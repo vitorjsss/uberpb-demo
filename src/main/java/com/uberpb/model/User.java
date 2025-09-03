@@ -1,6 +1,7 @@
 package com.uberpb.model;
 
 public class User {
+    private Long id;
     private String nome;
     private String email;
     private String cpf;
@@ -45,5 +46,11 @@ public class User {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+    
+    // ID é gerenciado internamente pelo repositório
+    // Não deve ser exposto publicamente por questões de segurança
+    void setId(Long id) {
+        this.id = id;
     }
 }

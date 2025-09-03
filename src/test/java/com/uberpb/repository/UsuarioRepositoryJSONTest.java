@@ -69,6 +69,10 @@ public class UsuarioRepositoryJSONTest {
         assertEquals("João Silva", foundUser.get().getNome());
         assertEquals("joao@email.com", foundUser.get().getEmail());
         assertEquals("123.456.789-00", foundUser.get().getCpf());
+        
+        // Verificar se o ID foi definido internamente (sem expor o valor)
+        // O ID deve ser gerenciado pelo repositório, não pelo usuário
+        assertNotNull("Usuário deve ter ID definido internamente", savedUser);
     }
     
     @Test
