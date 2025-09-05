@@ -18,7 +18,7 @@ public class Motorista {
     private LocalDateTime dataCadastro;
     private boolean ativo;
     
-    // Atributos específicos do motorista
+    // Atributos especificos do motorista
     private String cnh;
     private String validadeCnh;
     private String placaVeiculo;
@@ -45,7 +45,7 @@ public class Motorista {
         this.dataCadastro = LocalDateTime.now();
         this.ativo = true;
         
-        // Inicializa atributos específicos do motorista
+        // Inicializa atributos especificos do motorista
         this.cnh = cnh;
         this.validadeCnh = validadeCnh;
         this.placaVeiculo = placaVeiculo;
@@ -96,7 +96,7 @@ public class Motorista {
     public void setDisponivel(boolean disponivel) { this.disponivel = disponivel; }
     public void setLocalizacaoAtual(String localizacaoAtual) { this.localizacaoAtual = localizacaoAtual; }
     
-    // ===== MÉTODOS ESPECÍFICOS =====
+    
     
     /**
      * Adiciona categoria ao motorista (evita duplicatas)
@@ -115,7 +115,7 @@ public class Motorista {
     }
     
     /**
-     * Adiciona uma nova avaliação e recalcula a média
+     * Adiciona uma nova avaliaçao e recalcula a media
      */
     public void adicionarAvaliacao(double novaAvaliacao) {
         double somaTotal = (this.avaliacaoMedia * this.totalAvaliacoes) + novaAvaliacao;
@@ -124,7 +124,7 @@ public class Motorista {
     }
     
     /**
-     * Verifica se o motorista pode atuar em uma categoria específica
+     * Verifica se o motorista pode atuar em uma categoria especifica
      */
     public boolean podeAtuarCategoria(String categoria) {
         return this.categorias.contains(categoria);
