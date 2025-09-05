@@ -2,72 +2,56 @@ package com.uberpb.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class Passageiro {
-    private static int contadorId = 1;
+public class Passageiro extends User {
 
-    private final int id;
-    private String nome;
-    private String email;
-    private String telefone;
-    private String senha;
     private double avaliacaoMedia;
     private List<String> historicoCorridas;
+    private String localizacaoAtual;
+    private boolean emCorrida;
+    private List<String> metodosPagamento;
+    private int idade; // <-- novo campo
 
-    public Passageiro(String nome, String email, String telefone, String senha) {
-        this.id = contadorId++;
-        this.nome = nome;
-        this.email = email;
-        this.telefone = telefone;
-        this.senha = senha;
+    // Construtor
+    public Passageiro(int id, String localizacaoAtual, boolean emCorrida) {
+        super();
+        this.setId(id);
         this.avaliacaoMedia = 0.0;
         this.historicoCorridas = new ArrayList<>();
+        this.localizacaoAtual = localizacaoAtual;
+        this.emCorrida = emCorrida;
+        this.metodosPagamento = new ArrayList<>();
     }
 
-    // Getters e Setters
-    public int getId() { return id; }
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public String getTelefone() { return telefone; }
-    public void setTelefone(String telefone) { this.telefone = telefone; }
-
-    public String getSenha() { return senha; }
-    public void setSenha(String senha) { this.senha = senha; }
-
+    // ===== Getters e Setters =====
     public double getAvaliacaoMedia() { return avaliacaoMedia; }
     public void setAvaliacaoMedia(double avaliacaoMedia) { this.avaliacaoMedia = avaliacaoMedia; }
 
     public List<String> getHistoricoCorridas() { return historicoCorridas; }
-    public void adicionarCorrida(String corrida) {
-        this.historicoCorridas.add(corrida);
-    }
+    public void setHistoricoCorridas(List<String> historicoCorridas) { this.historicoCorridas = historicoCorridas; }
+
+    public String getLocalizacaoAtual() { return localizacaoAtual; }
+    public void setLocalizacaoAtual(String localizacaoAtual) { this.localizacaoAtual = localizacaoAtual; }
+
+    public boolean isEmCorrida() { return emCorrida; }
+    public void setEmCorrida(boolean emCorrida) { this.emCorrida = emCorrida; }
+
+    public List<String> getMetodosPagamento() { return metodosPagamento; }
+    public void setMetodosPagamento(List<String> metodosPagamento) { this.metodosPagamento = metodosPagamento; }
+
+    public int getIdade() { return idade; } // <-- getter
+    public void setIdade(int idade) { this.idade = idade; } // <-- setter
 
     @Override
     public String toString() {
         return "Passageiro{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", email='" + email + '\'' +
-                ", telefone='" + telefone + '\'' +
+                "id=" + getId() +
+                ", idade=" + idade +
                 ", avaliacaoMedia=" + avaliacaoMedia +
+                ", historicoCorridas=" + historicoCorridas +
+                ", localizacaoAtual='" + localizacaoAtual + '\'' +
+                ", emCorrida=" + emCorrida +
+                ", metodosPagamento=" + metodosPagamento +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Passageiro)) return false;
-        Passageiro that = (Passageiro) o;
-        return Objects.equals(email, that.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(email);
     }
 }
