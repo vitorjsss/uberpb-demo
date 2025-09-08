@@ -1,0 +1,13 @@
+[ {
+  "nome" : "João Silva Santos",
+  "email" : "joao@email.com",
+  "cpf" : "123.456.789-00",
+  "senha" : "senha123",
+  "tipo" : "passageiro"
+}, {
+  "nome" : "Maria Santos",
+  "email" : "maria@email.com",
+  "cpf" : "987.654.321-00",
+  "senha" : "senha456",
+  "tipo" : "motorista"
+} ]
