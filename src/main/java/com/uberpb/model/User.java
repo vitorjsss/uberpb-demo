@@ -1,11 +1,29 @@
 package com.uberpb.model;
 
+import java.time.LocalDateTime;
+
 public class User {
-    private String nome;
-    private String email;
-    private String cpf;
+    private int id;
+    private String username;
     private String senha;
+
+    private String nome;
+    private String sobrenome;
+
+    private String email;
+    private String telefone;
+
     private String tipo;
+
+    private LocalDateTime dataCadastro;
+
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
 
     public String getNome() {
         return nome;
@@ -23,14 +41,6 @@ public class User {
         this.email = email;
     }
 
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
     public String getSenha() {
         return senha;
     }
@@ -45,5 +55,37 @@ public class User {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 }
