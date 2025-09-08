@@ -63,7 +63,7 @@ public class MainCLI {
             String input = sc.nextLine();
             if (validarCampoObrigatorio(input, "Username")) {
                 username = input;
-                System.out.println(" Username válido!");
+                System.out.println("✓ Username válido!");
             }
         }
         
@@ -73,7 +73,7 @@ public class MainCLI {
             String input = sc.nextLine();
             if (validarSenha(input)) {
                 senha = input;
-                System.out.println(" Senha válida!");
+                System.out.println("✓ Senha válida!");
             }
         }
         
@@ -83,7 +83,7 @@ public class MainCLI {
             String input = sc.nextLine();
             if (validarNome(input)) {
                 nome = input;
-                System.out.println(" Nome válido!");
+                System.out.println("✓ Nome válido!");
             }
         }
         
@@ -93,7 +93,7 @@ public class MainCLI {
             String input = sc.nextLine();
             if (validarCampoObrigatorio(input, "Sobrenome")) {
                 sobrenome = input;
-                System.out.println(" Sobrenome válido!");
+                System.out.println("✓ Sobrenome válido!");
             }
         }
         
@@ -107,7 +107,7 @@ public class MainCLI {
                     System.out.println("ERRO: Já existe um usuário com este e-mail!");
                 } else {
                     email = input;
-                    System.out.println(" Email válido!");
+                    System.out.println("✓ Email válido!");
                 }
             }
         }
@@ -118,7 +118,7 @@ public class MainCLI {
             String input = sc.nextLine();
             if (validarTelefone(input)) {
                 telefone = input;
-                System.out.println(" Telefone válido!");
+                System.out.println("✓ Telefone válido!");
             }
         }
 
@@ -184,9 +184,30 @@ public class MainCLI {
             System.out.println("Voce ja possui perfil de passageiro.");
             return;
         }
-        System.out.print("Idade: ");
-        int idade = sc.nextInt();
-        sc.nextLine();
+        
+        System.out.println("\n--- Cadastro de Perfil Passageiro ---");
+        
+        int idade = -1;
+        // Validar idade (deve ser maior ou igual a 18)
+        while (idade == -1) {
+            System.out.print("Idade: ");
+            try {
+                int inputIdade = sc.nextInt();
+                sc.nextLine();
+                
+                if (validarIdade(inputIdade)) {
+                    if (inputIdade >= 18) {
+                        idade = inputIdade;
+                        System.out.println("✓ Idade válida!");
+                    } else {
+                        System.out.println("ERRO: Passageiro deve ser maior de 18 anos!");
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("ERRO: Digite uma idade válida!");
+                sc.nextLine(); // Limpar buffer
+            }
+        }
 
         Passageiro p = new Passageiro(usuarioLogado.getId(), "Nao definida", false);
         p.setUsername(usuarioLogado.getUsername());
@@ -198,6 +219,7 @@ public class MainCLI {
         p.setIdade(idade);
 
         repo.associarPassageiro(usuarioLogado);
+        System.out.println("\n🎉 Perfil de passageiro cadastrado com sucesso!");
     }
 
     // ===== CADASTRO PERFIL MOTORISTA COM VALIDAÇÕES =====
@@ -212,13 +234,13 @@ public class MainCLI {
         String cnh = null;
         String validade = null;
         
-        // CNH
+        // CNH - Validar formato (apenas números, 11 caracteres)
         while (cnh == null) {
-            System.out.print("CNH: ");
+            System.out.print("CNH (apenas números, 11 dígitos): ");
             String input = sc.nextLine();
-            if (validarCampoObrigatorio(input, "CNH")) {
+            if (validarCNH(input)) {
                 cnh = input;
-                System.out.println(" CNH válida!");
+                System.out.println("✓ CNH válida!");
             }
         }
         
@@ -226,9 +248,9 @@ public class MainCLI {
         while (validade == null) {
             System.out.print("Validade da CNH (dd/mm/yyyy): ");
             String input = sc.nextLine();
-            if (validarCampoObrigatorio(input, "Validade da CNH")) {
+            if (validarDataValidade(input)) {
                 validade = input;
-                System.out.println(" Validade válida!");
+                System.out.println("✓ Validade válida!");
             }
         }
 
@@ -361,6 +383,111 @@ public class MainCLI {
         if (!telefoneLimpo.matches("^[0-9]+$")) {
             System.out.println("ERRO: Telefone deve conter apenas números!");
             return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Valida idade do passageiro (validação genérica)
+     */
+    private static boolean validarIdade(int idade) {
+        if (idade < 0) {
+            System.out.println("ERRO: Idade não pode ser negativa!");
+            return false;
+        }
+        
+        if (idade > 120) {
+            System.out.println("ERRO: Idade não pode ser maior que 120 anos!");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Valida CNH do motorista
+     */
+    private static boolean validarCNH(String cnh) {
+        if (!validarCampoObrigatorio(cnh, "CNH")) return false;
+        
+        String cnhLimpa = cnh.trim().replaceAll("[\\s.-]", "");
+        
+        // CNH deve ter exatamente 11 dígitos
+        if (cnhLimpa.length() != 11) {
+            System.out.println("ERRO: CNH deve ter exatamente 11 dígitos!");
+            return false;
+        }
+        
+        if (!cnhLimpa.matches("^[0-9]+$")) {
+            System.out.println("ERRO: CNH deve conter apenas números!");
+            return false;
+        }
+        
+        // Verificar se não são todos os dígitos iguais
+        if (cnhLimpa.matches("(.)\\1{10}")) {
+            System.out.println("ERRO: CNH não pode ter todos os dígitos iguais!");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Valida data de validade da CNH
+     */
+    private static boolean validarDataValidade(String data) {
+        if (!validarCampoObrigatorio(data, "Data de validade")) return false;
+        
+        String dataLimpa = data.trim();
+        
+        // Verificar formato dd/mm/aaaa
+        if (!dataLimpa.matches("^\\d{2}/\\d{2}/\\d{4}$")) {
+            System.out.println("ERRO: Data deve estar no formato dd/mm/aaaa (ex: 15/12/2025)!");
+            return false;
+        }
+        
+        String[] partes = dataLimpa.split("/");
+        int dia = Integer.parseInt(partes[0]);
+        int mes = Integer.parseInt(partes[1]);
+        int ano = Integer.parseInt(partes[2]);
+        
+        // Validar dia
+        if (dia < 1 || dia > 31) {
+            System.out.println("ERRO: Dia deve estar entre 01 e 31!");
+            return false;
+        }
+        
+        // Validar mês
+        if (mes < 1 || mes > 12) {
+            System.out.println("ERRO: Mês deve estar entre 01 e 12!");
+            return false;
+        }
+        
+        // Validar ano (não pode ser muito antigo nem muito futuro)
+        int anoAtual = 2024; // ou use Calendar.getInstance().get(Calendar.YEAR)
+        if (ano < anoAtual) {
+            System.out.println("ERRO: CNH não pode estar vencida!");
+            return false;
+        }
+        
+        if (ano > anoAtual + 10) {
+            System.out.println("ERRO: Data de validade muito distante no futuro!");
+            return false;
+        }
+        
+        // Validações específicas de dias por mês
+        if (mes == 2) { // Fevereiro
+            boolean bissexto = (ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0);
+            if (dia > (bissexto ? 29 : 28)) {
+                System.out.println("ERRO: Fevereiro não pode ter mais de " + (bissexto ? "29" : "28") + " dias!");
+                return false;
+            }
+        } else if (mes == 4 || mes == 6 || mes == 9 || mes == 11) { // Meses com 30 dias
+            if (dia > 30) {
+                System.out.println("ERRO: Este mês só pode ter até 30 dias!");
+                return false;
+            }
         }
         
         return true;
