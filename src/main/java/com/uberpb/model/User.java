@@ -2,7 +2,13 @@ package com.uberpb.model;
 
 import java.time.LocalDateTime;
 
+import java.time.LocalDateTime;
+
 public class User {
+    private int id;
+    private String username;
+    private String senha;
+
     private int id;
     private String username;
     private String senha;
@@ -10,10 +16,24 @@ public class User {
     private String nome;
     private String sobrenome;
 
+    private String sobrenome;
+
     private String email;
     private String telefone;
 
+    private String telefone;
+
     private String tipo;
+
+    private LocalDateTime dataCadastro;
+
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
 
     private LocalDateTime dataCadastro;
 

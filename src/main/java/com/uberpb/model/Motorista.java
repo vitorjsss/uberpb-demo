@@ -1,20 +1,20 @@
 package com.uberpb.model;
 
-public class Motorista {
-    private int id;
-    private boolean ativo;
+public class Motorista extends User {
 
+    private boolean ativo;
     private String cnh;
     private String validadeCnh;
-
     private double avaliacaoMedia;
     private int totalAvaliacoes;
     private boolean disponivel;
     private String localizacaoAtual;
 
+    // Construtor: mantém os atributos atuais, chama super() para dados do Usuario
     public Motorista(int id, boolean ativo, String cnh, String validadeCnh, double avaliacaoMedia,
             int totalAvaliacoes, boolean disponivel, String localizacaoAtual) {
-        this.id = id;
+        super(); // chama construtor padrão de Usuario
+        this.setId(id); // id herdado de Usuario
         this.ativo = ativo;
         this.cnh = cnh;
         this.validadeCnh = validadeCnh;
@@ -24,13 +24,7 @@ public class Motorista {
         this.localizacaoAtual = localizacaoAtual;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    // Getters e Setters
 
     public boolean isAtivo() {
         return ativo;
@@ -86,5 +80,19 @@ public class Motorista {
 
     public void setLocalizacaoAtual(String localizacaoAtual) {
         this.localizacaoAtual = localizacaoAtual;
+    }
+
+    @Override
+    public String toString() {
+        return "Motorista{" +
+                "id=" + getId() +
+                ", ativo=" + ativo +
+                ", cnh='" + cnh + '\'' +
+                ", validadeCnh='" + validadeCnh + '\'' +
+                ", avaliacaoMedia=" + avaliacaoMedia +
+                ", totalAvaliacoes=" + totalAvaliacoes +
+                ", disponivel=" + disponivel +
+                ", localizacaoAtual='" + localizacaoAtual + '\'' +
+                '}';
     }
 }
