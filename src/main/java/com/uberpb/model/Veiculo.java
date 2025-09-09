@@ -4,14 +4,19 @@ public class Veiculo {
     private int id;
     private String modelo;
     private String marca;
-    private String ano;
+    private int ano; // Mudado para int para facilitar cálculos
     private String cor;
     private String placa;
     private String tipo; // Ex: Carro, Moto, Bicicleta
     private String categoria; // Ex: Econômico, Luxo, SUV
+    
+    // Atributos adicionais obrigatórios da task T2.1
+    private double capacidadePortaMalas; // em litros
+    private int numeroPassageiros;
 
-    public Veiculo(int id, String modelo, String marca, String ano, String cor, String placa, String tipo,
-            String categoria) {
+    // Construtor completo
+    public Veiculo(int id, String modelo, String marca, int ano, String cor, String placa, 
+                   String tipo, String categoria, double capacidadePortaMalas, int numeroPassageiros) {
         this.id = id;
         this.modelo = modelo;
         this.marca = marca;
@@ -20,8 +25,15 @@ public class Veiculo {
         this.placa = placa;
         this.tipo = tipo;
         this.categoria = categoria;
+        this.capacidadePortaMalas = capacidadePortaMalas;
+        this.numeroPassageiros = numeroPassageiros;
+    }
+    
+    // Construtor padrão
+    public Veiculo() {
     }
 
+    // Getters e Setters existentes
     public int getId() {
         return id;
     }
@@ -46,11 +58,11 @@ public class Veiculo {
         this.marca = marca;
     }
 
-    public String getAno() {
+    public int getAno() {
         return ano;
     }
 
-    public void setAno(String ano) {
+    public void setAno(int ano) {
         this.ano = ano;
     }
 
@@ -84,5 +96,56 @@ public class Veiculo {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+    
+    // Getters e Setters para novos atributos obrigatórios
+    public double getCapacidadePortaMalas() {
+        return capacidadePortaMalas;
+    }
+    
+    public void setCapacidadePortaMalas(double capacidadePortaMalas) {
+        this.capacidadePortaMalas = capacidadePortaMalas;
+    }
+    
+    public int getNumeroPassageiros() {
+        return numeroPassageiros;
+    }
+    
+    public void setNumeroPassageiros(int numeroPassageiros) {
+        this.numeroPassageiros = numeroPassageiros;
+    }
+    
+    // Métodos utilitários
+    public int getIdadeVeiculo() {
+        return java.time.LocalDate.now().getYear() - this.ano;
+    }
+    
+    public boolean isVeiculoNovo() {
+        return getIdadeVeiculo() <= 1;
+    }
+    
+    // toString para facilitar debug e exibição
+    @Override
+    public String toString() {
+        return String.format("Veiculo{id=%d, modelo='%s', marca='%s', ano=%d, cor='%s', " +
+                           "placa='%s', tipo='%s', categoria='%s', capacidadePortaMalas=%.1fL, " +
+                           "numeroPassageiros=%d}", 
+                           id, modelo, marca, ano, cor, placa, tipo, categoria, 
+                           capacidadePortaMalas, numeroPassageiros);
+    }
+    
+    // equals e hashCode
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        
+        Veiculo veiculo = (Veiculo) obj;
+        return id == veiculo.id;
+    }
+    
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(id);
     }
 }
