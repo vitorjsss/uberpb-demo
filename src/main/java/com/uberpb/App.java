@@ -1,18 +1,11 @@
 package com.uberpb;
 
-import com.uberpb.model.User;
-import com.uberpb.repository.UsuarioRepository;
-import com.uberpb.repository.UsuarioRepositoryJSON;
-
 import java.util.List;
-import java.util.Optional;
-
 /**
  * Demonstração do uso do UsuarioRepositoryJSON
  */
 import com.uberpb.model.*;
 import java.util.Scanner;
-import java.util.List;
 
 public class App {
 
