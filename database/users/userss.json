@@ -1,24 +1,4 @@
 [ {
-  "id" : 3,
-  "username" : "rai10",
-  "senha" : "Rai10",
-  "nome" : "Vitor",
-  "sobrenome" : "Raimundo",
-  "email" : "vitor@hotmail.com",
-  "telefone" : "83967767667",
-  "tipo" : "usuario",
-  "dataCadastro" : "09/09/2025 23:03:26"
-}, {
-  "id" : 4,
-  "username" : "kevin",
-  "senha" : "Kevin12",
-  "nome" : "Kevin",
-  "sobrenome" : "Santos",
-  "email" : "kevin@mail.com",
-  "telefone" : "83998879896",
-  "tipo" : "usuario",
-  "dataCadastro" : "09/09/2025 23:20:05"
-}, {
   "id" : 5,
   "username" : "arthur9",
   "senha" : "Arthur09",
@@ -28,4 +8,24 @@
   "telefone" : "83977776666",
   "tipo" : "usuario",
   "dataCadastro" : "09/09/2025 23:32:00"
+}, {
+  "id" : 6,
+  "username" : "cr7",
+  "senha" : "Cristiano7",
+  "nome" : "Cristiano",
+  "sobrenome" : "Ronaldo",
+  "email" : "cr7@mail.com",
+  "telefone" : "83990098783",
+  "tipo" : "usuario",
+  "dataCadastro" : "10/09/2025 14:29:27"
+}, {
+  "id" : 7,
+  "username" : "pokemon",
+  "senha" : "Pokemon1",
+  "nome" : "Pokemon",
+  "sobrenome" : "Mamede",
+  "email" : "pokemon@mail.com",
+  "telefone" : "83976544543",
+  "tipo" : "usuario",
+  "dataCadastro" : "10/09/2025 15:04:15"
 } ]

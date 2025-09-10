@@ -15,4 +15,21 @@
   "totalAvaliacoes" : 0,
   "disponivel" : true,
   "localizacaoAtual" : "Nao definida"
+}, {
+  "id" : 7,
+  "username" : "pokemon",
+  "senha" : "Pokemon1",
+  "nome" : "Pokemon",
+  "sobrenome" : "Mamede",
+  "email" : "pokemon@mail.com",
+  "telefone" : "83976544543",
+  "tipo" : "motorista",
+  "dataCadastro" : "10/09/2025 15:04:15",
+  "ativo" : true,
+  "cnh" : "33344455532",
+  "validadeCnh" : "30/12/2034",
+  "avaliacaoMedia" : 0.0,
+  "totalAvaliacoes" : 0,
+  "disponivel" : true,
+  "localizacaoAtual" : "Nao definida"
 } ]

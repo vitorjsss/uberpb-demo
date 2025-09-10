@@ -12,7 +12,17 @@ public class Passageiro extends User {
     private List<String> metodosPagamento;
     private int idade;
 
-    // Construtor
+    // Construtor padrão necessário para o Jackson
+    public Passageiro() {
+        super();
+        this.avaliacaoMedia = 0.0;
+        this.historicoCorridas = new ArrayList<>();
+        this.localizacaoAtual = "Nao definida";
+        this.emCorrida = false;
+        this.metodosPagamento = new ArrayList<>();
+    }
+
+    // Construtor existente
     public Passageiro(int id, String localizacaoAtual, boolean emCorrida) {
         super();
         this.setId(id);
