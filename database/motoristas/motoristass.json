@@ -1,0 +1,18 @@
+[ {
+  "id" : 5,
+  "username" : "arthur9",
+  "senha" : "Arthur09",
+  "nome" : "Arthur",
+  "sobrenome" : "Marques",
+  "email" : "arthur@mail.com",
+  "telefone" : "83977776666",
+  "tipo" : "motorista",
+  "dataCadastro" : "09/09/2025 23:32:00",
+  "ativo" : true,
+  "cnh" : "12345678909",
+  "validadeCnh" : "14/09/2030",
+  "avaliacaoMedia" : 0.0,
+  "totalAvaliacoes" : 0,
+  "disponivel" : true,
+  "localizacaoAtual" : "Nao definida"
+} ]

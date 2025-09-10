@@ -1,0 +1,31 @@
+[ {
+  "id" : 3,
+  "username" : "rai10",
+  "senha" : "Rai10",
+  "nome" : "Vitor",
+  "sobrenome" : "Raimundo",
+  "email" : "vitor@hotmail.com",
+  "telefone" : "83967767667",
+  "tipo" : "usuario",
+  "dataCadastro" : "09/09/2025 23:03:26"
+}, {
+  "id" : 4,
+  "username" : "kevin",
+  "senha" : "Kevin12",
+  "nome" : "Kevin",
+  "sobrenome" : "Santos",
+  "email" : "kevin@mail.com",
+  "telefone" : "83998879896",
+  "tipo" : "usuario",
+  "dataCadastro" : "09/09/2025 23:20:05"
+}, {
+  "id" : 5,
+  "username" : "arthur9",
+  "senha" : "Arthur09",
+  "nome" : "Arthur",
+  "sobrenome" : "Marques",
+  "email" : "arthur@mail.com",
+  "telefone" : "83977776666",
+  "tipo" : "usuario",
+  "dataCadastro" : "09/09/2025 23:32:00"
+} ]
