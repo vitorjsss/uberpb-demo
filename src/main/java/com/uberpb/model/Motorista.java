@@ -10,11 +10,23 @@ public class Motorista extends User {
     private boolean disponivel;
     private String localizacaoAtual;
 
-    // Construtor: mantém os atributos atuais, chama super() para dados do Usuario
+    // Construtor padrão necessário para o Jackson
+    public Motorista() {
+        super();
+        this.ativo = false;
+        this.cnh = "";
+        this.validadeCnh = "";
+        this.avaliacaoMedia = 0.0;
+        this.totalAvaliacoes = 0;
+        this.disponivel = false;
+        this.localizacaoAtual = "Não definida";
+    }
+
+    // Construtor existente
     public Motorista(int id, boolean ativo, String cnh, String validadeCnh, double avaliacaoMedia,
             int totalAvaliacoes, boolean disponivel, String localizacaoAtual) {
-        super(); // chama construtor padrão de Usuario
-        this.setId(id); // id herdado de Usuario
+        super();
+        this.setId(id);
         this.ativo = ativo;
         this.cnh = cnh;
         this.validadeCnh = validadeCnh;

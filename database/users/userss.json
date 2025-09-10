@@ -1,0 +1,31 @@
+[ {
+  "id" : 5,
+  "username" : "arthur9",
+  "senha" : "Arthur09",
+  "nome" : "Arthur",
+  "sobrenome" : "Marques",
+  "email" : "arthur@mail.com",
+  "telefone" : "83977776666",
+  "tipo" : "usuario",
+  "dataCadastro" : "09/09/2025 23:32:00"
+}, {
+  "id" : 6,
+  "username" : "cr7",
+  "senha" : "Cristiano7",
+  "nome" : "Cristiano",
+  "sobrenome" : "Ronaldo",
+  "email" : "cr7@mail.com",
+  "telefone" : "83990098783",
+  "tipo" : "usuario",
+  "dataCadastro" : "10/09/2025 14:29:27"
+}, {
+  "id" : 7,
+  "username" : "pokemon",
+  "senha" : "Pokemon1",
+  "nome" : "Pokemon",
+  "sobrenome" : "Mamede",
+  "email" : "pokemon@mail.com",
+  "telefone" : "83976544543",
+  "tipo" : "usuario",
+  "dataCadastro" : "10/09/2025 15:04:15"
+} ]

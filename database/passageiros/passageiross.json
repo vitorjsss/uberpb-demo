@@ -1,0 +1,17 @@
+[ {
+  "id" : 6,
+  "username" : "cr7",
+  "senha" : "Cristiano7",
+  "nome" : "Cristiano",
+  "sobrenome" : "Ronaldo",
+  "email" : "cr7@mail.com",
+  "telefone" : "83990098783",
+  "tipo" : "passageiro",
+  "dataCadastro" : "10/09/2025 14:29:27",
+  "avaliacaoMedia" : 0.0,
+  "historicoCorridas" : [ ],
+  "localizacaoAtual" : "Nao definida",
+  "emCorrida" : false,
+  "metodosPagamento" : [ "dinheiro" ],
+  "idade" : 40
+} ]

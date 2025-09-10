@@ -10,9 +10,19 @@ public class Passageiro extends User {
     private String localizacaoAtual;
     private boolean emCorrida;
     private List<String> metodosPagamento;
-    private int idade; // <-- novo campo
+    private int idade;
 
-    // Construtor
+    // Construtor padrão necessário para o Jackson
+    public Passageiro() {
+        super();
+        this.avaliacaoMedia = 0.0;
+        this.historicoCorridas = new ArrayList<>();
+        this.localizacaoAtual = "Nao definida";
+        this.emCorrida = false;
+        this.metodosPagamento = new ArrayList<>();
+    }
+
+    // Construtor existente
     public Passageiro(int id, String localizacaoAtual, boolean emCorrida) {
         super();
         this.setId(id);
@@ -24,23 +34,53 @@ public class Passageiro extends User {
     }
 
     // ===== Getters e Setters =====
-    public double getAvaliacaoMedia() { return avaliacaoMedia; }
-    public void setAvaliacaoMedia(double avaliacaoMedia) { this.avaliacaoMedia = avaliacaoMedia; }
+    public double getAvaliacaoMedia() {
+        return avaliacaoMedia;
+    }
 
-    public List<String> getHistoricoCorridas() { return historicoCorridas; }
-    public void setHistoricoCorridas(List<String> historicoCorridas) { this.historicoCorridas = historicoCorridas; }
+    public void setAvaliacaoMedia(double avaliacaoMedia) {
+        this.avaliacaoMedia = avaliacaoMedia;
+    }
 
-    public String getLocalizacaoAtual() { return localizacaoAtual; }
-    public void setLocalizacaoAtual(String localizacaoAtual) { this.localizacaoAtual = localizacaoAtual; }
+    public List<String> getHistoricoCorridas() {
+        return historicoCorridas;
+    }
 
-    public boolean isEmCorrida() { return emCorrida; }
-    public void setEmCorrida(boolean emCorrida) { this.emCorrida = emCorrida; }
+    public void setHistoricoCorridas(List<String> historicoCorridas) {
+        this.historicoCorridas = historicoCorridas;
+    }
 
-    public List<String> getMetodosPagamento() { return metodosPagamento; }
-    public void setMetodosPagamento(List<String> metodosPagamento) { this.metodosPagamento = metodosPagamento; }
+    public String getLocalizacaoAtual() {
+        return localizacaoAtual;
+    }
 
-    public int getIdade() { return idade; } // <-- getter
-    public void setIdade(int idade) { this.idade = idade; } // <-- setter
+    public void setLocalizacaoAtual(String localizacaoAtual) {
+        this.localizacaoAtual = localizacaoAtual;
+    }
+
+    public boolean isEmCorrida() {
+        return emCorrida;
+    }
+
+    public void setEmCorrida(boolean emCorrida) {
+        this.emCorrida = emCorrida;
+    }
+
+    public List<String> getMetodosPagamento() {
+        return metodosPagamento;
+    }
+
+    public void setMetodosPagamento(List<String> metodosPagamento) {
+        this.metodosPagamento = metodosPagamento;
+    }
+
+    public int getIdade() {
+        return idade;
+    } // <-- getter
+
+    public void setIdade(int idade) {
+        this.idade = idade;
+    } // <-- setter
 
     @Override
     public String toString() {

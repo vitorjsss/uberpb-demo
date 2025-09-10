@@ -1,13 +1,16 @@
 package com.uberpb.cli;
 
 import com.uberpb.model.*;
+import com.uberpb.repository.DatabaseManager;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class MainCLI {
 
     private static Scanner sc = new Scanner(System.in);
-    private static RepositorioMemoria repo = new RepositorioMemoria();
+    private static DatabaseManager db = new DatabaseManager();
     private static User usuarioLogado = null;
     
     // Padrão para validação de email
@@ -103,7 +106,7 @@ public class MainCLI {
             String input = sc.nextLine();
             if (validarEmail(input)) {
                 // Verificar email duplicado
-                if (repo.buscarPorEmailSenha(input, "") != null) {
+                if (db.findUserByEmail(input).isPresent()) {
                     System.out.println("ERRO: Já existe um usuário com este e-mail!");
                 } else {
                     email = input;
@@ -129,10 +132,14 @@ public class MainCLI {
         u.setSobrenome(sobrenome);
         u.setEmail(email);
         u.setTelefone(telefone);
+        u.setTipo("usuario");
+        u.setDataCadastro(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
 
-        repo.salvar(u);
+        User savedUser = db.saveUser(u);
 
         System.out.println("\n🎉 Usuario cadastrado com sucesso!");
+        System.out.println("ID do usuário: " + savedUser.getId());
+        System.out.println("Dados salvos em: database/users/users.json");
     }
 
     // ===== LOGIN =====
@@ -143,12 +150,20 @@ public class MainCLI {
         System.out.print("Senha: ");
         String senha = sc.nextLine();
 
-        User u = repo.buscarPorEmailSenha(email, senha);
-        if (u != null) {
-            usuarioLogado = u;
-            System.out.println("Login bem-sucedido! Bem-vindo, " + u.getNome());
+        // Buscar usuário por email
+        var userOpt = db.findUserByEmail(email);
+        if (userOpt.isPresent()) {
+            User u = userOpt.get();
+            // Verificar senha
+            if (senha.equals(u.getSenha())) {
+                usuarioLogado = u;
+                System.out.println("Login bem-sucedido! Bem-vindo, " + u.getNome());
+                System.out.println("Dados carregados de: database/users/users.json");
+            } else {
+                System.out.println("Senha incorreta!");
+            }
         } else {
-            System.out.println("Email ou senha invalido!");
+            System.out.println("Email não encontrado!");
         }
     }
 
@@ -160,6 +175,7 @@ public class MainCLI {
         System.out.println("2 - Cadastrar perfil de Motorista");
         System.out.println("3 - Menu Passageiro");
         System.out.println("4 - Menu Motorista");
+        System.out.println("5 - Ver estatísticas do banco de dados");
         System.out.println("9 - Logout");
         System.out.print("Escolha: ");
         int op = sc.nextInt();
@@ -170,6 +186,7 @@ public class MainCLI {
             case 2 -> cadastrarPerfilMotorista();
             case 3 -> menuPassageiro();
             case 4 -> menuMotorista();
+            case 5 -> verEstatisticasBanco();
             case 9 -> {
                 System.out.println("Saindo da conta...");
                 usuarioLogado = null;
@@ -180,7 +197,9 @@ public class MainCLI {
 
     // ===== CADASTRO PERFIL PASSAGEIRO =====
     private static void cadastrarPerfilPassageiro() {
-        if (repo.getPassageiro(usuarioLogado) != null) {
+        // Verificar se já possui perfil de passageiro
+        var passageiroOpt = db.findPassageiroById(usuarioLogado.getId());
+        if (passageiroOpt.isPresent()) {
             System.out.println("Voce ja possui perfil de passageiro.");
             return;
         }
@@ -216,15 +235,22 @@ public class MainCLI {
         p.setSobrenome(usuarioLogado.getSobrenome());
         p.setEmail(usuarioLogado.getEmail());
         p.setTelefone(usuarioLogado.getTelefone());
+        p.setTipo("passageiro");
+        p.setDataCadastro(usuarioLogado.getDataCadastro());
         p.setIdade(idade);
 
-        repo.associarPassageiro(usuarioLogado);
+        Passageiro savedPassageiro = db.savePassageiro(p);
         System.out.println("\n🎉 Perfil de passageiro cadastrado com sucesso!");
+        System.out.println("ID do passageiro: " + savedPassageiro.getId());
+        System.out.println("Dados salvos em: database/users/users.json");
+        System.out.println("Dados salvos em: database/passageiros/passageiros.json");
     }
 
     // ===== CADASTRO PERFIL MOTORISTA COM VALIDAÇÕES =====
     private static void cadastrarPerfilMotorista() {
-        if (repo.getMotorista(usuarioLogado) != null) {
+        // Verificar se já possui perfil de motorista
+        var motoristaOpt = db.findMotoristaById(usuarioLogado.getId());
+        if (motoristaOpt.isPresent()) {
             System.out.println("Voce ja possui perfil de motorista.");
             return;
         }
@@ -254,18 +280,34 @@ public class MainCLI {
             }
         }
 
-        repo.associarMotorista(usuarioLogado, cnh, validade);
+        // Criar motorista com os dados
+        Motorista m = new Motorista(usuarioLogado.getId(), true, cnh, validade, 0.0, 0, true, "Nao definida");
+        m.setUsername(usuarioLogado.getUsername());
+        m.setSenha(usuarioLogado.getSenha());
+        m.setNome(usuarioLogado.getNome());
+        m.setSobrenome(usuarioLogado.getSobrenome());
+        m.setEmail(usuarioLogado.getEmail());
+        m.setTelefone(usuarioLogado.getTelefone());
+        m.setTipo("motorista");
+        m.setDataCadastro(usuarioLogado.getDataCadastro());
+        
+        Motorista savedMotorista = db.saveMotorista(m);
         
         System.out.println("\n🎉 Perfil de motorista cadastrado com sucesso!");
+        System.out.println("ID do motorista: " + savedMotorista.getId());
+        System.out.println("Dados salvos em: database/users/users.json");
+        System.out.println("Dados salvos em: database/motoristas/motoristas.json");
     }
 
     // ===== MENU PASSAGEIRO =====
     private static void menuPassageiro() {
-        Passageiro p = repo.getPassageiro(usuarioLogado);
-        if (p == null) {
+        var passageiroOpt = db.findPassageiroById(usuarioLogado.getId());
+        if (passageiroOpt.isEmpty()) {
             System.out.println("Voce ainda nao possui perfil de passageiro. Cadastre primeiro.");
             return;
         }
+        
+        Passageiro p = passageiroOpt.get();
 
         while (true) {
             System.out.println("\n=== Menu Passageiro ===");
@@ -275,23 +317,37 @@ public class MainCLI {
             System.out.println("4 - Ver historico de corridas");
             System.out.println("5 - Ver localizacao atual");
             System.out.println("6 - Ver status (em corrida ou nao)");
+            System.out.println("7 - Atualizar localizacao");
+            System.out.println("8 - Ver informacoes do perfil");
             System.out.println("9 - Voltar");
             System.out.print("Escolha: ");
             int op = sc.nextInt();
             sc.nextLine();
 
-            if (op == 9) break;
-            else System.out.println("Em breve...");
+            switch (op) {
+                case 1 -> cadastrarMetodoPagamento(p);
+                case 2 -> System.out.println("Funcionalidade de corrida em desenvolvimento...");
+                case 3 -> verAvaliacaoMedia(p);
+                case 4 -> verHistoricoCorridas(p);
+                case 5 -> verLocalizacaoAtual(p);
+                case 6 -> verStatusCorrida(p);
+                case 7 -> atualizarLocalizacao(p);
+                case 8 -> verInformacoesPerfil(p);
+                case 9 -> { return; }
+                default -> System.out.println("Opcao invalida!");
+            }
         }
     }
 
     // ===== MENU MOTORISTA =====
     private static void menuMotorista() {
-        Motorista m = repo.getMotorista(usuarioLogado);
-        if (m == null) {
+        var motoristaOpt = db.findMotoristaById(usuarioLogado.getId());
+        if (motoristaOpt.isEmpty()) {
             System.out.println("Voce ainda nao possui perfil de motorista. Cadastre primeiro.");
             return;
         }
+        
+        Motorista m = motoristaOpt.get();
 
         while (true) {
             System.out.println("\n=== Menu Motorista ===");
@@ -299,14 +355,176 @@ public class MainCLI {
             System.out.println("2 - Ver avaliacao media");
             System.out.println("3 - Ver total de avaliacoes");
             System.out.println("4 - Ver localizacao atual");
+            System.out.println("5 - Atualizar localizacao");
+            System.out.println("6 - Ver informacoes do perfil");
+            System.out.println("7 - Ver CNH e validade");
+            System.out.println("8 - Ver status disponibilidade");
             System.out.println("9 - Voltar");
             System.out.print("Escolha: ");
             int op = sc.nextInt();
             sc.nextLine();
 
-            if (op == 9) break;
-            else System.out.println("Em breve...");
+            switch (op) {
+                case 1 -> verStatusAtivo(m);
+                case 2 -> verAvaliacaoMediaMotorista(m);
+                case 3 -> verTotalAvaliacoes(m);
+                case 4 -> verLocalizacaoAtualMotorista(m);
+                case 5 -> atualizarLocalizacaoMotorista(m);
+                case 6 -> verInformacoesPerfilMotorista(m);
+                case 7 -> verCnhValidade(m);
+                case 8 -> verStatusDisponibilidade(m);
+                case 9 -> { return; }
+                default -> System.out.println("Opcao invalida!");
+            }
         }
+    }
+    
+    // ===== MÉTODO PARA VER ESTATÍSTICAS DO BANCO =====
+    
+    private static void verEstatisticasBanco() {
+        System.out.println("\n--- Estatísticas do Banco de Dados ---");
+        System.out.println(db.getDatabaseStats());
+        System.out.println("\nEstrutura dos arquivos JSON:");
+        System.out.println("database/");
+        System.out.println("├── users/users.json (dados básicos de todos os usuários)");
+        System.out.println("├── passageiros/passageiros.json (dados específicos dos passageiros)");
+        System.out.println("├── motoristas/motoristas.json (dados específicos dos motoristas)");
+        System.out.println("├── veiculos/veiculos.json (dados dos veículos)");
+        System.out.println("└── id_counter.json (contadores de ID para cada entidade)");
+    }
+    
+    // ===== MÉTODOS DO MENU PASSAGEIRO =====
+    
+    private static void cadastrarMetodoPagamento(Passageiro p) {
+        System.out.println("\n--- Cadastrar Método de Pagamento ---");
+        System.out.print("Digite o método de pagamento: ");
+        String metodo = sc.nextLine();
+        
+        if (metodo != null && !metodo.trim().isEmpty()) {
+            p.getMetodosPagamento().add(metodo.trim());
+            db.updatePassageiro(p);
+            System.out.println("✓ Método de pagamento cadastrado com sucesso!");
+            System.out.println("Dados atualizados em: database/passageiros/passageiros.json");
+        } else {
+            System.out.println("ERRO: Método de pagamento não pode estar vazio!");
+        }
+    }
+    
+    private static void verAvaliacaoMedia(Passageiro p) {
+        System.out.println("\n--- Avaliação Média ---");
+        System.out.println("Avaliação média: " + p.getAvaliacaoMedia() + " ⭐");
+    }
+    
+    private static void verHistoricoCorridas(Passageiro p) {
+        System.out.println("\n--- Histórico de Corridas ---");
+        if (p.getHistoricoCorridas().isEmpty()) {
+            System.out.println("Nenhuma corrida realizada ainda.");
+        } else {
+            for (int i = 0; i < p.getHistoricoCorridas().size(); i++) {
+                System.out.println((i + 1) + ". " + p.getHistoricoCorridas().get(i));
+            }
+        }
+    }
+    
+    private static void verLocalizacaoAtual(Passageiro p) {
+        System.out.println("\n--- Localização Atual ---");
+        System.out.println("Localização: " + p.getLocalizacaoAtual());
+    }
+    
+    private static void verStatusCorrida(Passageiro p) {
+        System.out.println("\n--- Status da Corrida ---");
+        System.out.println("Status: " + (p.isEmCorrida() ? "Em corrida" : "Disponível"));
+    }
+    
+    private static void atualizarLocalizacao(Passageiro p) {
+        System.out.println("\n--- Atualizar Localização ---");
+        System.out.print("Digite a nova localização: ");
+        String localizacao = sc.nextLine();
+        
+        if (localizacao != null && !localizacao.trim().isEmpty()) {
+            p.setLocalizacaoAtual(localizacao.trim());
+            db.updatePassageiro(p);
+            System.out.println("✓ Localização atualizada com sucesso!");
+            System.out.println("Dados atualizados em: database/passageiros/passageiros.json");
+        } else {
+            System.out.println("ERRO: Localização não pode estar vazia!");
+        }
+    }
+    
+    private static void verInformacoesPerfil(Passageiro p) {
+        System.out.println("\n--- Informações do Perfil ---");
+        System.out.println("ID: " + p.getId());
+        System.out.println("Nome: " + p.getNome() + " " + p.getSobrenome());
+        System.out.println("Email: " + p.getEmail());
+        System.out.println("Telefone: " + p.getTelefone());
+        System.out.println("Idade: " + p.getIdade() + " anos");
+        System.out.println("Localização: " + p.getLocalizacaoAtual());
+        System.out.println("Avaliação média: " + p.getAvaliacaoMedia() + " ⭐");
+        System.out.println("Status: " + (p.isEmCorrida() ? "Em corrida" : "Disponível"));
+        System.out.println("Métodos de pagamento: " + p.getMetodosPagamento());
+    }
+    
+    // ===== MÉTODOS DO MENU MOTORISTA =====
+    
+    private static void verStatusAtivo(Motorista m) {
+        System.out.println("\n--- Status Ativo ---");
+        System.out.println("Status: " + (m.isAtivo() ? "Ativo" : "Inativo"));
+    }
+    
+    private static void verAvaliacaoMediaMotorista(Motorista m) {
+        System.out.println("\n--- Avaliação Média ---");
+        System.out.println("Avaliação média: " + m.getAvaliacaoMedia() + " ⭐");
+    }
+    
+    private static void verTotalAvaliacoes(Motorista m) {
+        System.out.println("\n--- Total de Avaliações ---");
+        System.out.println("Total de avaliações: " + m.getTotalAvaliacoes());
+    }
+    
+    private static void verLocalizacaoAtualMotorista(Motorista m) {
+        System.out.println("\n--- Localização Atual ---");
+        System.out.println("Localização: " + m.getLocalizacaoAtual());
+    }
+    
+    private static void atualizarLocalizacaoMotorista(Motorista m) {
+        System.out.println("\n--- Atualizar Localização ---");
+        System.out.print("Digite a nova localização: ");
+        String localizacao = sc.nextLine();
+        
+        if (localizacao != null && !localizacao.trim().isEmpty()) {
+            m.setLocalizacaoAtual(localizacao.trim());
+            db.updateMotorista(m);
+            System.out.println("✓ Localização atualizada com sucesso!");
+            System.out.println("Dados atualizados em: database/motoristas/motoristas.json");
+        } else {
+            System.out.println("ERRO: Localização não pode estar vazia!");
+        }
+    }
+    
+    private static void verInformacoesPerfilMotorista(Motorista m) {
+        System.out.println("\n--- Informações do Perfil ---");
+        System.out.println("ID: " + m.getId());
+        System.out.println("Nome: " + m.getNome() + " " + m.getSobrenome());
+        System.out.println("Email: " + m.getEmail());
+        System.out.println("Telefone: " + m.getTelefone());
+        System.out.println("CNH: " + m.getCnh());
+        System.out.println("Validade CNH: " + m.getValidadeCnh());
+        System.out.println("Localização: " + m.getLocalizacaoAtual());
+        System.out.println("Avaliação média: " + m.getAvaliacaoMedia() + " ⭐");
+        System.out.println("Total de avaliações: " + m.getTotalAvaliacoes());
+        System.out.println("Status: " + (m.isAtivo() ? "Ativo" : "Inativo"));
+        System.out.println("Disponibilidade: " + (m.isDisponivel() ? "Disponível" : "Indisponível"));
+    }
+    
+    private static void verCnhValidade(Motorista m) {
+        System.out.println("\n--- CNH e Validade ---");
+        System.out.println("CNH: " + m.getCnh());
+        System.out.println("Validade: " + m.getValidadeCnh());
+    }
+    
+    private static void verStatusDisponibilidade(Motorista m) {
+        System.out.println("\n--- Status de Disponibilidade ---");
+        System.out.println("Disponibilidade: " + (m.isDisponivel() ? "Disponível" : "Indisponível"));
     }
     
     // ===== MÉTODOS DE VALIDAÇÃO =====
