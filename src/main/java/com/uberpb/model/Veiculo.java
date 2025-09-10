@@ -1,18 +1,45 @@
 package com.uberpb.model;
 
-public class Veiculo {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.time.LocalDate;
+
+// Interface Observer - quem quer ser notificado implementa isso
+interface VeiculoObserver {
+    void onVeiculoStatusChanged(Veiculo veiculo, String novoStatus, String statusAnterior);
+    void onVeiculoLocalizacaoChanged(Veiculo veiculo, String novaLocalizacao);
+    void onVeiculoDisponibilidadeChanged(Veiculo veiculo, boolean disponivel);
+}
+
+// Interface Subject - quem será observado
+interface VeiculoSubject {
+    void addObserver(VeiculoObserver observer);
+    void removeObserver(VeiculoObserver observer);
+    void notifyStatusChange(String novoStatus, String statusAnterior);
+    void notifyLocalizacaoChange(String novaLocalizacao);
+    void notifyDisponibilidadeChange(boolean disponivel);
+}
+
+public class Veiculo implements VeiculoSubject {
     private int id;
     private String modelo;
     private String marca;
-    private int ano; // Mudado para int para facilitar cálculos
+    private int ano;
     private String cor;
     private String placa;
     private String tipo; // Ex: Carro, Moto, Bicicleta
     private String categoria; // Ex: Econômico, Luxo, SUV
     
-    // Atributos adicionais obrigatórios da task T2.1
+    // Atributos obrigatórios da task T2.1
     private double capacidadePortaMalas; // em litros
     private int numeroPassageiros;
+    
+    // Atributos para Observer Pattern
+    private List<VeiculoObserver> observers;
+    private String status; // Ex: "Disponível", "Ocupado", "Em Manutenção", "Offline"
+    private String localizacao; // Ex: coordenadas ou endereço atual
+    private boolean disponivel;
 
     // Construtor completo
     public Veiculo(int id, String modelo, String marca, int ano, String cor, String placa, 
@@ -27,13 +54,57 @@ public class Veiculo {
         this.categoria = categoria;
         this.capacidadePortaMalas = capacidadePortaMalas;
         this.numeroPassageiros = numeroPassageiros;
+        
+        // Inicialização do Observer Pattern
+        this.observers = new ArrayList<>();
+        this.status = "Disponível";
+        this.disponivel = true;
+        this.localizacao = "Não definida";
     }
     
     // Construtor padrão
     public Veiculo() {
+        this.observers = new ArrayList<>();
+        this.status = "Disponível";
+        this.disponivel = true;
+        this.localizacao = "Não definida";
     }
 
-    // Getters e Setters existentes
+    // Implementação do Observer Pattern
+    @Override
+    public void addObserver(VeiculoObserver observer) {
+        if (!observers.contains(observer)) {
+            observers.add(observer);
+        }
+    }
+
+    @Override
+    public void removeObserver(VeiculoObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyStatusChange(String novoStatus, String statusAnterior) {
+        for (VeiculoObserver observer : observers) {
+            observer.onVeiculoStatusChanged(this, novoStatus, statusAnterior);
+        }
+    }
+
+    @Override
+    public void notifyLocalizacaoChange(String novaLocalizacao) {
+        for (VeiculoObserver observer : observers) {
+            observer.onVeiculoLocalizacaoChanged(this, novaLocalizacao);
+        }
+    }
+
+    @Override
+    public void notifyDisponibilidadeChange(boolean disponivel) {
+        for (VeiculoObserver observer : observers) {
+            observer.onVeiculoDisponibilidadeChanged(this, disponivel);
+        }
+    }
+
+    // Getters e Setters originais
     public int getId() {
         return id;
     }
@@ -98,7 +169,6 @@ public class Veiculo {
         this.categoria = categoria;
     }
     
-    // Getters e Setters para novos atributos obrigatórios
     public double getCapacidadePortaMalas() {
         return capacidadePortaMalas;
     }
@@ -114,27 +184,82 @@ public class Veiculo {
     public void setNumeroPassageiros(int numeroPassageiros) {
         this.numeroPassageiros = numeroPassageiros;
     }
+
+    // Getters e Setters para Observer Pattern (com notificações)
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String novoStatus) {
+        if (!Objects.equals(this.status, novoStatus)) {
+            String statusAnterior = this.status;
+            this.status = novoStatus;
+            notifyStatusChange(novoStatus, statusAnterior);
+        }
+    }
+
+    public String getLocalizacao() {
+        return localizacao;
+    }
+
+    public void setLocalizacao(String novaLocalizacao) {
+        if (!Objects.equals(this.localizacao, novaLocalizacao)) {
+            this.localizacao = novaLocalizacao;
+            notifyLocalizacaoChange(novaLocalizacao);
+        }
+    }
+
+    public boolean isDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(boolean novaDisponibilidade) {
+        if (this.disponivel != novaDisponibilidade) {
+            this.disponivel = novaDisponibilidade;
+            notifyDisponibilidadeChange(novaDisponibilidade);
+        }
+    }
+
+    // Métodos de negócio com notificações automáticas
+    public void iniciarCorrida() {
+        setStatus("Em Corrida");
+        setDisponivel(false);
+    }
+
+    public void finalizarCorrida() {
+        setStatus("Disponível");
+        setDisponivel(true);
+    }
+
+    public void entrarEmManutencao() {
+        setStatus("Em Manutenção");
+        setDisponivel(false);
+    }
+
+    public void ficarOffline() {
+        setStatus("Offline");
+        setDisponivel(false);
+    }
     
     // Métodos utilitários
     public int getIdadeVeiculo() {
-        return java.time.LocalDate.now().getYear() - this.ano;
+        return LocalDate.now().getYear() - this.ano;
     }
     
     public boolean isVeiculoNovo() {
         return getIdadeVeiculo() <= 1;
     }
     
-    // toString para facilitar debug e exibição
+    // toString atualizado
     @Override
     public String toString() {
         return String.format("Veiculo{id=%d, modelo='%s', marca='%s', ano=%d, cor='%s', " +
                            "placa='%s', tipo='%s', categoria='%s', capacidadePortaMalas=%.1fL, " +
-                           "numeroPassageiros=%d}", 
+                           "numeroPassageiros=%d, status='%s', disponivel=%s, localizacao='%s'}", 
                            id, modelo, marca, ano, cor, placa, tipo, categoria, 
-                           capacidadePortaMalas, numeroPassageiros);
+                           capacidadePortaMalas, numeroPassageiros, status, disponivel, localizacao);
     }
     
-    // equals e hashCode
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -146,6 +271,6 @@ public class Veiculo {
     
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(id);
+        return Objects.hash(id);
     }
 }
