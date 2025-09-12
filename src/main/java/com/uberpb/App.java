@@ -5,6 +5,9 @@ import java.util.List;
  * Demonstração do uso do UsuarioRepositoryJSON
  */
 import com.uberpb.model.*;
+import com.uberpb.sevices.MotoristaService;
+import com.uberpb.sevices.PassageiroService;
+
 import java.util.Scanner;
 
 public class App {

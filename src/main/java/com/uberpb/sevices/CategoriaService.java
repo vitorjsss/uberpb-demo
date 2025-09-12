@@ -1,17 +1,15 @@
-package com.uberpb.model;
+package com.uberpb.sevices;
 
 import com.uberpb.model.Categoria;
 import com.uberpb.model.Veiculo;
-import com.uberpb.repository.SimpleJSONRepository;
-
-import java.util.List;
+import com.uberpb.repository.VeiculoRepository;
 
 public class CategoriaService {
 
-    private final SimpleJSONRepository veiculoRepository;
+    private final VeiculoRepository veiculoRepository;
 
     // Construtor
-    public CategoriaService(SimpleJSONRepository veiculoRepository) {
+    public CategoriaService(VeiculoRepository veiculoRepository) {
         this.veiculoRepository = veiculoRepository;
     }
 
@@ -45,25 +43,5 @@ public class CategoriaService {
         Categoria categoria = classificarVeiculo(veiculo);
         veiculo.setCategoria(categoria.getNome());
         return veiculoRepository.save(veiculo);
-    }
-
-    /**
-     * Classifica e atualiza todos os veículos do repositório.
-     */
-    public void classificarTodos() {
-        List<Veiculo> veiculos = veiculoRepository.findAll();
-        for (Veiculo v : veiculos) {
-            atualizarCategoria(v);
-        }
-    }
-
-    /**
-     * Busca veículos por categoria.
-     */
-    public List<Veiculo> buscarPorCategoria(Categoria categoria) {
-        return veiculoRepository.findAll()
-                .stream()
-                .filter(v -> v.getCategoria() != null && v.getCategoria().equalsIgnoreCase(categoria.getNome()))
-                .toList();
     }
 }
