@@ -32,4 +32,21 @@
   "totalAvaliacoes" : 0,
   "disponivel" : true,
   "localizacaoAtual" : "Nao definida"
+}, {
+  "id" : 8,
+  "username" : "vitorteste",
+  "senha" : "Teste123@",
+  "nome" : "Vitor",
+  "sobrenome" : "Teste",
+  "email" : "vitor@gmail.com",
+  "telefone" : "83996248243",
+  "tipo" : "motorista",
+  "dataCadastro" : "11/09/2025 23:46:46",
+  "ativo" : true,
+  "cnh" : "12345678900",
+  "validadeCnh" : "20/10/2027",
+  "avaliacaoMedia" : 0.0,
+  "totalAvaliacoes" : 0,
+  "disponivel" : true,
+  "localizacaoAtual" : "Patos"
 } ]

@@ -28,4 +28,14 @@
   "telefone" : "83976544543",
   "tipo" : "usuario",
   "dataCadastro" : "10/09/2025 15:04:15"
+}, {
+  "id" : 8,
+  "username" : "vitorteste",
+  "senha" : "Teste123@",
+  "nome" : "Vitor",
+  "sobrenome" : "Teste",
+  "email" : "vitor@gmail.com",
+  "telefone" : "83996248243",
+  "tipo" : "usuario",
+  "dataCadastro" : "11/09/2025 23:46:46"
 } ]

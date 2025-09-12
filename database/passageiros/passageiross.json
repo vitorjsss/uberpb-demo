@@ -14,4 +14,20 @@
   "emCorrida" : false,
   "metodosPagamento" : [ "dinheiro" ],
   "idade" : 40
+}, {
+  "id" : 8,
+  "username" : "vitorteste",
+  "senha" : "Teste123@",
+  "nome" : "Vitor",
+  "sobrenome" : "Teste",
+  "email" : "vitor@gmail.com",
+  "telefone" : "83996248243",
+  "tipo" : "passageiro",
+  "dataCadastro" : "11/09/2025 23:46:46",
+  "avaliacaoMedia" : 0.0,
+  "historicoCorridas" : [ ],
+  "localizacaoAtual" : "Campina Grande",
+  "emCorrida" : false,
+  "metodosPagamento" : [ "credito" ],
+  "idade" : 24
 } ]
