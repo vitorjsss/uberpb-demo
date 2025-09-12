@@ -233,10 +233,6 @@ public class DatabaseManager {
         return veiculoRepository.findByPlaca(placa);
     }
 
-    public List<Veiculo> findVeiculosByTipo(String tipo) {
-        return veiculoRepository.findByTipo(tipo);
-    }
-
     public List<Veiculo> findVeiculosByCategoria(String categoria) {
         return veiculoRepository.findByCategoria(categoria);
     }

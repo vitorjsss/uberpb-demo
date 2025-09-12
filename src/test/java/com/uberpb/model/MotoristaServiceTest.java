@@ -19,7 +19,7 @@ class MotoristaServiceTest {
         motorista.setNome("Carlos");
         motorista.setEmail("carlos@email.com");
         motorista.setTelefone("11999999999");
-        motorista.setDataCadastro(LocalDateTime.now());
+        motorista.setDataCadastro(LocalDateTime.now().toString());
     }
 
     @Test
