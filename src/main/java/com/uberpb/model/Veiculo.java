@@ -7,15 +7,14 @@ public class Veiculo {
     private int ano; // Mudado para int para facilitar cálculos
     private String cor;
     private String placa;
-    private String tipo; // Ex: Carro, Moto, Bicicleta
-    private String categoria; // Ex: Econômico, Luxo, SUV
+    private String categoria; // Volta a ser String
 
     // Atributos adicionais obrigatórios da task T2.1
     private double capacidadePortaMalas; // em litros
     private int numeroPassageiros;
 
     // Construtor completo
-    public Veiculo(int id, String modelo, String marca, int ano, String cor, String placa, String tipo,
+    public Veiculo(int id, String modelo, String marca, int ano, String cor, String placa,
             String categoria, double capacidadePortaMalas, int numeroPassageiros) {
         this.id = id;
         this.modelo = modelo;
@@ -23,7 +22,6 @@ public class Veiculo {
         this.ano = ano;
         this.cor = cor;
         this.placa = placa;
-        this.tipo = tipo;
         this.categoria = categoria;
         this.capacidadePortaMalas = capacidadePortaMalas;
         this.numeroPassageiros = numeroPassageiros;
@@ -82,14 +80,6 @@ public class Veiculo {
         this.placa = placa;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
     public String getCategoria() {
         return categoria;
     }
@@ -128,9 +118,9 @@ public class Veiculo {
     @Override
     public String toString() {
         return String.format("Veiculo{id=%d, modelo='%s', marca='%s', ano=%d, cor='%s', " +
-                "placa='%s', tipo='%s', categoria='%s', capacidadePortaMalas=%.1fL, " +
+                "placa='%s', categoria='%s', capacidadePortaMalas=%.1fL, " +
                 "numeroPassageiros=%d}",
-                id, modelo, marca, ano, cor, placa, tipo, categoria,
+                id, modelo, marca, ano, cor, placa, categoria != null ? categoria : "",
                 capacidadePortaMalas, numeroPassageiros);
     }
 

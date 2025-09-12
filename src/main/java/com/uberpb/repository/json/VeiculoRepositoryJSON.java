@@ -115,19 +115,6 @@ public class VeiculoRepositoryJSON extends BaseRepository<Veiculo> implements Ve
     }
 
     @Override
-    public List<Veiculo> findByTipo(String tipo) {
-        lock.readLock().lock();
-        try {
-            List<Veiculo> veiculos = loadAll();
-            return veiculos.stream()
-                    .filter(veiculo -> tipo.equals(veiculo.getTipo()))
-                    .collect(Collectors.toList());
-        } finally {
-            lock.readLock().unlock();
-        }
-    }
-
-    @Override
     public List<Veiculo> findByCategoria(String categoria) {
         lock.readLock().lock();
         try {

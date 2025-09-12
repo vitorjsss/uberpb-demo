@@ -1,1 +1,13 @@
-[]
+[ {
+  "id" : 2,
+  "modelo" : "honda",
+  "marca" : "civic",
+  "ano" : 2025,
+  "cor" : "red",
+  "placa" : "ABC1D23",
+  "categoria" : "Comfort",
+  "capacidadePortaMalas" : 20.0,
+  "numeroPassageiros" : 4,
+  "idadeVeiculo" : 0,
+  "veiculoNovo" : true
+} ]

@@ -1,8 +1,8 @@
-package com.uberpb.cli;
+package com.uberpb.helpers;
 
 import java.util.regex.Pattern;
 
-public class ValidadorCLI {
+public class ValidadoresCadastro {
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
             "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
 

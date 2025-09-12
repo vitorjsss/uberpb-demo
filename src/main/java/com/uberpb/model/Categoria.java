@@ -1,22 +1,27 @@
 package com.uberpb.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 // Interface Observer para mudanças nas categorias
 interface CategoriaObserver {
     void onCategoriaPrecoChanged(Categoria categoria, double novoMultiplicador, double multiplicadorAnterior);
+
     void onCategoriaCapacidadeChanged(Categoria categoria, int novaCapacidade, int capacidadeAnterior);
+
     void onCategoriaStatusChanged(Categoria categoria, String evento);
 }
 
 // Interface Subject para categorias
 interface CategoriaSubject {
     void addObserver(CategoriaObserver observer);
+
     void removeObserver(CategoriaObserver observer);
+
     void notifyPrecoChange(double novoMultiplicador, double multiplicadorAnterior);
+
     void notifyCapacidadeChange(int novaCapacidade, int capacidadeAnterior);
+
     void notifyStatusChange(String evento);
 }
 
@@ -31,7 +36,7 @@ public enum Categoria implements CategoriaSubject {
     private final String descricao;
     private double multiplicadorPreco; // Não final para permitir mudanças
     private int capacidadeMaximaPassageiros; // Não final para permitir mudanças
-    
+
     // Lista de observers para cada instância do enum
     private final List<CategoriaObserver> observers;
 
@@ -211,8 +216,8 @@ public enum Categoria implements CategoriaSubject {
     // toString personalizado
     @Override
     public String toString() {
-        return String.format("%s (%.1fx) - %s [Cap: %d passageiros]", 
-                           nome, multiplicadorPreco, descricao, capacidadeMaximaPassageiros);
+        return String.format("%s (%.1fx) - %s [Cap: %d passageiros]",
+                nome, multiplicadorPreco, descricao, capacidadeMaximaPassageiros);
     }
 
     // Método para listar todas as categorias

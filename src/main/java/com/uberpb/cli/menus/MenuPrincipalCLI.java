@@ -1,10 +1,12 @@
-package com.uberpb.cli;
+package com.uberpb.cli.menus;
 
 import com.uberpb.model.User;
 import com.uberpb.model.Motorista;
 import com.uberpb.model.Passageiro;
 import com.uberpb.repository.DatabaseManager;
-import com.uberpb.cli.MenuPassageiroCLI;
+import com.uberpb.cli.menus.MenuPassageiroCLI;
+import com.uberpb.helpers.ValidadoresCadastro;
+
 import java.util.Scanner;
 
 public class MenuPrincipalCLI {
@@ -64,7 +66,7 @@ public class MenuPrincipalCLI {
                 int inputIdade = sc.nextInt();
                 sc.nextLine();
 
-                if (ValidadorCLI.validarIdade(inputIdade)) {
+                if (ValidadoresCadastro.validarIdade(inputIdade)) {
                     if (inputIdade >= 18) {
                         idade = inputIdade;
                         System.out.println("✓ Idade válida!");
@@ -112,7 +114,7 @@ public class MenuPrincipalCLI {
         while (cnh == null) {
             System.out.print("CNH (apenas números, 11 dígitos): ");
             String input = sc.nextLine();
-            if (ValidadorCLI.validarCNH(input)) {
+            if (ValidadoresCadastro.validarCNH(input)) {
                 cnh = input;
                 System.out.println("✓ CNH válida!");
             }
@@ -122,7 +124,7 @@ public class MenuPrincipalCLI {
         while (validade == null) {
             System.out.print("Validade da CNH (dd/mm/yyyy): ");
             String input = sc.nextLine();
-            if (ValidadorCLI.validarDataValidade(input)) {
+            if (ValidadoresCadastro.validarDataValidade(input)) {
                 validade = input;
                 System.out.println("✓ Validade válida!");
             }

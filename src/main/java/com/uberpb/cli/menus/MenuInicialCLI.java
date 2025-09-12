@@ -1,5 +1,6 @@
-package com.uberpb.cli;
+package com.uberpb.cli.menus;
 
+import com.uberpb.helpers.ValidadoresCadastro;
 import com.uberpb.model.*;
 import com.uberpb.repository.DatabaseManager;
 import java.time.LocalDateTime;
@@ -57,7 +58,7 @@ public class MenuInicialCLI {
         while (username == null) {
             System.out.print("Username: ");
             String input = sc.nextLine();
-            if (ValidadorCLI.validarCampoObrigatorio(input, "Username")) {
+            if (ValidadoresCadastro.validarCampoObrigatorio(input, "Username")) {
                 username = input;
                 System.out.println("✓ Username válido!");
             }
@@ -67,7 +68,7 @@ public class MenuInicialCLI {
         while (senha == null) {
             System.out.print("Senha: ");
             String input = sc.nextLine();
-            if (ValidadorCLI.validarSenha(input)) {
+            if (ValidadoresCadastro.validarSenha(input)) {
                 senha = input;
                 System.out.println("✓ Senha válida!");
             }
@@ -77,7 +78,7 @@ public class MenuInicialCLI {
         while (nome == null) {
             System.out.print("Nome: ");
             String input = sc.nextLine();
-            if (ValidadorCLI.validarNome(input)) {
+            if (ValidadoresCadastro.validarNome(input)) {
                 nome = input;
                 System.out.println("✓ Nome válido!");
             }
@@ -87,7 +88,7 @@ public class MenuInicialCLI {
         while (sobrenome == null) {
             System.out.print("Sobrenome: ");
             String input = sc.nextLine();
-            if (ValidadorCLI.validarCampoObrigatorio(input, "Sobrenome")) {
+            if (ValidadoresCadastro.validarCampoObrigatorio(input, "Sobrenome")) {
                 sobrenome = input;
                 System.out.println("✓ Sobrenome válido!");
             }
@@ -97,7 +98,7 @@ public class MenuInicialCLI {
         while (email == null) {
             System.out.print("Email: ");
             String input = sc.nextLine();
-            if (ValidadorCLI.validarEmail(input)) {
+            if (ValidadoresCadastro.validarEmail(input)) {
                 // Verificar email duplicado
                 if (db.findUserByEmail(input).isPresent()) {
                     System.out.println("ERRO: Já existe um usuário com este e-mail!");
@@ -112,7 +113,7 @@ public class MenuInicialCLI {
         while (telefone == null) {
             System.out.print("Telefone: ");
             String input = sc.nextLine();
-            if (ValidadorCLI.validarTelefone(input)) {
+            if (ValidadoresCadastro.validarTelefone(input)) {
                 telefone = input;
                 System.out.println("✓ Telefone válido!");
             }

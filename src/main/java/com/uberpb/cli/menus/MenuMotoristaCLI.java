@@ -1,5 +1,6 @@
-package com.uberpb.cli;
+package com.uberpb.cli.menus;
 
+import com.uberpb.cli.forms.CadastroVeiculoCLI;
 import com.uberpb.model.Motorista;
 import com.uberpb.repository.DatabaseManager;
 import java.util.Scanner;
@@ -26,7 +27,8 @@ public class MenuMotoristaCLI {
             System.out.println("6 - Ver informacoes do perfil");
             System.out.println("7 - Ver CNH e validade");
             System.out.println("8 - Ver status disponibilidade");
-            System.out.println("9 - Voltar");
+            System.out.println("9 - Cadastrar veículo");
+            System.out.println("10 - Voltar");
             System.out.print("Escolha: ");
             int op = sc.nextInt();
             sc.nextLine();
@@ -57,6 +59,9 @@ public class MenuMotoristaCLI {
                     verStatusDisponibilidade();
                     break;
                 case 9:
+                    CadastroVeiculoCLI.cadastrarVeiculo(sc, db, motorista);
+                    break;
+                case 10:
                     return;
                 default:
                     System.out.println("Opcao invalida!");

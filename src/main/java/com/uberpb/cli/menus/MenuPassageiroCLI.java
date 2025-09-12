@@ -1,4 +1,4 @@
-package com.uberpb.cli;
+package com.uberpb.cli.menus;
 
 import com.uberpb.model.Passageiro;
 import com.uberpb.repository.DatabaseManager;
