@@ -15,25 +15,26 @@ public class CadastroVeiculoCLI {
     public static void cadastrarVeiculo(Scanner sc, DatabaseManager bd, Motorista m) {
         System.out.println("--- Cadastro de Veículo ---");
 
-        String modelo = null;
-        String marca = null;
-        Integer ano = null;
-        String cor = null;
-        String placa = null;
+        String modelo = lerString(sc, "Modelo", ValidadoresVeiculo::validarModelo);
+        String marca = lerString(sc, "Marca", ValidadoresVeiculo::validarMarca);
+        String cor = lerString(sc, "Cor", ValidadoresVeiculo::validarCor);
+        String placa = lerString(sc, "Placa", ValidadoresVeiculo::validarPlaca);
+        Integer ano = lerInteiro(sc, "Ano", ValidadoresVeiculo::validarAno);
+        String tipo = lerString(sc, "Tipo (CARRO ou MOTO)", ValidadoresVeiculo::validarTipo);
+
         Double capacidadePortaMalas = null;
         Integer numeroPassageiros = null;
 
-        // --- Campos comuns a todos os veículos ---
-        modelo = lerString(sc, "Modelo", ValidadoresVeiculo::validarModelo);
-        marca = lerString(sc, "Marca", ValidadoresVeiculo::validarMarca);
-        cor = lerString(sc, "Cor", ValidadoresVeiculo::validarCor);
-        placa = lerString(sc, "Placa", ValidadoresVeiculo::validarPlaca);
-        ano = lerInteiro(sc, "Ano", ValidadoresVeiculo::validarAno);
-
-        // Campos obrigatórios para carro
-        capacidadePortaMalas = lerDouble(sc, "Capacidade do porta-malas (litros)",
-                ValidadoresVeiculo::validarCapacidadePortaMalas);
-        numeroPassageiros = lerInteiro(sc, "Número de passageiros", ValidadoresVeiculo::validarNumeroPassageiros);
+        if (tipo.equalsIgnoreCase("CARRO")) {
+            capacidadePortaMalas = lerDouble(sc, "Capacidade do porta-malas (litros)",
+                    ValidadoresVeiculo::validarCapacidadePortaMalas);
+            numeroPassageiros = lerInteiro(sc, "Número de passageiros",
+                    ValidadoresVeiculo::validarNumeroPassageiros);
+        } else {
+            // Para motos, podemos setar valores padrão
+            capacidadePortaMalas = 0.0;
+            numeroPassageiros = 1;
+        }
 
         // Criar veículo
         Veiculo veiculo = new Veiculo(
@@ -61,7 +62,6 @@ public class CadastroVeiculoCLI {
             String input = sc.nextLine();
             if (validador.test(input)) {
                 valor = input;
-                System.out.println("✓ " + label + " válida!");
             } else {
                 System.out.println(label + " inválida!");
             }
@@ -78,7 +78,6 @@ public class CadastroVeiculoCLI {
                 int num = Integer.parseInt(input);
                 if (validador.test(num)) {
                     valor = num;
-                    System.out.println("✓ " + label + " válida!");
                 } else {
                     System.out.println(label + " inválido!");
                 }
@@ -98,7 +97,6 @@ public class CadastroVeiculoCLI {
                 double num = Double.parseDouble(input);
                 if (validador.test(num)) {
                     valor = num;
-                    System.out.println("✓ " + label + " válida!");
                 } else {
                     System.out.println(label + " inválida!");
                 }
