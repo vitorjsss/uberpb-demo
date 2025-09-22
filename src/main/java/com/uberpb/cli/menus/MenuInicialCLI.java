@@ -3,6 +3,7 @@ package com.uberpb.cli.menus;
 import com.uberpb.helpers.ValidadoresCadastro;
 import com.uberpb.model.*;
 import com.uberpb.repository.DatabaseManager;
+import com.uberpb.session.SessionManager;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -10,14 +11,17 @@ import java.util.Scanner;
 public class MenuInicialCLI {
     private static Scanner sc = new Scanner(System.in);
     private static DatabaseManager db = new DatabaseManager();
-    private static User usuarioLogado = null;
 
     public static void main(String[] args) {
         while (true) {
-            if (usuarioLogado == null) {
-                menuInicial();
+            // Verificar se já existe uma sessão ativa
+            if (SessionManager.isLoggedIn()) {
+                User user = SessionManager.getCurrentUser();
+                System.out.println("Bem-vindo de volta, " + user.getNome() + "!");
+                menuPrincipal(user);
+                // Após sair do menu principal (logout), continua o loop para menu inicial
             } else {
-                menuPrincipal();
+                menuInicial();
             }
         }
     }
@@ -36,6 +40,7 @@ public class MenuInicialCLI {
             case 1 -> cadastrarUser();
             case 2 -> login();
             case 0 -> {
+                // SessionManager.logout();
                 System.out.println("Encerrando...");
                 System.exit(0);
             }
@@ -147,9 +152,12 @@ public class MenuInicialCLI {
             User u = userOpt.get();
             // Verificar senha
             if (senha.equals(u.getSenha())) {
-                usuarioLogado = u;
+                // Salvar sessão
+                SessionManager.saveSession(u);
+
                 System.out.println("Login bem-sucedido! Bem-vindo, " + u.getNome());
-                System.out.println("Dados carregados de: database/users/users.json");
+                // System.out.println("Dados carregados de: database/users/users.json");
+                menuPrincipal(u);
             } else {
                 System.out.println("Senha incorreta!");
             }
@@ -159,9 +167,14 @@ public class MenuInicialCLI {
     }
 
     // ===== MENU PRINCIPAL (APOS LOGIN) =====
-    private static void menuPrincipal() {
-        MenuPrincipalCLI menuPrincipal = new MenuPrincipalCLI(sc, db, usuarioLogado);
+    private static void menuPrincipal(User user) {
+        // Atualizar última atividade
+        SessionManager.updateLastActivity();
+
+        MenuPrincipalCLI menuPrincipal = new MenuPrincipalCLI(sc, db, user);
         menuPrincipal.exibirMenu();
-        usuarioLogado = menuPrincipal.getUsuarioLogado(); // caso o usuário faça logout
+
+        // Se retornou do menu principal (logout), limpar sessão
+        SessionManager.logout();
     }
 }

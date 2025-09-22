@@ -28,6 +28,6 @@
   "historicoCorridas" : [ ],
   "localizacaoAtual" : "Campina Grande",
   "emCorrida" : false,
-  "metodosPagamento" : [ "credito" ],
+  "metodosPagamento" : [ "credito", "inter", "will" ],
   "idade" : 24
 } ]

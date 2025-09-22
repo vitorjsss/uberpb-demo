@@ -102,7 +102,6 @@ Escolha: 2
 Email: joao@email.com
 Senha: MinhaSenh@123
 Login bem-sucedido! Bem-vindo, João
-Dados carregados de: database/users/users.json
 ```
 
 ### **3. Cadastrar Perfil de Passageiro**
