@@ -19,7 +19,7 @@ public class MenuPassageiroCLI {
         while (true) {
             System.out.println("\n=== Menu Passageiro ===");
             System.out.println("1 - Cadastrar metodo de pagamento");
-            System.out.println("2 - Realizar corrida");
+            System.out.println("2 - Solicitar corrida");
             System.out.println("3 - Ver avaliacao media");
             System.out.println("4 - Ver historico de corridas");
             System.out.println("5 - Ver localizacao atual");

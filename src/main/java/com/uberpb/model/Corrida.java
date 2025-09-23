@@ -17,7 +17,7 @@ public class Corrida {
 
     // Informações adicionais
     private double precoEstimado;
-    private double distancia; // em km
+    private double distancia;
     private LocalDateTime dataHoraSolicitacao;
     private LocalDateTime dataHoraFim;
 
@@ -26,7 +26,7 @@ public class Corrida {
     }
 
     public Corrida(int id, String origem, String destino, Categoria categoria,
-                   int passageiroId, int motoristaId, int veiculoId, double distancia) {
+            int passageiroId, int motoristaId, int veiculoId, double distancia) {
         this.id = id;
         this.origem = origem;
         this.destino = destino;

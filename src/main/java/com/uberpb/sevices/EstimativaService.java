@@ -3,29 +3,22 @@ package com.uberpb.sevices;
 import com.uberpb.model.Categoria;
 
 public class EstimativaService {
-    public double estimarPreco(double distanciaKm, String categoria) {
-        double precoBase = 5.0;
-        double precoPorKm = 2.0;
-        switch (categoria.toUpperCase()) {
-            case "UBER_X":
-                precoPorKm = 2.0;
-                break;
-            case "COMFORT":
-                precoPorKm = 3.0;
-                break;
-            case "BLACK":
-                precoPorKm = 4.0;
-                break;
-            case "XL":
-                precoPorKm = 3.5;
-                break;
-            case "BAG":
-                precoPorKm = 2.5;
-                break;
-            default:
-                throw new IllegalArgumentException("Categoria desconhecida: " + categoria);
+
+    private static final double PRECO_BASE = 5.0;
+    private static final double PRECO_BASE_POR_KM = 2.0;
+
+    public double estimarPreco(double distanciaKm, String categoriaNome) {
+        Categoria categoria = Categoria.buscarPorNome(categoriaNome);
+        if (categoria == null) {
+            // Fallback para categorias não encontradas
+            categoria = Categoria.valueOf(categoriaNome.toUpperCase());
         }
-        return precoBase + (precoPorKm * distanciaKm);
+        return estimarPreco(distanciaKm, categoria);
+    }
+
+    public double estimarPreco(double distanciaKm, Categoria categoria) {
+        double precoBase = PRECO_BASE + (PRECO_BASE_POR_KM * distanciaKm);
+        return categoria.calcularPreco(precoBase);
     }
 
     public int estimarTempoMinutos(double distanciaKm) {
