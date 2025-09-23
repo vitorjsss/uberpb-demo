@@ -4,20 +4,26 @@ import com.uberpb.model.User;
 import com.uberpb.model.Motorista;
 import com.uberpb.model.Passageiro;
 import com.uberpb.repository.DatabaseManager;
-import com.uberpb.cli.menus.MenuPassageiroCLI;
 import com.uberpb.helpers.ValidadoresCadastro;
+import com.uberpb.service.CorridaService;
+import com.uberpb.model.Corrida;
+import com.uberpb.model.CorridaStatus;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuPrincipalCLI {
+
     private Scanner sc;
     private DatabaseManager db;
     private User usuarioLogado;
+    private CorridaService corridaService;
 
     public MenuPrincipalCLI(Scanner sc, DatabaseManager db, User usuarioLogado) {
         this.sc = sc;
         this.db = db;
         this.usuarioLogado = usuarioLogado;
+        this.corridaService = new CorridaService();
     }
 
     public void exibirMenu() {
@@ -49,7 +55,6 @@ public class MenuPrincipalCLI {
     }
 
     private void cadastrarPerfilPassageiro() {
-        // Verificar se já possui perfil de passageiro
         var passageiroOpt = db.findPassageiroById(usuarioLogado.getId());
         if (passageiroOpt.isPresent()) {
             System.out.println("Voce ja possui perfil de passageiro.");
@@ -59,13 +64,11 @@ public class MenuPrincipalCLI {
         System.out.println("\n--- Cadastro de Perfil Passageiro ---");
 
         int idade = -1;
-        // Validar idade (deve ser maior ou igual a 18)
         while (idade == -1) {
             System.out.print("Idade: ");
             try {
                 int inputIdade = sc.nextInt();
                 sc.nextLine();
-
                 if (ValidadoresCadastro.validarIdade(inputIdade)) {
                     if (inputIdade >= 18) {
                         idade = inputIdade;
@@ -76,7 +79,7 @@ public class MenuPrincipalCLI {
                 }
             } catch (Exception e) {
                 System.out.println("ERRO: Digite uma idade válida!");
-                sc.nextLine(); // Limpar buffer
+                sc.nextLine();
             }
         }
 
@@ -91,14 +94,11 @@ public class MenuPrincipalCLI {
         p.setDataCadastro(usuarioLogado.getDataCadastro());
         p.setIdade(idade);
 
-        Passageiro savedPassageiro = db.savePassageiro(p);
+        db.savePassageiro(p);
         System.out.println("\n🎉 Perfil de passageiro cadastrado com sucesso!");
-        System.out.println("Dados salvos em: database/users/users.json");
-        System.out.println("Dados salvos em: database/passageiros/passageiros.json");
     }
 
     private void cadastrarPerfilMotorista() {
-        // Verificar se já possui perfil de motorista
         var motoristaOpt = db.findMotoristaById(usuarioLogado.getId());
         if (motoristaOpt.isPresent()) {
             System.out.println("Voce ja possui perfil de motorista.");
@@ -110,9 +110,8 @@ public class MenuPrincipalCLI {
         String cnh = null;
         String validade = null;
 
-        // CNH - Validar formato (apenas números, 11 caracteres)
         while (cnh == null) {
-            System.out.print("CNH (apenas números, 11 dígitos): ");
+            System.out.print("CNH (11 dígitos): ");
             String input = sc.nextLine();
             if (ValidadoresCadastro.validarCNH(input)) {
                 cnh = input;
@@ -120,7 +119,6 @@ public class MenuPrincipalCLI {
             }
         }
 
-        // Validade da CNH
         while (validade == null) {
             System.out.print("Validade da CNH (dd/mm/yyyy): ");
             String input = sc.nextLine();
@@ -130,7 +128,6 @@ public class MenuPrincipalCLI {
             }
         }
 
-        // Criar motorista com os dados
         Motorista m = new Motorista(usuarioLogado.getId(), true, cnh, validade, 0.0, 0, true, "Nao definida");
         m.setUsername(usuarioLogado.getUsername());
         m.setSenha(usuarioLogado.getSenha());
@@ -141,11 +138,8 @@ public class MenuPrincipalCLI {
         m.setTipo("motorista");
         m.setDataCadastro(usuarioLogado.getDataCadastro());
 
-        Motorista savedMotorista = db.saveMotorista(m);
-
+        db.saveMotorista(m);
         System.out.println("\n🎉 Perfil de motorista cadastrado com sucesso!");
-        System.out.println("Dados salvos em: database/users/users.json");
-        System.out.println("Dados salvos em: database/motoristas/motoristas.json");
     }
 
     private void menuPassageiro() {
@@ -155,8 +149,51 @@ public class MenuPrincipalCLI {
             return;
         }
         Passageiro p = passageiroOpt.get();
-        MenuPassageiroCLI menuPassageiro = new MenuPassageiroCLI(sc, db, p);
-        menuPassageiro.exibirMenu();
+
+        while (true) {
+            System.out.println("\n--- Menu Passageiro ---");
+            System.out.println("1 - Solicitar corrida");
+            System.out.println("2 - Listar minhas corridas");
+            System.out.println("9 - Voltar");
+            System.out.print("Escolha: ");
+            int op = sc.nextInt();
+            sc.nextLine();
+
+            switch (op) {
+                case 1 -> solicitarCorrida(p);
+                case 2 -> listarCorridasPassageiro(p);
+                case 9 -> { return; }
+                default -> System.out.println("Opcao invalida!");
+            }
+        }
+    }
+
+    private void solicitarCorrida(Passageiro p) {
+        System.out.print("Origem: ");
+        String origem = sc.nextLine();
+        System.out.print("Destino: ");
+        String destino = sc.nextLine();
+        System.out.print("ID Motorista: ");
+        int motoristaId = sc.nextInt();
+        System.out.print("Distancia (km): ");
+        double distancia = sc.nextDouble();
+        sc.nextLine();
+
+        Corrida corrida = corridaService.criarCorrida(origem, destino, p.getId(), motoristaId, distancia);
+        System.out.println("🎉 Corrida solicitada! ID: " + corrida.getId());
+    }
+
+    private void listarCorridasPassageiro(Passageiro p) {
+        List<Corrida> corridas = corridaService.listarCorridasPorPassageiro(p.getId());
+        if (corridas.isEmpty()) {
+            System.out.println("Nenhuma corrida encontrada.");
+            return;
+        }
+        System.out.println("\n--- Minhas Corridas ---");
+        for (Corrida c : corridas) {
+            System.out.println("ID: " + c.getId() + " | Origem: " + c.getOrigem() +
+                    " | Destino: " + c.getDestino() + " | Status: " + c.getStatus());
+        }
     }
 
     private void menuMotorista() {
@@ -166,11 +203,61 @@ public class MenuPrincipalCLI {
             return;
         }
         Motorista m = motoristaOpt.get();
-        MenuMotoristaCLI menuMotorista = new MenuMotoristaCLI(sc, db, m);
-        menuMotorista.exibirMenu();
+
+        while (true) {
+            System.out.println("\n--- Menu Motorista ---");
+            System.out.println("1 - Listar corridas pendentes");
+            System.out.println("2 - Iniciar corrida");
+            System.out.println("3 - Finalizar corrida");
+            System.out.println("4 - Cancelar corrida");
+            System.out.println("9 - Voltar");
+            System.out.print("Escolha: ");
+            int op = sc.nextInt();
+            sc.nextLine();
+
+            switch (op) {
+                case 1 -> listarCorridasPendentes(m);
+                case 2 -> atualizarStatusCorrida(m, "iniciar");
+                case 3 -> atualizarStatusCorrida(m, "finalizar");
+                case 4 -> atualizarStatusCorrida(m, "cancelar");
+                case 9 -> { return; }
+                default -> System.out.println("Opcao invalida!");
+            }
+        }
     }
 
-    public User getUsuarioLogado() {
-        return usuarioLogado;
+    private void listarCorridasPendentes(Motorista m) {
+        List<Corrida> corridas = corridaService.listarCorridasPorMotorista(m.getId());
+        boolean hasPendentes = false;
+        for (Corrida c : corridas) {
+            if (c.getStatus() == CorridaStatus.PENDENTE) {
+                System.out.println("ID: " + c.getId() + " | Origem: " + c.getOrigem() +
+                        " | Destino: " + c.getDestino());
+                hasPendentes = true;
+            }
+        }
+        if (!hasPendentes) {
+            System.out.println("Nenhuma corrida pendente.");
+        }
+    }
+
+    private void atualizarStatusCorrida(Motorista m, String acao) {
+        System.out.print("ID da corrida: ");
+        int corridaId = sc.nextInt();
+        sc.nextLine();
+
+        Corrida corrida = corridaService.getCorridaById(corridaId);
+        if (corrida == null || corrida.getMotoristaId() != m.getId()) {
+            System.out.println("Corrida nao encontrada para este motorista.");
+            return;
+        }
+
+        switch (acao) {
+            case "iniciar" -> corridaService.iniciarCorrida(corridaId);
+            case "finalizar" -> corridaService.finalizarCorrida(corridaId);
+            case "cancelar" -> corridaService.cancelarCorrida(corridaId);
+        }
+
+        System.out.println("Status da corrida atualizado: " + corrida.getStatus());
     }
 }
