@@ -1,71 +1,59 @@
 package com.uberpb.cli.menus;
 
+import com.uberpb.sevices.CorridaService;
 import com.uberpb.cli.forms.CadastroVeiculoCLI;
+import com.uberpb.model.Corrida;
+import com.uberpb.model.CorridaStatus;
 import com.uberpb.model.Motorista;
 import com.uberpb.repository.DatabaseManager;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuMotoristaCLI {
     private final Scanner sc;
     private final DatabaseManager db;
     private final Motorista motorista;
+    private final CorridaService corridaService;
 
     public MenuMotoristaCLI(Scanner sc, DatabaseManager db, Motorista motorista) {
         this.sc = sc;
         this.db = db;
         this.motorista = motorista;
+        this.corridaService = new CorridaService();
     }
 
     public void exibirMenu() {
         while (true) {
             System.out.println("\n=== Menu Motorista ===");
             System.out.println("1 - Ver status ativo");
-            System.out.println("2 - Ver avaliacao media");
-            System.out.println("3 - Ver total de avaliacoes");
-            System.out.println("4 - Ver localizacao atual");
-            System.out.println("5 - Atualizar localizacao");
-            System.out.println("6 - Ver informacoes do perfil");
+            System.out.println("2 - Ver avaliação média");
+            System.out.println("3 - Ver total de avaliações");
+            System.out.println("4 - Ver localização atual");
+            System.out.println("5 - Atualizar localização");
+            System.out.println("6 - Ver informações do perfil");
             System.out.println("7 - Ver CNH e validade");
             System.out.println("8 - Ver status disponibilidade");
             System.out.println("9 - Cadastrar veículo");
             System.out.println("10 - Voltar");
+            System.out.println("11 - Aceitar corrida");
             System.out.print("Escolha: ");
             int op = sc.nextInt();
             sc.nextLine();
 
             switch (op) {
-                case 1:
-                    verStatusAtivo();
-                    break;
-                case 2:
-                    verAvaliacaoMedia();
-                    break;
-                case 3:
-                    verTotalAvaliacoes();
-                    break;
-                case 4:
-                    verLocalizacaoAtual();
-                    break;
-                case 5:
-                    atualizarLocalizacao();
-                    break;
-                case 6:
-                    verInformacoesPerfil();
-                    break;
-                case 7:
-                    verCnhValidade();
-                    break;
-                case 8:
-                    verStatusDisponibilidade();
-                    break;
-                case 9:
-                    CadastroVeiculoCLI.cadastrarVeiculo(sc, db, motorista);
-                    break;
-                case 10:
-                    return;
-                default:
-                    System.out.println("Opcao invalida!");
-                    break;
+                case 1 -> verStatusAtivo();
+                case 2 -> verAvaliacaoMedia();
+                case 3 -> verTotalAvaliacoes();
+                case 4 -> verLocalizacaoAtual();
+                case 5 -> atualizarLocalizacao();
+                case 6 -> verInformacoesPerfil();
+                case 7 -> verCnhValidade();
+                case 8 -> verStatusDisponibilidade();
+                case 9 -> CadastroVeiculoCLI.cadastrarVeiculo(sc, db, motorista);
+                case 10 -> { return; }
+                case 11 -> aceitarCorrida();
+                default -> System.out.println("Opção inválida!");
             }
         }
     }
@@ -127,5 +115,46 @@ public class MenuMotoristaCLI {
     private void verStatusDisponibilidade() {
         System.out.println("\n--- Status de Disponibilidade ---");
         System.out.println("Disponibilidade: " + (motorista.isDisponivel() ? "Disponível" : "Indisponível"));
+    }
+
+    private void aceitarCorrida() {
+    System.out.println("\n--- Corridas Pendentes ---");
+
+    // Lista corridas pendentes usando o serviço
+    List<Corrida> corridasPendentes = corridaService.listarCorridasPorStatus(CorridaStatus.PENDENTE);
+
+    if (corridasPendentes.isEmpty()) {
+        System.out.println("Não há corridas pendentes no momento.");
+        return;
+    }
+
+    // Mostra corridas numeradas
+    for (int i = 0; i < corridasPendentes.size(); i++) {
+        Corrida c = corridasPendentes.get(i);
+        System.out.printf("%d - ID: %d | Origem: %s | Destino: %s | Passageiro ID: %d | Categoria: %s | Distância: %.2f km | Preço: R$ %.2f%n",
+                i + 1, c.getId(), c.getOrigem(), c.getDestino(), c.getPassageiroId(),
+                c.getCategoria().getNome(), c.getDistancia(), c.getPrecoEstimado());
+    }
+
+    System.out.print("Escolha a corrida (número): ");
+    int escolha = sc.nextInt();
+    sc.nextLine();
+
+    if (escolha < 1 || escolha > corridasPendentes.size()) {
+        System.out.println("Opção inválida!");
+        return;
+    }
+
+    Corrida corridaEscolhida = corridasPendentes.get(escolha - 1);
+
+    // Associa o motorista e inicia a corrida usando os métodos do service
+    corridaEscolhida.setMotoristaId(motorista.getId());
+    corridaService.iniciarCorrida(corridaEscolhida.getId());
+
+    // Atualiza disponibilidade do motorista
+    motorista.setDisponivel(false);
+    db.updateMotorista(motorista);
+
+    System.out.println("✓ Corrida aceita e iniciada com sucesso!");
     }
 }

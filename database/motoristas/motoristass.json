@@ -47,6 +47,6 @@
   "validadeCnh" : "20/10/2027",
   "avaliacaoMedia" : 0.0,
   "totalAvaliacoes" : 0,
-  "disponivel" : true,
+  "disponivel" : false,
   "localizacaoAtual" : "Patos"
 } ]

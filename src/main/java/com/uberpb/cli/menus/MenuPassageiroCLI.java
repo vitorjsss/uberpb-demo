@@ -1,7 +1,11 @@
 package com.uberpb.cli.menus;
 
+import com.uberpb.model.Categoria;
+import com.uberpb.model.Corrida;
 import com.uberpb.model.Passageiro;
 import com.uberpb.repository.DatabaseManager;
+import com.uberpb.sevices.CorridaService;
+
 import java.util.Scanner;
 
 public class MenuPassageiroCLI {
@@ -33,7 +37,7 @@ public class MenuPassageiroCLI {
 
             switch (op) {
                 case 1 -> cadastrarMetodoPagamento();
-                case 2 -> System.out.println("Funcionalidade de corrida em desenvolvimento...");
+                case 2 -> solicitarCorrida();
                 case 3 -> verAvaliacaoMedia();
                 case 4 -> verHistoricoCorridas();
                 case 5 -> verLocalizacaoAtual();
@@ -113,4 +117,49 @@ public class MenuPassageiroCLI {
         System.out.println("Status: " + (passageiro.isEmCorrida() ? "Em corrida" : "Disponível"));
         System.out.println("Métodos de pagamento: " + passageiro.getMetodosPagamento());
     }
+
+    private void solicitarCorrida() {
+    System.out.println("\n--- Solicitar Corrida ---");
+    System.out.print("Digite a origem: ");
+    String origem = sc.nextLine().trim();
+
+    System.out.print("Digite o destino: ");
+    String destino = sc.nextLine().trim();
+
+    // Mostrar categorias com números
+    Categoria[] categorias = Categoria.values();
+    System.out.println("Categorias disponíveis:");
+    for (int i = 0; i < categorias.length; i++) {
+        System.out.printf("%d - %s\n", i + 1, categorias[i].getNome());
+    }
+
+    System.out.print("Escolha a categoria (número): ");
+    int opcaoCategoria = sc.nextInt();
+    sc.nextLine(); // limpar buffer
+
+    if (opcaoCategoria < 1 || opcaoCategoria > categorias.length) {
+        System.out.println("ERRO: Categoria inválida!");
+        return;
+    }
+    Categoria categoria = categorias[opcaoCategoria - 1];
+
+    // Para simplificar, pegar o passageiro logado
+    int passageiroId = passageiro.getId();
+
+    int motoristaId = 1; // pegar do DB, exemplo
+    int veiculoId = 1;   // pegar do DB, exemplo
+
+    System.out.print("Digite a distância estimada (km): ");
+    double distancia = sc.nextDouble();
+    sc.nextLine(); // limpar buffer
+
+    CorridaService corridaService = new CorridaService();
+    Corrida corrida = corridaService.criarCorrida(origem, destino, categoria,
+            passageiroId, motoristaId, veiculoId, distancia);
+
+    System.out.println("✓ Corrida solicitada com sucesso!");
+    System.out.println("Preço estimado: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
 }
+
+}
+

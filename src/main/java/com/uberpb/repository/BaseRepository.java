@@ -3,6 +3,7 @@ package com.uberpb.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,11 +26,13 @@ public abstract class BaseRepository<T> {
     public BaseRepository(String entityName) {
         this.entityName = entityName;
         this.dataPath = Paths.get(DATA_DIR, entityName, entityName + "s.json");
-        this.objectMapper = new ObjectMapper();
         this.lock = new ReentrantReadWriteLock();
 
-        // Configurar o ObjectMapper para formatação legível
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        // Inicializar ObjectMapper com suporte a LocalDateTime
+        this.objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule()); // suporte a LocalDateTime
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT); // JSON legível
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // evita timestamps
 
         // Criar diretório e arquivo se não existirem
         initializeDataFile();
@@ -37,10 +40,7 @@ public abstract class BaseRepository<T> {
 
     private void initializeDataFile() {
         try {
-            // Criar diretório se não existir
             Files.createDirectories(dataPath.getParent());
-
-            // Criar arquivo JSON se não existir
             if (!Files.exists(dataPath)) {
                 Files.write(dataPath, "[]".getBytes());
             }
@@ -49,6 +49,7 @@ public abstract class BaseRepository<T> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected List<T> loadAll() {
         lock.readLock().lock();
         try {
@@ -61,22 +62,19 @@ public abstract class BaseRepository<T> {
                 return new ArrayList<>();
             }
 
-            if (entityName.equals("users")) {
-                return (List<T>) objectMapper.readValue(content, new TypeReference<List<com.uberpb.model.User>>() {
-                });
-            } else if (entityName.equals("passageiros")) {
-                return (List<T>) objectMapper.readValue(content,
-                        new TypeReference<List<com.uberpb.model.Passageiro>>() {
-                        });
-            } else if (entityName.equals("motoristas")) {
-                return (List<T>) objectMapper.readValue(content, new TypeReference<List<com.uberpb.model.Motorista>>() {
-                });
-            } else if (entityName.equals("veiculos")) {
-                return (List<T>) objectMapper.readValue(content, new TypeReference<List<com.uberpb.model.Veiculo>>() {
-                });
-            } else {
-                return objectMapper.readValue(content, new TypeReference<List<T>>() {
-                });
+            switch (entityName) {
+                case "users":
+                    return (List<T>) objectMapper.readValue(content, new TypeReference<List<com.uberpb.model.User>>() {});
+                case "passageiros":
+                    return (List<T>) objectMapper.readValue(content, new TypeReference<List<com.uberpb.model.Passageiro>>() {});
+                case "motoristas":
+                    return (List<T>) objectMapper.readValue(content, new TypeReference<List<com.uberpb.model.Motorista>>() {});
+                case "veiculos":
+                    return (List<T>) objectMapper.readValue(content, new TypeReference<List<com.uberpb.model.Veiculo>>() {});
+                case "corridas":
+                    return (List<T>) objectMapper.readValue(content, new TypeReference<List<com.uberpb.model.Corrida>>() {});
+                default:
+                    return objectMapper.readValue(content, new TypeReference<List<T>>() {});
             }
         } catch (IOException e) {
             throw new RuntimeException("Erro ao carregar " + entityName + "s do arquivo", e);
@@ -101,23 +99,19 @@ public abstract class BaseRepository<T> {
         lock.writeLock().lock();
         try {
             Path idCounterPath = Paths.get(DATA_DIR, "id_counter.json");
-
-            // Carregar contador atual
             Map<String, Integer> counters;
+
             if (Files.exists(idCounterPath)) {
                 String content = Files.readString(idCounterPath);
-                counters = objectMapper.readValue(content, new TypeReference<Map<String, Integer>>() {
-                });
+                counters = objectMapper.readValue(content, new TypeReference<Map<String, Integer>>() {});
             } else {
                 counters = new java.util.HashMap<>();
             }
 
-            // Obter próximo ID para esta entidade
             int currentId = counters.getOrDefault(entityName, 0);
             int nextId = currentId + 1;
             counters.put(entityName, nextId);
 
-            // Salvar contador atualizado
             String jsonContent = objectMapper.writeValueAsString(counters);
             Files.write(idCounterPath, jsonContent.getBytes());
 

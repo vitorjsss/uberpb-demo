@@ -1,1 +1,14 @@
-[]
+[ {
+  "id" : 9,
+  "origem" : "aqui",
+  "destino" : "la",
+  "categoria" : "UBER_X",
+  "status" : "EM_ANDAMENTO",
+  "passageiroId" : 8,
+  "motoristaId" : 1,
+  "veiculoId" : 1,
+  "precoEstimado" : 29.0,
+  "distancia" : 12.0,
+  "dataHoraSolicitacao" : "2025-09-24T17:42:21.0713799",
+  "dataHoraFim" : null
+} ]
