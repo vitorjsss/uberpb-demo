@@ -126,21 +126,6 @@ public class MenuPrincipalCLI {
             }
         }
 
-        // Seleção de categoria do motorista
-        Categoria categoriaEscolhida = null;
-        while (categoriaEscolhida == null) {
-            System.out.println("\nEscolha a categoria que deseja dirigir:");
-            for (Categoria cat : Categoria.values()) {
-                System.out.println("- " + cat.getNome());
-            }
-            System.out.print("Digite o nome da categoria: ");
-            String catInput = sc.nextLine();
-            categoriaEscolhida = Categoria.buscarPorNome(catInput);
-            if (categoriaEscolhida == null) {
-                System.out.println("Categoria inválida. Tente novamente!");
-            }
-        }
-
         Motorista m = new Motorista(usuarioLogado.getId(), true, cnh, validade, 0.0, 0, true, "Nao definida");
         m.setUsername(usuarioLogado.getUsername());
         m.setSenha(usuarioLogado.getSenha());
@@ -151,14 +136,7 @@ public class MenuPrincipalCLI {
         m.setTipo("motorista");
         m.setDataCadastro(usuarioLogado.getDataCadastro());
 
-        // Registrar motorista como observer da categoria
-        categoriaEscolhida.addObserver((categoria, novoMultiplicador, anterior) ->
-                System.out.println("🔔 Notificação para " + m.getNome() + ": Multiplicador da categoria " +
-                        categoria.getNome() + " mudou de " + anterior + " para " + novoMultiplicador)
-        );
-
         db.saveMotorista(m);
-        System.out.println("\n🎉 Perfil de motorista cadastrado com sucesso na categoria " + categoriaEscolhida.getNome() + "!");
     }
 
     private void menuPassageiro() {

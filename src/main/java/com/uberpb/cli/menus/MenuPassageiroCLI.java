@@ -119,47 +119,45 @@ public class MenuPassageiroCLI {
     }
 
     private void solicitarCorrida() {
-    System.out.println("\n--- Solicitar Corrida ---");
-    System.out.print("Digite a origem: ");
-    String origem = sc.nextLine().trim();
+        System.out.println("\n--- Solicitar Corrida ---");
+        System.out.print("Digite a origem: ");
+        String origem = sc.nextLine().trim();
 
-    System.out.print("Digite o destino: ");
-    String destino = sc.nextLine().trim();
+        System.out.print("Digite o destino: ");
+        String destino = sc.nextLine().trim();
 
-    // Mostrar categorias com números
-    Categoria[] categorias = Categoria.values();
-    System.out.println("Categorias disponíveis:");
-    for (int i = 0; i < categorias.length; i++) {
-        System.out.printf("%d - %s\n", i + 1, categorias[i].getNome());
+        // Mostrar categorias com números
+        Categoria[] categorias = Categoria.values();
+        System.out.println("Categorias disponíveis:");
+        for (int i = 0; i < categorias.length; i++) {
+            System.out.printf("%d - %s\n", i + 1, categorias[i].getNome());
+        }
+
+        System.out.print("Escolha a categoria (número): ");
+        int opcaoCategoria = sc.nextInt();
+        sc.nextLine();
+
+        if (opcaoCategoria < 1 || opcaoCategoria > categorias.length) {
+            System.out.println("ERRO: Categoria inválida!");
+            return;
+        }
+        Categoria categoria = categorias[opcaoCategoria - 1];
+
+        int passageiroId = passageiro.getId();
+
+        int motoristaId = 0;
+        int veiculoId = 0;
+
+        System.out.print("Digite a distância estimada (km): ");
+        double distancia = sc.nextDouble();
+        sc.nextLine();
+
+        CorridaService corridaService = new CorridaService();
+        Corrida corrida = corridaService.criarCorrida(origem, destino, categoria,
+                passageiroId, motoristaId, veiculoId, distancia);
+
+        System.out.println("✓ Corrida solicitada com sucesso!");
+        System.out.println("Preço estimado: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
     }
 
-    System.out.print("Escolha a categoria (número): ");
-    int opcaoCategoria = sc.nextInt();
-    sc.nextLine(); // limpar buffer
-
-    if (opcaoCategoria < 1 || opcaoCategoria > categorias.length) {
-        System.out.println("ERRO: Categoria inválida!");
-        return;
-    }
-    Categoria categoria = categorias[opcaoCategoria - 1];
-
-    // Para simplificar, pegar o passageiro logado
-    int passageiroId = passageiro.getId();
-
-    int motoristaId = 1; // pegar do DB, exemplo
-    int veiculoId = 1;   // pegar do DB, exemplo
-
-    System.out.print("Digite a distância estimada (km): ");
-    double distancia = sc.nextDouble();
-    sc.nextLine(); // limpar buffer
-
-    CorridaService corridaService = new CorridaService();
-    Corrida corrida = corridaService.criarCorrida(origem, destino, categoria,
-            passageiroId, motoristaId, veiculoId, distancia);
-
-    System.out.println("✓ Corrida solicitada com sucesso!");
-    System.out.println("Preço estimado: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
 }
-
-}
-
