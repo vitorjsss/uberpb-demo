@@ -2,12 +2,14 @@ package com.uberpb.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RepositorioMemoria {
 
     private List<User> users = new ArrayList<>();
     private List<Passageiro> passageiros = new ArrayList<>();
     private List<Motorista> motoristas = new ArrayList<>();
+    private List<Corrida> corridas = new ArrayList<>();
 
     // ===== USERS =====
     public void salvar(User u) {
@@ -90,5 +92,40 @@ public class RepositorioMemoria {
                 .filter(m -> m.getEmail().equalsIgnoreCase(u.getEmail()))
                 .findFirst()
                 .orElse(null);
+    }
+
+    // ===== CORRIDAS =====
+    public void salvarCorrida(Corrida corrida) {
+        corridas.add(corrida);
+        System.out.println("Corrida salva: " + corrida.getOrigem() + " -> " + corrida.getDestino());
+    }
+
+    public Corrida buscarCorridaPorId(int id) {
+        return corridas.stream()
+                .filter(c -> c.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<Corrida> getCorridas() {
+        return corridas;
+    }
+
+    // ===== NOTIFICAÇÃO SIMULADA A MOTORISTAS =====
+    public void notificarMotoristasPorCategoria(Categoria categoria) {
+        List<Motorista> motoristasCategoria = motoristas.stream()
+                .filter(Motorista::isDisponivel)
+                // Aqui você pode futuramente filtrar motoristas que têm veículo compatível com a categoria
+                .collect(Collectors.toList());
+
+        if (motoristasCategoria.isEmpty()) {
+            System.out.println("Nenhum motorista disponível encontrado para a categoria " + categoria.getNome());
+            return;
+        }
+
+        System.out.println("Notificando motoristas da categoria " + categoria.getNome() + "...");
+        for (Motorista m : motoristasCategoria) {
+            System.out.println(" -> Motorista " + m.getNome() + " foi notificado!");
+        }
     }
 }
