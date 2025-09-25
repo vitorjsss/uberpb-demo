@@ -8,6 +8,8 @@ public class Veiculo {
     private String cor;
     private String placa;
     private String categoria; // Volta a ser String
+    private boolean veiculoNovo;
+    private int idadeVeiculo;
 
     // Atributos adicionais obrigatórios da task T2.1
     private double capacidadePortaMalas; // em litros
@@ -25,6 +27,8 @@ public class Veiculo {
         this.categoria = categoria;
         this.capacidadePortaMalas = capacidadePortaMalas;
         this.numeroPassageiros = numeroPassageiros;
+        this.idadeVeiculo = getIdadeVeiculo();
+        this.veiculoNovo = isVeiculoNovo();
     }
 
     // Construtor padrão

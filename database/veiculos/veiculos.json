@@ -6,8 +6,20 @@
   "cor" : "Cinza",
   "placa" : "ABC1234",
   "categoria" : "Bag",
-  "capacidadePortaMalas" : 500.0,
-  "numeroPassageiros" : 4,
   "veiculoNovo" : true,
-  "idadeVeiculo" : 1
+  "idadeVeiculo" : 1,
+  "capacidadePortaMalas" : 500.0,
+  "numeroPassageiros" : 4
+}, {
+  "id" : 2,
+  "modelo" : "Prisma",
+  "marca" : "Chevrolet ",
+  "ano" : 2023,
+  "cor" : "Preto ",
+  "placa" : "ASD2380",
+  "categoria" : "Comfort",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 2,
+  "capacidadePortaMalas" : 4.0,
+  "numeroPassageiros" : 4
 } ]

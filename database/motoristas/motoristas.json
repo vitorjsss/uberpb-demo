@@ -52,4 +52,22 @@
   "disponivel" : false,
   "localizacaoAtual" : "Teatro",
   "categoria" : "Bag"
+}, {
+  "id" : 6,
+  "username" : "ash",
+  "senha" : "Teste123@",
+  "nome" : "Ash",
+  "sobrenome" : "Ketchum",
+  "email" : "ash@mail.com",
+  "telefone" : "83999231233",
+  "tipo" : "motorista",
+  "dataCadastro" : "25/09/2025 07:48:37",
+  "ativo" : true,
+  "cnh" : "12345678903",
+  "validadeCnh" : "01/12/2027",
+  "avaliacaoMedia" : 0.0,
+  "totalAvaliacoes" : 0,
+  "disponivel" : true,
+  "localizacaoAtual" : "Nao definida",
+  "categoria" : "Comfort"
 } ]

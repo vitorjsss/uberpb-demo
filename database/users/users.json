@@ -48,4 +48,14 @@
   "telefone" : "83999991233",
   "tipo" : "usuario",
   "dataCadastro" : "25/09/2025 01:58:43"
+}, {
+  "id" : 6,
+  "username" : "ash",
+  "senha" : "Teste123@",
+  "nome" : "Ash",
+  "sobrenome" : "Ketchum",
+  "email" : "ash@mail.com",
+  "telefone" : "83999231233",
+  "tipo" : "usuario",
+  "dataCadastro" : "25/09/2025 07:48:37"
 } ]

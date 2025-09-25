@@ -30,4 +30,20 @@
   "emCorrida" : false,
   "metodosPagamento" : [ ],
   "idade" : 23
+}, {
+  "id" : 6,
+  "username" : "ash",
+  "senha" : "Teste123@",
+  "nome" : "Ash",
+  "sobrenome" : "Ketchum",
+  "email" : "ash@mail.com",
+  "telefone" : "83999231233",
+  "tipo" : "passageiro",
+  "dataCadastro" : "25/09/2025 07:48:37",
+  "avaliacaoMedia" : 0.0,
+  "historicoCorridas" : [ ],
+  "localizacaoAtual" : "Nao definida",
+  "emCorrida" : false,
+  "metodosPagamento" : [ ],
+  "idade" : 24
 } ]
