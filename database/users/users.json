@@ -18,4 +18,34 @@
   "telefone" : "8399999123",
   "tipo" : "usuario",
   "dataCadastro" : "25/09/2025 01:42:23"
+}, {
+  "id" : 3,
+  "username" : "Luigi",
+  "senha" : "Teste123@",
+  "nome" : "Luigi",
+  "sobrenome" : "Bros",
+  "email" : "luigi@mail.com",
+  "telefone" : "8399991239",
+  "tipo" : "usuario",
+  "dataCadastro" : "25/09/2025 01:54:32"
+}, {
+  "id" : 4,
+  "username" : "Peach",
+  "senha" : "Teste123@",
+  "nome" : "Peach",
+  "sobrenome" : "Bros",
+  "email" : "peach@mail.com",
+  "telefone" : "8392930493",
+  "tipo" : "usuario",
+  "dataCadastro" : "25/09/2025 01:57:29"
+}, {
+  "id" : 5,
+  "username" : "toad",
+  "senha" : "Teste123@",
+  "nome" : "Toad",
+  "sobrenome" : "Bros",
+  "email" : "toad@mail.com",
+  "telefone" : "83999991233",
+  "tipo" : "usuario",
+  "dataCadastro" : "25/09/2025 01:58:43"
 } ]

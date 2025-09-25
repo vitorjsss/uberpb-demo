@@ -20,13 +20,15 @@ public class Corrida {
     private double distancia;
     private LocalDateTime dataHoraSolicitacao;
     private LocalDateTime dataHoraFim;
+    private LocalDateTime dataHoraAceito;
+    private int tempoRestante; // em minutos
 
     // ===== Construtores =====
     public Corrida() {
     }
 
     public Corrida(int id, String origem, String destino, Categoria categoria,
-                   int passageiroId, int motoristaId, int veiculoId, double distancia) {
+            int passageiroId, int motoristaId, int veiculoId, double distancia) {
         this.id = id;
         this.origem = origem;
         this.destino = destino;
@@ -43,6 +45,9 @@ public class Corrida {
     public void iniciarCorrida() {
         if (this.status == CorridaStatus.PENDENTE) {
             this.status = CorridaStatus.EM_ANDAMENTO;
+            this.dataHoraAceito = LocalDateTime.now();
+            // Calcular tempo restante baseado na distância (estimativa: 3 minutos por km)
+            this.tempoRestante = (int) Math.ceil(this.distancia * 3);
         }
     }
 
@@ -50,6 +55,7 @@ public class Corrida {
         if (this.status == CorridaStatus.EM_ANDAMENTO) {
             this.status = CorridaStatus.FINALIZADA;
             this.dataHoraFim = LocalDateTime.now();
+            this.tempoRestante = 0; // Corrida finalizada
         }
     }
 
@@ -57,12 +63,30 @@ public class Corrida {
         if (this.status == CorridaStatus.PENDENTE || this.status == CorridaStatus.EM_ANDAMENTO) {
             this.status = CorridaStatus.CANCELADA;
             this.dataHoraFim = LocalDateTime.now();
+            this.tempoRestante = 0; // Corrida cancelada
         }
     }
 
     /**
+     * Calcula o tempo restante real baseado no tempo decorrido desde que foi aceita
+     * 
+     * @return tempo restante em minutos, 0 se já passou do tempo estimado
+     */
+    public int calcularTempoRestanteReal() {
+        if (this.status != CorridaStatus.EM_ANDAMENTO || this.dataHoraAceito == null) {
+            return this.tempoRestante;
+        }
+
+        long minutosDecorridos = java.time.Duration.between(this.dataHoraAceito, LocalDateTime.now()).toMinutes();
+        int tempoRestanteReal = this.tempoRestante - (int) minutosDecorridos;
+
+        return Math.max(0, tempoRestanteReal);
+    }
+
+    /**
      * Método auxiliar de cálculo de preço.
-     * Normalmente o CorridaService usa EstimativaService, mas pode ser usado aqui também.
+     * Normalmente o CorridaService usa EstimativaService, mas pode ser usado aqui
+     * também.
      */
     public void calcularPreco(double precoBaseKm) {
         if (this.categoria != null) {
@@ -169,6 +193,22 @@ public class Corrida {
         this.dataHoraFim = dataHoraFim;
     }
 
+    public LocalDateTime getDataHoraAceito() {
+        return dataHoraAceito;
+    }
+
+    public void setDataHoraAceito(LocalDateTime dataHoraAceito) {
+        this.dataHoraAceito = dataHoraAceito;
+    }
+
+    public int getTempoRestante() {
+        return tempoRestante;
+    }
+
+    public void setTempoRestante(int tempoRestante) {
+        this.tempoRestante = tempoRestante;
+    }
+
     @Override
     public String toString() {
         return "Corrida{" +
@@ -184,6 +224,8 @@ public class Corrida {
                 ", distancia=" + distancia +
                 ", dataHoraSolicitacao=" + dataHoraSolicitacao +
                 ", dataHoraFim=" + dataHoraFim +
+                ", dataHoraAceito=" + dataHoraAceito +
+                ", tempoRestante=" + tempoRestante +
                 '}';
     }
 }

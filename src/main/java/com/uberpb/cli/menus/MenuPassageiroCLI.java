@@ -2,6 +2,8 @@ package com.uberpb.cli.menus;
 
 import com.uberpb.model.Categoria;
 import com.uberpb.model.Corrida;
+import com.uberpb.model.CorridaStatus;
+import com.uberpb.model.Motorista;
 import com.uberpb.model.Passageiro;
 import com.uberpb.repository.DatabaseManager;
 import com.uberpb.sevices.CorridaService;
@@ -97,18 +99,45 @@ public class MenuPassageiroCLI {
             Corrida corrida = corridaAtiva.get();
             System.out.println("Status: Em corrida");
             System.out.println("═══════════════════════════════════════");
-            System.out.println("📋 ID da Corrida: " + corrida.getId());
             System.out.println("📍 Origem: " + corrida.getOrigem());
             System.out.println("📍 Destino: " + corrida.getDestino());
             System.out.println("🚗 Categoria: " + corrida.getCategoria().getNome());
             System.out.println("📊 Status: " + corrida.getStatus());
-            System.out.println("💰 Preço Estimado: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
+            System.out.println("💰 Preço: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
             if (corrida.getDistancia() > 0) {
                 System.out.println("📏 Distância: " + String.format("%.1f km", corrida.getDistancia()));
             }
+
+            // Mostrar informações do motorista atribuído
+            if (corrida.getMotoristaId() > 0 && corrida.getStatus() != CorridaStatus.PENDENTE) {
+                Optional<Motorista> motoristaOpt = db.findMotoristaById(corrida.getMotoristaId());
+                if (motoristaOpt.isPresent()) {
+                    Motorista motorista = motoristaOpt.get();
+                    System.out.println("\n🚖 Motorista Atribuído:");
+                    System.out.println("👤 Nome: " + motorista.getNome() + " " + motorista.getSobrenome());
+                    System.out.println("⭐ Avaliação: " + String.format("%.1f", motorista.getAvaliacaoMedia()));
+                } else {
+                    System.out.println("\n⚠️ Motorista não encontrado (ID: " + corrida.getMotoristaId() + ")");
+                }
+            } else {
+                System.out.println("\n🔍 Aguardando atribuição de motorista...");
+            }
+
             if (corrida.getDataHoraSolicitacao() != null) {
                 System.out.println("🕐 Solicitada em: " + corrida.getDataHoraSolicitacao()
                         .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+            }
+            if (corrida.getDataHoraAceito() != null) {
+                System.out.println("✅ Aceita em: " + corrida.getDataHoraAceito()
+                        .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+
+                // Mostrar tempo restante em tempo real
+                int tempoRestanteReal = corrida.calcularTempoRestanteReal();
+                if (tempoRestanteReal > 0) {
+                    System.out.println("⏱️ Tempo restante: " + tempoRestanteReal + " min");
+                } else if (corrida.getStatus() == CorridaStatus.EM_ANDAMENTO) {
+                    System.out.println("⏱️ Tempo esgotado - chegando em breve!");
+                }
             }
             if (corrida.getDataHoraFim() != null) {
                 System.out.println("🏁 Finalizada em: " + corrida.getDataHoraFim()
@@ -226,19 +255,27 @@ public class MenuPassageiroCLI {
         Categoria categoriaEscolhida = categorias[opcaoCategoria - 1];
         double precoFinal = estimativaService.estimarPreco(origem, destino, categoriaEscolhida.getNome());
 
-        // Criar a corrida
+        // Criar a corrida com atribuição automática do motorista mais próximo
         int passageiroId = passageiro.getId();
-        int motoristaId = 0;
-        int veiculoId = 0;
-        double distancia = 0;
+        double distancia = estimativaService.calcularDistanciaKm(origem, destino);
 
         Corrida corrida = corridaService.criarCorrida(origem, destino, categoriaEscolhida,
-                passageiroId, motoristaId, veiculoId, distancia);
+                passageiroId, 0, 0, distancia);
 
-        System.out.println("\n✅ Corrida solicitada com sucesso!");
-        System.out.println("📍 Origem: " + origem);
-        System.out.println("📍 Destino: " + destino);
-        System.out.println("🚗 Categoria: " + categoriaEscolhida.getNome());
-        System.out.println("💰 Preço: R$ " + String.format("%.2f", precoFinal));
+        if (corrida.getMotoristaId() > 0) {
+            // Buscar informações do motorista atribuído
+            Optional<Motorista> motoristaOpt = db.findMotoristaById(corrida.getMotoristaId());
+
+            System.out.println("\n✅ Corrida solicitada com sucesso!");
+            System.out.println("📍 Origem: " + origem);
+            System.out.println("📍 Destino: " + destino);
+            System.out.println("🚗 Categoria: " + categoriaEscolhida.getNome());
+            System.out.printf("📏 Distância: %.1f km%n", distancia);
+            System.out.println("💰 Preço: R$ " + String.format("%.2f", precoFinal));
+
+        } else {
+            System.out.println("\n❌ Nenhum motorista disponível na categoria " + categoriaEscolhida.getNome());
+            System.out.println("Tente novamente mais tarde ou escolha outra categoria.");
+        }
     }
 }

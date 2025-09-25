@@ -53,4 +53,10 @@ public class EstimativaService {
     public String getNomeLocalizacao(String nome) {
         return localizacaoService.getNome(nome);
     }
+
+    // Método para obter distância em km
+    public double calcularDistanciaKm(String nomeOrigem, String nomeDestino) {
+        int distancia = localizacaoService.calcularDistancia(nomeOrigem, nomeDestino);
+        return distancia / 10.0; // Convertendo unidades para km (10 unidades = 1 km)
+    }
 }

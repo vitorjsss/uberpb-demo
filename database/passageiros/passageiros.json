@@ -10,8 +10,24 @@
   "dataCadastro" : "25/09/2025 01:42:23",
   "avaliacaoMedia" : 0.0,
   "historicoCorridas" : [ ],
-  "localizacaoAtual" : "Nao definida",
+  "localizacaoAtual" : "Centro",
   "emCorrida" : false,
   "metodosPagamento" : [ ],
   "idade" : 19
+}, {
+  "id" : 3,
+  "username" : "Luigi",
+  "senha" : "Teste123@",
+  "nome" : "Luigi",
+  "sobrenome" : "Bros",
+  "email" : "luigi@mail.com",
+  "telefone" : "8399991239",
+  "tipo" : "passageiro",
+  "dataCadastro" : "25/09/2025 01:54:32",
+  "avaliacaoMedia" : 0.0,
+  "historicoCorridas" : [ ],
+  "localizacaoAtual" : "Estádio",
+  "emCorrida" : false,
+  "metodosPagamento" : [ ],
+  "idade" : 23
 } ]

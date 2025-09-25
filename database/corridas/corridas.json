@@ -1,14 +1,16 @@
 [ {
-  "id" : 1,
-  "origem" : "Hospital",
-  "destino" : "Praia",
+  "id" : 4,
+  "origem" : "Centro",
+  "destino" : "Estádio",
   "categoria" : "BAG",
-  "status" : "EM_ANDAMENTO",
+  "status" : "FINALIZADA",
   "passageiroId" : 2,
-  "motoristaId" : 1,
+  "motoristaId" : 5,
   "veiculoId" : 0,
-  "precoEstimado" : 9.46,
-  "distancia" : 0.0,
-  "dataHoraSolicitacao" : "2025-09-25T01:43:02.052969",
-  "dataHoraFim" : null
+  "precoEstimado" : 22.44,
+  "distancia" : 7.7,
+  "dataHoraSolicitacao" : "2025-09-25T02:03:51.712226",
+  "dataHoraFim" : "2025-09-25T02:35:22.975042",
+  "dataHoraAceito" : "2025-09-25T02:19:12.457201",
+  "tempoRestante" : 0
 } ]
