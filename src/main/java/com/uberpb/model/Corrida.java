@@ -26,7 +26,7 @@ public class Corrida {
     }
 
     public Corrida(int id, String origem, String destino, Categoria categoria,
-            int passageiroId, int motoristaId, int veiculoId, double distancia) {
+                   int passageiroId, int motoristaId, int veiculoId, double distancia) {
         this.id = id;
         this.origem = origem;
         this.destino = destino;
@@ -60,6 +60,10 @@ public class Corrida {
         }
     }
 
+    /**
+     * Método auxiliar de cálculo de preço.
+     * Normalmente o CorridaService usa EstimativaService, mas pode ser usado aqui também.
+     */
     public void calcularPreco(double precoBaseKm) {
         if (this.categoria != null) {
             this.precoEstimado = precoBaseKm * this.distancia * this.categoria.getMultiplicadorPreco();
@@ -163,5 +167,23 @@ public class Corrida {
 
     public void setDataHoraFim(LocalDateTime dataHoraFim) {
         this.dataHoraFim = dataHoraFim;
+    }
+
+    @Override
+    public String toString() {
+        return "Corrida{" +
+                "id=" + id +
+                ", origem='" + origem + '\'' +
+                ", destino='" + destino + '\'' +
+                ", categoria=" + categoria +
+                ", status=" + status +
+                ", passageiroId=" + passageiroId +
+                ", motoristaId=" + motoristaId +
+                ", veiculoId=" + veiculoId +
+                ", precoEstimado=" + precoEstimado +
+                ", distancia=" + distancia +
+                ", dataHoraSolicitacao=" + dataHoraSolicitacao +
+                ", dataHoraFim=" + dataHoraFim +
+                '}';
     }
 }
