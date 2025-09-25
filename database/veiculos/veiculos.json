@@ -1,1 +1,13 @@
-[]
+[ {
+  "id" : 1,
+  "modelo" : "Prisma",
+  "marca" : "Chevrolet",
+  "ano" : 2023,
+  "cor" : "Preto",
+  "placa" : "ABC1234",
+  "categoria" : "Comfort",
+  "capacidadePortaMalas" : 20.0,
+  "numeroPassageiros" : 4,
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 2
+} ]

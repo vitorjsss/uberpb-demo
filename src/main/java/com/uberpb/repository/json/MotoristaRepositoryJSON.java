@@ -18,11 +18,6 @@ public class MotoristaRepositoryJSON extends BaseRepository<Motorista> implement
     public Motorista save(Motorista motorista) {
         lock.writeLock().lock();
         try {
-            // Verificar se CNH já existe
-            if (motorista.getCnh() != null && findByCnh(motorista.getCnh()).isPresent()) {
-                throw new IllegalArgumentException("Motorista com CNH " + motorista.getCnh() + " já existe");
-            }
-
             // Gerar ID único se não tiver
             if (motorista.getId() == 0) {
                 motorista.setId(generateNextId());

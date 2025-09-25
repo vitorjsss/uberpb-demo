@@ -35,8 +35,8 @@ public class MenuMotoristaCLI {
             System.out.println("7 - Ver CNH e validade");
             System.out.println("8 - Ver status disponibilidade");
             System.out.println("9 - Cadastrar veículo");
-            System.out.println("10 - Voltar");
-            System.out.println("11 - Aceitar corrida");
+            System.out.println("10 - Aceitar corrida");
+            System.out.println("11 - Voltar");
             System.out.print("Escolha: ");
             int op = sc.nextInt();
             sc.nextLine();
@@ -51,8 +51,10 @@ public class MenuMotoristaCLI {
                 case 7 -> verCnhValidade();
                 case 8 -> verStatusDisponibilidade();
                 case 9 -> CadastroVeiculoCLI.cadastrarVeiculo(sc, db, motorista);
-                case 10 -> { return; }
-                case 11 -> aceitarCorrida();
+                case 10 -> aceitarCorrida();
+                case 11 -> {
+                    return;
+                }
                 default -> System.out.println("Opção inválida!");
             }
         }
@@ -118,43 +120,44 @@ public class MenuMotoristaCLI {
     }
 
     private void aceitarCorrida() {
-    System.out.println("\n--- Corridas Pendentes ---");
+        System.out.println("\n--- Corridas Pendentes ---");
 
-    // Lista corridas pendentes usando o serviço
-    List<Corrida> corridasPendentes = corridaService.listarCorridasPorStatus(CorridaStatus.PENDENTE);
+        // Lista corridas pendentes usando o serviço
+        List<Corrida> corridasPendentes = corridaService.listarCorridasPorStatus(CorridaStatus.PENDENTE);
 
-    if (corridasPendentes.isEmpty()) {
-        System.out.println("Não há corridas pendentes no momento.");
-        return;
-    }
+        if (corridasPendentes.isEmpty()) {
+            System.out.println("Não há corridas pendentes no momento.");
+            return;
+        }
 
-    // Mostra corridas numeradas
-    for (int i = 0; i < corridasPendentes.size(); i++) {
-        Corrida c = corridasPendentes.get(i);
-        System.out.printf("%d - ID: %d | Origem: %s | Destino: %s | Passageiro ID: %d | Categoria: %s | Distância: %.2f km | Preço: R$ %.2f%n",
-                i + 1, c.getId(), c.getOrigem(), c.getDestino(), c.getPassageiroId(),
-                c.getCategoria().getNome(), c.getDistancia(), c.getPrecoEstimado());
-    }
+        // Mostra corridas numeradas
+        for (int i = 0; i < corridasPendentes.size(); i++) {
+            Corrida c = corridasPendentes.get(i);
+            System.out.printf(
+                    "%d - ID: %d | Origem: %s | Destino: %s | Passageiro ID: %d | Categoria: %s | Distância: %.2f km | Preço: R$ %.2f%n",
+                    i + 1, c.getId(), c.getOrigem(), c.getDestino(), c.getPassageiroId(),
+                    c.getCategoria().getNome(), c.getDistancia(), c.getPrecoEstimado());
+        }
 
-    System.out.print("Escolha a corrida (número): ");
-    int escolha = sc.nextInt();
-    sc.nextLine();
+        System.out.print("Escolha a corrida (número): ");
+        int escolha = sc.nextInt();
+        sc.nextLine();
 
-    if (escolha < 1 || escolha > corridasPendentes.size()) {
-        System.out.println("Opção inválida!");
-        return;
-    }
+        if (escolha < 1 || escolha > corridasPendentes.size()) {
+            System.out.println("Opção inválida!");
+            return;
+        }
 
-    Corrida corridaEscolhida = corridasPendentes.get(escolha - 1);
+        Corrida corridaEscolhida = corridasPendentes.get(escolha - 1);
 
-    // Associa o motorista e inicia a corrida usando os métodos do service
-    corridaEscolhida.setMotoristaId(motorista.getId());
-    corridaService.iniciarCorrida(corridaEscolhida.getId());
+        // Associa o motorista e inicia a corrida usando os métodos do service
+        corridaEscolhida.setMotoristaId(motorista.getId());
+        corridaService.iniciarCorrida(corridaEscolhida.getId());
 
-    // Atualiza disponibilidade do motorista
-    motorista.setDisponivel(false);
-    db.updateMotorista(motorista);
+        // Atualiza disponibilidade do motorista
+        motorista.setDisponivel(false);
+        db.updateMotorista(motorista);
 
-    System.out.println("✓ Corrida aceita e iniciada com sucesso!");
+        System.out.println("✓ Corrida aceita e iniciada com sucesso!");
     }
 }

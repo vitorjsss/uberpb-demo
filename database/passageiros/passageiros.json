@@ -1,1 +1,17 @@
-[]
+[ {
+  "id" : 1,
+  "username" : "vitor",
+  "senha" : "Teste123@",
+  "nome" : "Vitor",
+  "sobrenome" : "Soares",
+  "email" : "vitor@mail.com",
+  "telefone" : "83999999999",
+  "tipo" : "passageiro",
+  "dataCadastro" : "24/09/2025 23:10:07",
+  "avaliacaoMedia" : 0.0,
+  "historicoCorridas" : [ ],
+  "localizacaoAtual" : "Nao definida",
+  "emCorrida" : false,
+  "metodosPagamento" : [ ],
+  "idade" : 23
+} ]

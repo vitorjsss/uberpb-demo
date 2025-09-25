@@ -1,1 +1,18 @@
-[]
+[ {
+  "id" : 1,
+  "username" : "vitor",
+  "senha" : "Teste123@",
+  "nome" : "Vitor",
+  "sobrenome" : "Soares",
+  "email" : "vitor@mail.com",
+  "telefone" : "83999999999",
+  "tipo" : "motorista",
+  "dataCadastro" : "24/09/2025 23:10:07",
+  "ativo" : true,
+  "cnh" : "12345678900",
+  "validadeCnh" : "20/05/2026",
+  "avaliacaoMedia" : 0.0,
+  "totalAvaliacoes" : 0,
+  "disponivel" : false,
+  "localizacaoAtual" : "Nao definida"
+} ]

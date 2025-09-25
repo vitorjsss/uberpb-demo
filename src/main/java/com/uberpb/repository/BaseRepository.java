@@ -25,7 +25,7 @@ public abstract class BaseRepository<T> {
 
     public BaseRepository(String entityName) {
         this.entityName = entityName;
-        this.dataPath = Paths.get(DATA_DIR, entityName, entityName + "s.json");
+        this.dataPath = Paths.get(DATA_DIR, entityName, entityName + ".json");
         this.lock = new ReentrantReadWriteLock();
 
         // Inicializar ObjectMapper com suporte a LocalDateTime
@@ -64,17 +64,27 @@ public abstract class BaseRepository<T> {
 
             switch (entityName) {
                 case "users":
-                    return (List<T>) objectMapper.readValue(content, new TypeReference<List<com.uberpb.model.User>>() {});
+                    return (List<T>) objectMapper.readValue(content, new TypeReference<List<com.uberpb.model.User>>() {
+                    });
                 case "passageiros":
-                    return (List<T>) objectMapper.readValue(content, new TypeReference<List<com.uberpb.model.Passageiro>>() {});
+                    return (List<T>) objectMapper.readValue(content,
+                            new TypeReference<List<com.uberpb.model.Passageiro>>() {
+                            });
                 case "motoristas":
-                    return (List<T>) objectMapper.readValue(content, new TypeReference<List<com.uberpb.model.Motorista>>() {});
+                    return (List<T>) objectMapper.readValue(content,
+                            new TypeReference<List<com.uberpb.model.Motorista>>() {
+                            });
                 case "veiculos":
-                    return (List<T>) objectMapper.readValue(content, new TypeReference<List<com.uberpb.model.Veiculo>>() {});
+                    return (List<T>) objectMapper.readValue(content,
+                            new TypeReference<List<com.uberpb.model.Veiculo>>() {
+                            });
                 case "corridas":
-                    return (List<T>) objectMapper.readValue(content, new TypeReference<List<com.uberpb.model.Corrida>>() {});
+                    return (List<T>) objectMapper.readValue(content,
+                            new TypeReference<List<com.uberpb.model.Corrida>>() {
+                            });
                 default:
-                    return objectMapper.readValue(content, new TypeReference<List<T>>() {});
+                    return objectMapper.readValue(content, new TypeReference<List<T>>() {
+                    });
             }
         } catch (IOException e) {
             throw new RuntimeException("Erro ao carregar " + entityName + "s do arquivo", e);
@@ -103,7 +113,8 @@ public abstract class BaseRepository<T> {
 
             if (Files.exists(idCounterPath)) {
                 String content = Files.readString(idCounterPath);
-                counters = objectMapper.readValue(content, new TypeReference<Map<String, Integer>>() {});
+                counters = objectMapper.readValue(content, new TypeReference<Map<String, Integer>>() {
+                });
             } else {
                 counters = new java.util.HashMap<>();
             }

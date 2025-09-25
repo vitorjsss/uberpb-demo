@@ -1,1 +1,27 @@
-[]
+[ {
+  "id" : 1,
+  "origem" : "Patos",
+  "destino" : "Campina Grande",
+  "categoria" : "COMFORT",
+  "status" : "EM_ANDAMENTO",
+  "passageiroId" : 1,
+  "motoristaId" : 1,
+  "veiculoId" : 1,
+  "precoEstimado" : 54.0,
+  "distancia" : 20.0,
+  "dataHoraSolicitacao" : "2025-09-24T23:11:20.929681",
+  "dataHoraFim" : null
+}, {
+  "id" : 2,
+  "origem" : "Campina Grande",
+  "destino" : "João Pessoa",
+  "categoria" : "XL",
+  "status" : "PENDENTE",
+  "passageiroId" : 1,
+  "motoristaId" : 1,
+  "veiculoId" : 1,
+  "precoEstimado" : 526.5,
+  "distancia" : 200.0,
+  "dataHoraSolicitacao" : "2025-09-24T23:11:54.285183",
+  "dataHoraFim" : null
+} ]

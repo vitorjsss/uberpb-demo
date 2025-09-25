@@ -134,8 +134,13 @@ public class MenuInicialCLI {
         u.setTipo("usuario");
         u.setDataCadastro(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
 
-        System.out.println("\nUsuario cadastrado com sucesso!");
-        System.out.println("Dados salvos em: database/users/users.json");
+        // Salvar usuário no banco de dados
+        User savedUser = db.saveUser(u);
+        if (savedUser != null && savedUser.getId() > 0) {
+            System.out.println("\nUsuário cadastrado com sucesso!");
+        } else {
+            System.out.println("\nErro ao cadastrar usuário. Tente novamente.");
+        }
     }
 
     // ===== LOGIN =====

@@ -108,6 +108,12 @@ public class MenuPrincipalCLI {
             System.out.print("CNH (11 dígitos): ");
             String input = sc.nextLine();
             if (ValidadoresCadastro.validarCNH(input)) {
+                // Verificar se CNH já existe antes de aceitar
+                var existingMotorista = db.findMotoristaByCnh(input);
+                if (existingMotorista.isPresent()) {
+                    System.out.println("❌ Erro: CNH " + input + " já está cadastrada!");
+                    continue;
+                }
                 cnh = input;
                 System.out.println("✓ CNH válida!");
             }
