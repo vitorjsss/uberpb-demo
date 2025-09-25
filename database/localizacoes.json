@@ -1,0 +1,32 @@
+{
+  "Aeroporto": {
+    "coordenada": 0
+  },
+  "Hospital": {
+    "coordenada": 20
+  },
+  "Shopping": {
+    "coordenada": 45
+  },
+  "Universidade": {
+    "coordenada": 73
+  },
+  "Centro": {
+    "coordenada": 15
+  },
+  "Estádio": {
+    "coordenada": 92
+  },
+  "Praia": {
+    "coordenada": 38
+  },
+  "Rodoviária": {
+    "coordenada": 61
+  },
+  "Teatro": {
+    "coordenada": 27
+  },
+  "Parque": {
+    "coordenada": 84
+  }
+}

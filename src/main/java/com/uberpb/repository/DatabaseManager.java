@@ -1,18 +1,13 @@
 package com.uberpb.repository;
 
-import com.uberpb.model.Motorista;
-import com.uberpb.model.Passageiro;
-import com.uberpb.model.User;
-import com.uberpb.model.Veiculo;
-import com.uberpb.repository.json.MotoristaRepositoryJSON;
-import com.uberpb.repository.json.PassageiroRepositoryJSON;
-import com.uberpb.repository.json.UserRepositoryJSON;
-import com.uberpb.repository.json.VeiculoRepositoryJSON;
+import com.uberpb.model.*;
+import com.uberpb.repository.json.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Gerenciador principal do banco de dados JSON
@@ -24,12 +19,14 @@ public class DatabaseManager {
     private final PassageiroRepository passageiroRepository;
     private final MotoristaRepository motoristaRepository;
     private final VeiculoRepository veiculoRepository;
+    private final CorridaRepository corridaRepository;
 
     public DatabaseManager() {
         this.userRepository = new UserRepositoryJSON();
         this.passageiroRepository = new PassageiroRepositoryJSON();
         this.motoristaRepository = new MotoristaRepositoryJSON();
         this.veiculoRepository = new VeiculoRepositoryJSON();
+        this.corridaRepository = new CorridaRepositoryJSON();
     }
 
     // ===== OPERAÇÕES DE USUÁRIO =====
@@ -239,6 +236,31 @@ public class DatabaseManager {
 
     public List<Veiculo> findVeiculosByMarca(String marca) {
         return veiculoRepository.findByMarca(marca);
+    }
+
+    // ===== OPERAÇÕES DE CORRIDAS =====
+    public List<Corrida> findAllCorridas() {
+        return corridaRepository.findAll();
+    }
+
+    public Optional<Corrida> findCorridaById(int id) {
+        return corridaRepository.findById(id);
+    }
+
+    public Corrida saveCorrida(Corrida corrida) {
+        return corridaRepository.save(corrida);
+    }
+
+    public Corrida updateCorrida(Corrida corrida) {
+        return corridaRepository.update(corrida);
+    }
+
+    public List<Corrida> listarCorridasPendentesPorCategoria(String categoria) {
+        return findAllCorridas().stream()
+                .filter(c -> c.getStatus() == CorridaStatus.PENDENTE)
+                .filter(c -> c.getCategoria() != null && c.getCategoria().getNome().equalsIgnoreCase(categoria))
+                .sorted((c1, c2) -> c2.getDataHoraSolicitacao().compareTo(c1.getDataHoraSolicitacao()))
+                .collect(Collectors.toList());
     }
 
     // ===== MÉTODOS DE UTILIDADE =====

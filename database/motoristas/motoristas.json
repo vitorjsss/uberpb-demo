@@ -5,14 +5,15 @@
   "nome" : "Vitor",
   "sobrenome" : "Soares",
   "email" : "vitor@mail.com",
-  "telefone" : "83999999999",
+  "telefone" : "83999923999",
   "tipo" : "motorista",
-  "dataCadastro" : "24/09/2025 23:10:07",
+  "dataCadastro" : "25/09/2025 01:39:03",
   "ativo" : true,
   "cnh" : "12345678900",
-  "validadeCnh" : "20/05/2026",
+  "validadeCnh" : "12/11/2026",
   "avaliacaoMedia" : 0.0,
   "totalAvaliacoes" : 0,
   "disponivel" : false,
-  "localizacaoAtual" : "Nao definida"
+  "localizacaoAtual" : "Parque",
+  "categoria" : "Bag"
 } ]

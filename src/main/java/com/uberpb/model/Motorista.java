@@ -9,22 +9,21 @@ public class Motorista extends User {
     private int totalAvaliacoes;
     private boolean disponivel;
     private String localizacaoAtual;
+    private String categoria;
 
     // Construtor padrão necessário para o Jackson
     public Motorista() {
         super();
         this.ativo = false;
-        this.cnh = "";
-        this.validadeCnh = "";
         this.avaliacaoMedia = 0.0;
         this.totalAvaliacoes = 0;
         this.disponivel = false;
         this.localizacaoAtual = "Não definida";
+        this.categoria = "Não definida";
     }
 
-    // Construtor existente
-    public Motorista(int id, boolean ativo, String cnh, String validadeCnh, double avaliacaoMedia,
-            int totalAvaliacoes, boolean disponivel, String localizacaoAtual) {
+    public Motorista(int id, boolean ativo, String cnh, String validadeCnh, double avaliacaoMedia, int totalAvaliacoes,
+            boolean disponivel, String categoria, String localizacaoAtual) {
         super();
         this.setId(id);
         this.ativo = ativo;
@@ -33,11 +32,11 @@ public class Motorista extends User {
         this.avaliacaoMedia = avaliacaoMedia;
         this.totalAvaliacoes = totalAvaliacoes;
         this.disponivel = disponivel;
-        this.localizacaoAtual = localizacaoAtual;
+        this.localizacaoAtual = (localizacaoAtual != null) ? localizacaoAtual : "Não definida";
+        this.categoria = (categoria != null) ? categoria : "Não definida";
     }
 
-    // Getters e Setters
-
+    // ===== Getters e Setters =====
     public boolean isAtivo() {
         return ativo;
     }
@@ -94,17 +93,18 @@ public class Motorista extends User {
         this.localizacaoAtual = localizacaoAtual;
     }
 
-    @Override
-    public String toString() {
-        return "Motorista{" +
-                "id=" + getId() +
-                ", ativo=" + ativo +
-                ", cnh='" + cnh + '\'' +
-                ", validadeCnh='" + validadeCnh + '\'' +
-                ", avaliacaoMedia=" + avaliacaoMedia +
-                ", totalAvaliacoes=" + totalAvaliacoes +
-                ", disponivel=" + disponivel +
-                ", localizacaoAtual='" + localizacaoAtual + '\'' +
-                '}';
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    // ===== Métodos auxiliares =====
+    public void atualizarAvaliacao(double novaNota) {
+        double total = this.avaliacaoMedia * this.totalAvaliacoes;
+        this.totalAvaliacoes++;
+        this.avaliacaoMedia = (total + novaNota) / this.totalAvaliacoes;
     }
 }

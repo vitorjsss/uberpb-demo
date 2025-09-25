@@ -6,8 +6,11 @@ import com.uberpb.model.Corrida;
 import com.uberpb.model.CorridaStatus;
 import com.uberpb.model.Motorista;
 import com.uberpb.repository.DatabaseManager;
+import com.uberpb.services.LocalizacaoService;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class MenuMotoristaCLI {
@@ -15,12 +18,14 @@ public class MenuMotoristaCLI {
     private final DatabaseManager db;
     private final Motorista motorista;
     private final CorridaService corridaService;
+    private final LocalizacaoService localizacaoService;
 
     public MenuMotoristaCLI(Scanner sc, DatabaseManager db, Motorista motorista) {
         this.sc = sc;
         this.db = db;
         this.motorista = motorista;
         this.corridaService = new CorridaService();
+        this.localizacaoService = new LocalizacaoService();
     }
 
     public void exibirMenu() {
@@ -35,7 +40,7 @@ public class MenuMotoristaCLI {
             System.out.println("7 - Ver CNH e validade");
             System.out.println("8 - Ver status disponibilidade");
             System.out.println("9 - Cadastrar veículo");
-            System.out.println("10 - Aceitar corrida");
+            System.out.println("10 - Notificações de corrida");
             System.out.println("11 - Voltar");
             System.out.print("Escolha: ");
             int op = sc.nextInt();
@@ -51,7 +56,7 @@ public class MenuMotoristaCLI {
                 case 7 -> verCnhValidade();
                 case 8 -> verStatusDisponibilidade();
                 case 9 -> CadastroVeiculoCLI.cadastrarVeiculo(sc, db, motorista);
-                case 10 -> aceitarCorrida();
+                case 10 -> notificacoesCorrida();
                 case 11 -> {
                     return;
                 }
@@ -82,15 +87,18 @@ public class MenuMotoristaCLI {
 
     private void atualizarLocalizacao() {
         System.out.println("\n--- Atualizar Localização ---");
-        System.out.print("Digite a nova localização: ");
-        String localizacao = sc.nextLine();
-        if (localizacao != null && !localizacao.trim().isEmpty()) {
-            motorista.setLocalizacaoAtual(localizacao.trim());
+
+        // Obter uma localização aleatória do JSON
+        String localizacaoAleatoria = localizacaoService.getLocalizacaoAleatoria();
+
+        if (localizacaoAleatoria != null) {
+            motorista.setLocalizacaoAtual(localizacaoAleatoria);
             db.updateMotorista(motorista);
+            System.out.println("📍 Nova localização: " + localizacaoAleatoria);
             System.out.println("✓ Localização atualizada com sucesso!");
             System.out.println("Dados atualizados em: database/motoristas/motoristas.json");
         } else {
-            System.out.println("ERRO: Localização não pode estar vazia!");
+            System.out.println("❌ Erro: Não foi possível obter uma localização aleatória!");
         }
     }
 
@@ -106,6 +114,8 @@ public class MenuMotoristaCLI {
         System.out.println("Total de avaliações: " + motorista.getTotalAvaliacoes());
         System.out.println("Status: " + (motorista.isAtivo() ? "Ativo" : "Inativo"));
         System.out.println("Disponibilidade: " + (motorista.isDisponivel() ? "Disponível" : "Indisponível"));
+        System.out.println(
+                "Categoria: " + (motorista.getCategoria() != null ? motorista.getCategoria() : "Não definida"));
     }
 
     private void verCnhValidade() {
@@ -119,45 +129,45 @@ public class MenuMotoristaCLI {
         System.out.println("Disponibilidade: " + (motorista.isDisponivel() ? "Disponível" : "Indisponível"));
     }
 
-    private void aceitarCorrida() {
-        System.out.println("\n--- Corridas Pendentes ---");
+    private void notificacoesCorrida() {
+        System.out.println("\n--- Corrida Disponível ---");
 
-        // Lista corridas pendentes usando o serviço
-        List<Corrida> corridasPendentes = corridaService.listarCorridasPorStatus(CorridaStatus.PENDENTE);
+        // Busca corridas pendentes da categoria do motorista
+        List<Corrida> corridasPendentes = db.listarCorridasPendentesPorCategoria(motorista.getCategoria());
+        Optional<Corrida> corridaOpt = corridasPendentes.stream()
+                .max(Comparator.comparing(Corrida::getDataHoraSolicitacao)); // mais recente
 
-        if (corridasPendentes.isEmpty()) {
-            System.out.println("Não há corridas pendentes no momento.");
+        if (corridaOpt.isEmpty()) {
+            System.out.println("Não há corridas disponíveis para sua categoria no momento.");
             return;
         }
 
-        // Mostra corridas numeradas
-        for (int i = 0; i < corridasPendentes.size(); i++) {
-            Corrida c = corridasPendentes.get(i);
-            System.out.printf(
-                    "%d - ID: %d | Origem: %s | Destino: %s | Passageiro ID: %d | Categoria: %s | Distância: %.2f km | Preço: R$ %.2f%n",
-                    i + 1, c.getId(), c.getOrigem(), c.getDestino(), c.getPassageiroId(),
-                    c.getCategoria().getNome(), c.getDistancia(), c.getPrecoEstimado());
+        Corrida corridaEscolhida = corridaOpt.get();
+
+        // Mostra detalhes da corrida
+        System.out.printf(
+                "Origem: %s | Destino: %s | Distância: %.2f km | Valor: R$ %.2f%n",
+                corridaEscolhida.getOrigem(),
+                corridaEscolhida.getDestino(),
+                corridaEscolhida.getDistancia(),
+                corridaEscolhida.getPrecoEstimado());
+
+        System.out.print("Deseja aceitar esta corrida? (s/n): ");
+        String resposta = sc.nextLine();
+
+        if (resposta.equalsIgnoreCase("s")) {
+            // Associa o motorista e inicia a corrida
+            corridaEscolhida.setMotoristaId(motorista.getId());
+            corridaEscolhida.setStatus(CorridaStatus.EM_ANDAMENTO);
+            db.updateCorrida(corridaEscolhida);
+
+            // Atualiza disponibilidade do motorista
+            motorista.setDisponivel(false);
+            db.updateMotorista(motorista);
+
+            System.out.println("✓ Corrida aceita e iniciada com sucesso!");
+        } else {
+            System.out.println("Corrida recusada.");
         }
-
-        System.out.print("Escolha a corrida (número): ");
-        int escolha = sc.nextInt();
-        sc.nextLine();
-
-        if (escolha < 1 || escolha > corridasPendentes.size()) {
-            System.out.println("Opção inválida!");
-            return;
-        }
-
-        Corrida corridaEscolhida = corridasPendentes.get(escolha - 1);
-
-        // Associa o motorista e inicia a corrida usando os métodos do service
-        corridaEscolhida.setMotoristaId(motorista.getId());
-        corridaService.iniciarCorrida(corridaEscolhida.getId());
-
-        // Atualiza disponibilidade do motorista
-        motorista.setDisponivel(false);
-        db.updateMotorista(motorista);
-
-        System.out.println("✓ Corrida aceita e iniciada com sucesso!");
     }
 }

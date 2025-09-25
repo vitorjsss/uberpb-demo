@@ -34,8 +34,8 @@ public class CorridaService {
         Corrida corrida = new Corrida(0, origem, destino, categoria,
                 passageiroId, motoristaId, veiculoId, distancia);
 
-        // Usar EstimativaService para calcular o preço
-        double precoEstimado = estimativaService.estimarPreco(distancia, categoria);
+        // Usar EstimativaService para calcular o preço usando nomes
+        double precoEstimado = estimativaService.estimarPreco(origem, destino, categoria.getNome());
         corrida.setPrecoEstimado(precoEstimado);
 
         return repository.save(corrida);
@@ -108,13 +108,33 @@ public class CorridaService {
         Optional<Corrida> corridaOpt = repository.findById(corridaId);
         if (corridaOpt.isPresent()) {
             Corrida corrida = corridaOpt.get();
-            double novoPreco = estimativaService.estimarPreco(corrida.getDistancia(), corrida.getCategoria());
+            double novoPreco = estimativaService.estimarPreco(
+                    corrida.getOrigem(),
+                    corrida.getDestino(),
+                    corrida.getCategoria().getNome());
             corrida.setPrecoEstimado(novoPreco);
             repository.update(corrida);
         }
     }
 
-    public double estimarPrecoParaCorrida(double distancia, Categoria categoria) {
-        return estimativaService.estimarPreco(distancia, categoria);
+    public double estimarPrecoParaCorrida(String nomeOrigem, String nomeDestino, String categoriaNome) {
+        return estimativaService.estimarPreco(nomeOrigem, nomeDestino, categoriaNome);
+    }
+
+    public boolean passageiroTemCorridaAtiva(int passageiroId) {
+        List<Corrida> corridasPassageiro = repository.findByPassageiroId(passageiroId);
+
+        return corridasPassageiro.stream()
+                .anyMatch(corrida -> corrida.getStatus() != CorridaStatus.FINALIZADA
+                        && corrida.getStatus() != CorridaStatus.CANCELADA);
+    }
+
+    public Optional<Corrida> obterCorridaAtivaPassageiro(int passageiroId) {
+        List<Corrida> corridasPassageiro = repository.findByPassageiroId(passageiroId);
+
+        return corridasPassageiro.stream()
+                .filter(corrida -> corrida.getStatus() != CorridaStatus.FINALIZADA
+                        && corrida.getStatus() != CorridaStatus.CANCELADA)
+                .findFirst();
     }
 }

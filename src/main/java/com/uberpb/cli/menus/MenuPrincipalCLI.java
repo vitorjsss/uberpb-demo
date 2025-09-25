@@ -126,7 +126,8 @@ public class MenuPrincipalCLI {
             }
         }
 
-        Motorista m = new Motorista(usuarioLogado.getId(), true, cnh, validade, 0.0, 0, true, "Nao definida");
+        Motorista m = new Motorista(usuarioLogado.getId(), true, cnh, validade, 0.0, 0, true, "Nao definida",
+                "Nao definida");
         m.setUsername(usuarioLogado.getUsername());
         m.setSenha(usuarioLogado.getSenha());
         m.setNome(usuarioLogado.getNome());

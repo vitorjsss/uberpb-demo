@@ -50,8 +50,11 @@ public class CadastroVeiculoCLI {
         VeiculoRepositoryJSON veiculoRepo = new VeiculoRepositoryJSON();
         veiculoRepo.save(veiculo);
 
+        m.setCategoria(categoria.getNome());
+        bd.updateMotorista(m);
+
         System.out.println("Veículo cadastrado com sucesso!");
-        System.out.println("Categoria definida: " + veiculo.getCategoria());
+        System.out.println("Categoria do motorista atualizada para: " + m.getCategoria());
     }
 
     // --- Métodos auxiliares para ler valores com validação ---

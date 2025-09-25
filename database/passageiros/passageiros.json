@@ -1,17 +1,17 @@
 [ {
-  "id" : 1,
-  "username" : "vitor",
+  "id" : 2,
+  "username" : "mario",
   "senha" : "Teste123@",
-  "nome" : "Vitor",
-  "sobrenome" : "Soares",
-  "email" : "vitor@mail.com",
-  "telefone" : "83999999999",
+  "nome" : "Mario",
+  "sobrenome" : "Bros",
+  "email" : "mario@mail.com",
+  "telefone" : "8399999123",
   "tipo" : "passageiro",
-  "dataCadastro" : "24/09/2025 23:10:07",
+  "dataCadastro" : "25/09/2025 01:42:23",
   "avaliacaoMedia" : 0.0,
   "historicoCorridas" : [ ],
   "localizacaoAtual" : "Nao definida",
   "emCorrida" : false,
   "metodosPagamento" : [ ],
-  "idade" : 23
+  "idade" : 19
 } ]

@@ -87,7 +87,7 @@ public abstract class BaseRepository<T> {
                     });
             }
         } catch (IOException e) {
-            throw new RuntimeException("Erro ao carregar " + entityName + "s do arquivo", e);
+            throw new RuntimeException("Erro ao carregar " + entityName + "do arquivo", e);
         } finally {
             lock.readLock().unlock();
         }
@@ -99,7 +99,7 @@ public abstract class BaseRepository<T> {
             String jsonContent = objectMapper.writeValueAsString(entities);
             Files.write(dataPath, jsonContent.getBytes());
         } catch (IOException e) {
-            throw new RuntimeException("Erro ao salvar " + entityName + "s no arquivo", e);
+            throw new RuntimeException("Erro ao salvar " + entityName + " no arquivo", e);
         } finally {
             lock.writeLock().unlock();
         }

@@ -5,7 +5,17 @@
   "nome" : "Vitor",
   "sobrenome" : "Soares",
   "email" : "vitor@mail.com",
-  "telefone" : "83999999999",
+  "telefone" : "83999923999",
   "tipo" : "usuario",
-  "dataCadastro" : "24/09/2025 23:10:07"
+  "dataCadastro" : "25/09/2025 01:39:03"
+}, {
+  "id" : 2,
+  "username" : "mario",
+  "senha" : "Teste123@",
+  "nome" : "Mario",
+  "sobrenome" : "Bros",
+  "email" : "mario@mail.com",
+  "telefone" : "8399999123",
+  "tipo" : "usuario",
+  "dataCadastro" : "25/09/2025 01:42:23"
 } ]
