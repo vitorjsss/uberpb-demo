@@ -12,5 +12,38 @@
   "dataHoraSolicitacao" : "2025-09-25T02:03:51.712226",
   "dataHoraFim" : "2025-09-25T02:35:22.975042",
   "dataHoraAceito" : "2025-09-25T02:19:12.457201",
-  "tempoRestante" : 0
+  "tempoRestante" : 0,
+  "metodoPagamento" : null
+}, {
+  "id" : 5,
+  "origem" : "Aeroporto",
+  "destino" : "Parque",
+  "categoria" : "UBER_X",
+  "status" : "PENDENTE",
+  "passageiroId" : 7,
+  "motoristaId" : 0,
+  "veiculoId" : 0,
+  "precoEstimado" : 21.8,
+  "distancia" : 8.4,
+  "dataHoraSolicitacao" : "2025-09-26T14:57:12.7558957",
+  "dataHoraFim" : null,
+  "dataHoraAceito" : null,
+  "tempoRestante" : 0,
+  "metodoPagamento" : null
+}, {
+  "id" : 6,
+  "origem" : "Aeroporto",
+  "destino" : "Parque",
+  "categoria" : "BAG",
+  "status" : "PENDENTE",
+  "passageiroId" : 2,
+  "motoristaId" : 4,
+  "veiculoId" : 0,
+  "precoEstimado" : 23.980000000000004,
+  "distancia" : 8.4,
+  "dataHoraSolicitacao" : "2025-09-26T15:00:42.532543",
+  "dataHoraFim" : null,
+  "dataHoraAceito" : null,
+  "tempoRestante" : 0,
+  "metodoPagamento" : null
 } ]

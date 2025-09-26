@@ -22,4 +22,16 @@
   "idadeVeiculo" : 2,
   "capacidadePortaMalas" : 4.0,
   "numeroPassageiros" : 4
+}, {
+  "id" : 3,
+  "modelo" : "Onix",
+  "marca" : "Chevrolet",
+  "ano" : 2014,
+  "cor" : "Prata",
+  "placa" : "FJR4032",
+  "categoria" : "Bag",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 11,
+  "capacidadePortaMalas" : 500.0,
+  "numeroPassageiros" : 4
 } ]

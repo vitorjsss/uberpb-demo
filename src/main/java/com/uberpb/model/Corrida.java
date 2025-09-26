@@ -23,6 +23,9 @@ public class Corrida {
     private LocalDateTime dataHoraAceito;
     private int tempoRestante; // em minutos
 
+    // Novo campo para armazenar o método de pagamento (Cartão, PIX, PayPal, Dinheiro)
+    private String metodoPagamento;
+
     // ===== Construtores =====
     public Corrida() {
     }
@@ -39,6 +42,7 @@ public class Corrida {
         this.veiculoId = veiculoId;
         this.distancia = distancia;
         this.dataHoraSolicitacao = LocalDateTime.now();
+        this.metodoPagamento = null; // default: nenhum metodo selecionado ainda
     }
 
     // ===== Métodos de Negócio =====
@@ -209,6 +213,14 @@ public class Corrida {
         this.tempoRestante = tempoRestante;
     }
 
+    public String getMetodoPagamento() {
+        return metodoPagamento;
+    }
+
+    public void setMetodoPagamento(String metodoPagamento) {
+        this.metodoPagamento = metodoPagamento;
+    }
+
     @Override
     public String toString() {
         return "Corrida{" +
@@ -217,6 +229,7 @@ public class Corrida {
                 ", destino='" + destino + '\'' +
                 ", categoria=" + categoria +
                 ", status=" + status +
+                ", metodoPagamento='" + metodoPagamento + '\'' +
                 ", passageiroId=" + passageiroId +
                 ", motoristaId=" + motoristaId +
                 ", veiculoId=" + veiculoId +

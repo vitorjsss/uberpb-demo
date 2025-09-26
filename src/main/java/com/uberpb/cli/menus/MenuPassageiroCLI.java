@@ -102,13 +102,13 @@ public class MenuPassageiroCLI {
             System.out.println("📍 Origem: " + corrida.getOrigem());
             System.out.println("📍 Destino: " + corrida.getDestino());
             System.out.println("🚗 Categoria: " + corrida.getCategoria().getNome());
+            System.out.println("💳 Pagamento: " + corrida.getMetodoPagamento()); // <<< NOVO
             System.out.println("📊 Status: " + corrida.getStatus());
             System.out.println("💰 Preço: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
             if (corrida.getDistancia() > 0) {
                 System.out.println("📏 Distância: " + String.format("%.1f km", corrida.getDistancia()));
             }
 
-            // Mostrar informações do motorista atribuído
             if (corrida.getMotoristaId() > 0 && corrida.getStatus() != CorridaStatus.PENDENTE) {
                 Optional<Motorista> motoristaOpt = db.findMotoristaById(corrida.getMotoristaId());
                 if (motoristaOpt.isPresent()) {
@@ -130,8 +130,6 @@ public class MenuPassageiroCLI {
             if (corrida.getDataHoraAceito() != null) {
                 System.out.println("✅ Aceita em: " + corrida.getDataHoraAceito()
                         .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
-
-                // Mostrar tempo restante em tempo real
                 int tempoRestanteReal = corrida.calcularTempoRestanteReal();
                 if (tempoRestanteReal > 0) {
                     System.out.println("⏱️ Tempo restante: " + tempoRestanteReal + " min");
@@ -153,7 +151,6 @@ public class MenuPassageiroCLI {
     private void atualizarLocalizacao() {
         System.out.println("\n--- Atualizar Localização ---");
 
-        // Obter uma localização aleatória do JSON
         String localizacaoAleatoria = localizacaoService.getLocalizacaoAleatoria();
 
         if (localizacaoAleatoria != null) {
@@ -182,15 +179,13 @@ public class MenuPassageiroCLI {
     private void solicitarCorrida() {
         System.out.println("\n--- Solicitar Corrida ---");
 
-        // Verificar se o passageiro já tem uma corrida ativa
         CorridaService corridaService = new CorridaService();
         if (corridaService.passageiroTemCorridaAtiva(passageiro.getId())) {
             System.out.println("❌ Erro: Você já tem uma corrida ativa!");
-            System.out.println("Finalize ou cancele sua corrida atual antes de solicitar uma nova.");
             return;
         }
 
-        // Escolher origem: localização atual ou outra
+        // ===== Escolher origem =====
         System.out.println("\n=== Escolher Origem ===");
         System.out.println("1 - Usar localização atual (" + passageiro.getLocalizacaoAtual() + ")");
         System.out.println("2 - Escolher outra localização");
@@ -201,13 +196,10 @@ public class MenuPassageiroCLI {
         String origem;
         if (opcaoOrigem == 1) {
             origem = passageiro.getLocalizacaoAtual();
-            System.out.println("📍 Origem selecionada: " + origem);
         } else if (opcaoOrigem == 2) {
             estimativaService.exibirLocalizacoes();
-
             System.out.print("Digite a origem: ");
             origem = sc.nextLine().trim();
-
             if (!estimativaService.isLocalizacaoValida(origem)) {
                 System.out.println("❌ Erro: Localização de origem inválida!");
                 return;
@@ -219,60 +211,70 @@ public class MenuPassageiroCLI {
 
         System.out.print("Digite o destino: ");
         String destino = sc.nextLine().trim();
-
         if (!estimativaService.isLocalizacaoValida(destino)) {
             System.out.println("❌ Erro: Localização de destino inválida!");
             return;
         }
 
-        // Mostrar todas as categorias com preços estimados
+        // ===== Escolher categoria =====
         Categoria[] categorias = Categoria.values();
         int tempo = estimativaService.estimarTempoMinutos(origem, destino);
-
         System.out.println("\nComo você quer viajar?");
         System.out.println("Rota: " + origem + " → " + destino);
         System.out.println("Tempo estimado: ≈ " + tempo + " min");
         System.out.println("────────────────────────────────────────");
-
         for (int i = 0; i < categorias.length; i++) {
             Categoria categoria = categorias[i];
             double preco = estimativaService.estimarPreco(origem, destino, categoria.getNome());
-
-            System.out.printf("%d - %s: R$ %.2f%n",
-                    i + 1, categoria.getNome(), preco);
+            System.out.printf("%d - %s: R$ %.2f%n", i + 1, categoria.getNome(), preco);
         }
         System.out.println("────────────────────────────────────────");
-
         System.out.print("Escolha a categoria (número): ");
         int opcaoCategoria = sc.nextInt();
         sc.nextLine();
-
         if (opcaoCategoria < 1 || opcaoCategoria > categorias.length) {
             System.out.println("❌ Erro: Categoria inválida!");
             return;
         }
-
         Categoria categoriaEscolhida = categorias[opcaoCategoria - 1];
         double precoFinal = estimativaService.estimarPreco(origem, destino, categoriaEscolhida.getNome());
 
-        // Criar a corrida com atribuição automática do motorista mais próximo
+        // ===== Escolher método de pagamento =====
+        System.out.println("\nEscolha o método de pagamento:");
+        System.out.println("1 - Cartão");
+        System.out.println("2 - PIX");
+        System.out.println("3 - PayPal");
+        System.out.println("4 - Dinheiro");
+        System.out.print("Opção: ");
+        int opcaoPagamento = sc.nextInt();
+        sc.nextLine();
+        String metodoPagamento = switch (opcaoPagamento) {
+            case 1 -> "Cartão";
+            case 2 -> "PIX";
+            case 3 -> "PayPal";
+            case 4 -> "Dinheiro";
+            default -> "Dinheiro";
+        };
+
+        // ===== Criar corrida =====
         int passageiroId = passageiro.getId();
         double distancia = estimativaService.calcularDistanciaKm(origem, destino);
 
-        Corrida corrida = corridaService.criarCorrida(origem, destino, categoriaEscolhida,
-                passageiroId, 0, 0, distancia);
+        Corrida corrida = corridaService.criarCorrida(
+                origem, destino, categoriaEscolhida,
+                passageiroId, 0, 0, distancia
+        );
+        corrida.setMetodoPagamento(metodoPagamento); // <<< NOVO
 
         if (corrida.getMotoristaId() > 0) {
-            // Buscar informações do motorista atribuído
             Optional<Motorista> motoristaOpt = db.findMotoristaById(corrida.getMotoristaId());
-
             System.out.println("\n✅ Corrida solicitada com sucesso!");
             System.out.println("📍 Origem: " + origem);
             System.out.println("📍 Destino: " + destino);
             System.out.println("🚗 Categoria: " + categoriaEscolhida.getNome());
+            System.out.println("💳 Pagamento: " + metodoPagamento);
             System.out.printf("📏 Distância: %.1f km%n", distancia);
             System.out.println("💰 Preço: R$ " + String.format("%.2f", precoFinal));
-
         } else {
             System.out.println("\n❌ Nenhum motorista disponível na categoria " + categoriaEscolhida.getNome());
             System.out.println("Tente novamente mais tarde ou escolha outra categoria.");
