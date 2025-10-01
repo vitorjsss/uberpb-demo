@@ -1,6 +1,6 @@
-package com.uberpb.sevices;
+package com.uberpb.services;
 
-import com.uberpb.model.Categoria;
+import com.uberpb.enums.Categoria;
 import com.uberpb.model.Veiculo;
 import com.uberpb.repository.VeiculoRepository;
 

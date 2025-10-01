@@ -1,14 +1,11 @@
 package com.uberpb.helpers;
 
+import com.uberpb.enums.TipoVeiculo;
+
 /**
  * Classe utilitária com métodos de validação para cadastro de veículos.
  */
 public class ValidadoresVeiculo {
-
-    // --- Tipos de veículo suportados ---
-    public enum TipoVeiculo {
-        CARRO, MOTO
-    }
 
     // --- Auxiliar: verifica se uma string não é nula nem vazia ---
     private static boolean isNotBlank(String value) {
@@ -19,6 +16,7 @@ public class ValidadoresVeiculo {
 
     /**
      * Valida o modelo do veículo.
+     * 
      * @param modelo Nome do modelo.
      * @return true se não for nulo ou vazio.
      */
@@ -28,6 +26,7 @@ public class ValidadoresVeiculo {
 
     /**
      * Valida a marca do veículo.
+     * 
      * @param marca Nome da marca.
      * @return true se não for nulo ou vazio.
      */
@@ -37,6 +36,7 @@ public class ValidadoresVeiculo {
 
     /**
      * Valida a cor do veículo.
+     * 
      * @param cor Cor informada.
      * @return true se não for nulo ou vazio.
      */
@@ -47,6 +47,7 @@ public class ValidadoresVeiculo {
     /**
      * Valida a placa do veículo.
      * Suporta placas brasileiras antigas e Mercosul.
+     * 
      * @param placa Placa informada.
      * @return true se estiver no formato correto.
      */
@@ -58,6 +59,7 @@ public class ValidadoresVeiculo {
 
     /**
      * Valida o tipo de veículo (CARRO ou MOTO).
+     * 
      * @param tipo Tipo informado.
      * @return true se for um tipo válido.
      */
@@ -74,6 +76,7 @@ public class ValidadoresVeiculo {
 
     /**
      * Valida o ano do veículo.
+     * 
      * @param ano Ano informado.
      * @return true se estiver entre 1900 e o ano atual.
      */
@@ -84,6 +87,7 @@ public class ValidadoresVeiculo {
 
     /**
      * Valida a capacidade do porta-malas (em litros).
+     * 
      * @param capacidade Capacidade informada.
      * @return true se estiver entre 0 e 1000 litros.
      */
@@ -93,6 +97,7 @@ public class ValidadoresVeiculo {
 
     /**
      * Valida o número de passageiros do veículo.
+     * 
      * @param num Número de passageiros.
      * @return true se estiver entre 1 e 10.
      */

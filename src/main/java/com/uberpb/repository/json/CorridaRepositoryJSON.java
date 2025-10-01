@@ -1,8 +1,8 @@
 package com.uberpb.repository.json;
 
 import com.uberpb.model.Corrida;
-import com.uberpb.model.CorridaStatus;
-import com.uberpb.model.Categoria;
+import com.uberpb.enums.CorridaStatus;
+import com.uberpb.enums.Categoria;
 import com.uberpb.repository.BaseRepository;
 import com.uberpb.repository.CorridaRepository;
 

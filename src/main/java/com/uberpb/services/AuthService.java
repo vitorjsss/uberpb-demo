@@ -1,4 +1,4 @@
-package com.uberpb.sevices;
+package com.uberpb.services;
 
 import com.uberpb.model.User;
 import com.uberpb.model.Motorista;
@@ -16,6 +16,7 @@ public class AuthService {
 
     /**
      * Autentica um usuário com base no email e senha
+     * 
      * @param email email do usuário
      * @param senha senha do usuário
      * @return User se autenticado, null se falhar
@@ -33,8 +34,8 @@ public class AuthService {
 
     private Passageiro autenticarPassageiro(String email, String senha) {
         for (Passageiro passageiro : passageiroService.listar()) {
-            if (passageiro.getEmail().equalsIgnoreCase(email) && 
-                passageiro.getSenha().equals(senha)) {
+            if (passageiro.getEmail().equalsIgnoreCase(email) &&
+                    passageiro.getSenha().equals(senha)) {
                 return passageiro;
             }
         }
@@ -43,8 +44,8 @@ public class AuthService {
 
     private Motorista autenticarMotorista(String email, String senha) {
         for (Motorista motorista : motoristaService.listar()) {
-            if (motorista.getEmail().equalsIgnoreCase(email) && 
-                motorista.getSenha().equals(senha)) {
+            if (motorista.getEmail().equalsIgnoreCase(email) &&
+                    motorista.getSenha().equals(senha)) {
                 return motorista;
             }
         }
@@ -53,6 +54,7 @@ public class AuthService {
 
     /**
      * Retorna o tipo do usuário (PASSAGEIRO ou MOTORISTA)
+     * 
      * @param usuario usuário a ser verificado
      * @return String com o tipo do usuário
      */

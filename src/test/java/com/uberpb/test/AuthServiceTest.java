@@ -1,11 +1,11 @@
 package com.uberpb.test;
 
 import com.uberpb.model.User;
+import com.uberpb.services.AuthService;
+import com.uberpb.services.MotoristaService;
+import com.uberpb.services.PassageiroService;
 import com.uberpb.model.Passageiro;
 import com.uberpb.model.Motorista;
-import com.uberpb.sevices.AuthService;
-import com.uberpb.sevices.PassageiroService;
-import com.uberpb.sevices.MotoristaService;
 import com.uberpb.session.SessionManager;
 
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ public class AuthServiceTest {
     private AuthService authService;
     private PassageiroService passageiroService;
     private MotoristaService motoristaService;
-    
+
     // Dados de teste
     private Passageiro passageiroTeste;
     private Motorista motoristaTeste;
@@ -36,12 +36,12 @@ public class AuthServiceTest {
         // Limpar sessão antes de cada teste
         SessionManager.logout();
         limparArquivoSessao();
-        
+
         // Inicializar services
         passageiroService = new PassageiroService();
         motoristaService = new MotoristaService();
         authService = new AuthService(passageiroService, motoristaService);
-        
+
         // Criar usuários de teste
         criarUsuariosTeste();
     }
@@ -172,10 +172,10 @@ public class AuthServiceTest {
         void testAutenticarParametrosNulos() {
             // Test email null
             assertNull(authService.autenticar(null, "senha"));
-            
+
             // Test senha null
             assertNull(authService.autenticar("email@teste.com", null));
-            
+
             // Test ambos null
             assertNull(authService.autenticar(null, null));
         }
@@ -185,10 +185,10 @@ public class AuthServiceTest {
         void testAutenticarParametrosVazios() {
             // Test email vazio
             assertNull(authService.autenticar("", "senha"));
-            
+
             // Test senha vazia
             assertNull(authService.autenticar("email@teste.com", ""));
-            
+
             // Test ambos vazios
             assertNull(authService.autenticar("", ""));
         }
@@ -198,14 +198,14 @@ public class AuthServiceTest {
         void testGetTipoUsuario() {
             // Test passageiro
             assertEquals("PASSAGEIRO", authService.getTipoUsuario(passageiroTeste));
-            
+
             // Test motorista
             assertEquals("MOTORISTA", authService.getTipoUsuario(motoristaTeste));
-            
+
             // Test usuário genérico (não deveria acontecer, mas testamos)
             User usuarioGenerico = new User();
             assertEquals("DESCONHECIDO", authService.getTipoUsuario(usuarioGenerico));
-            
+
             // Test null
             assertEquals("DESCONHECIDO", authService.getTipoUsuario(null));
         }
@@ -251,7 +251,7 @@ public class AuthServiceTest {
         void testRecuperarUsuarioLogado() {
             // Given - Salva sessão
             SessionManager.saveSession(motoristaTeste);
-            
+
             // When - Simula "nova execução" limpando cache
             // (Note: não podemos limpar completamente pois getCurrentUser() recarrega)
             User usuarioRecuperado = SessionManager.getCurrentUser();
@@ -294,10 +294,10 @@ public class AuthServiceTest {
             // Given
             SessionManager.saveSession(passageiroTeste);
             String arquivoSessao = "database/session/current_session.json";
-            
+
             // Lê conteúdo inicial
             String conteudoInicial = Files.readString(Paths.get(arquivoSessao));
-            
+
             // Aguarda um momento para garantir timestamp diferente
             Thread.sleep(1000);
 
@@ -321,7 +321,7 @@ public class AuthServiceTest {
                 SessionManager.trackActivity("Realizou uma corrida");
                 SessionManager.trackActivity("Atualizou perfil");
             });
-            
+
             // Usuário deve continuar logado
             assertTrue(SessionManager.isLoggedIn());
         }
@@ -340,7 +340,7 @@ public class AuthServiceTest {
             // When - Login
             User usuarioAutenticado = authService.autenticar("maria@teste.com", "senha123");
             assertNotNull(usuarioAutenticado);
-            
+
             // Salva sessão (simulando o que o sistema faria)
             SessionManager.saveSession(usuarioAutenticado);
 
@@ -362,7 +362,7 @@ public class AuthServiceTest {
             // Given & When
             User passageiro = authService.autenticar("maria@teste.com", "senha123");
             SessionManager.saveSession(passageiro);
-            
+
             User motorista = authService.autenticar("joao@teste.com", "senha456");
             SessionManager.saveSession(motorista); // Substitui sessão anterior
 
@@ -380,7 +380,7 @@ public class AuthServiceTest {
 
             // When - Tentativa de login inválido
             User usuarioInvalido = authService.autenticar("email@inexistente.com", "senha");
-            
+
             // Sistema não deveria salvar sessão para usuario null, mas testamos a robustez
             if (usuarioInvalido == null) {
                 // Then - Não há sessão
@@ -395,7 +395,7 @@ public class AuthServiceTest {
             User passageiro = authService.autenticar("maria@teste.com", "senha123");
             SessionManager.saveSession(passageiro);
             assertEquals("PASSAGEIRO", authService.getTipoUsuario(SessionManager.getCurrentUser()));
-            
+
             // Test com Motorista
             User motorista = authService.autenticar("joao@teste.com", "senha456");
             SessionManager.saveSession(motorista);

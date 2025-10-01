@@ -1,4 +1,4 @@
-package com.uberpb.sevices;
+package com.uberpb.services;
 
 import java.util.ArrayList;
 import java.util.List;

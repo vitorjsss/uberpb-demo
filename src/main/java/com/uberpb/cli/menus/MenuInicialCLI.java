@@ -12,22 +12,8 @@ public class MenuInicialCLI {
     private static Scanner sc = new Scanner(System.in);
     private static DatabaseManager db = new DatabaseManager();
 
-    public static void main(String[] args) {
-        while (true) {
-            // Verificar se já existe uma sessão ativa
-            if (SessionManager.isLoggedIn()) {
-                User user = SessionManager.getCurrentUser();
-                System.out.println("Bem-vindo de volta, " + user.getNome() + "!");
-                menuPrincipal(user);
-                // Após sair do menu principal (logout), continua o loop para menu inicial
-            } else {
-                menuInicial();
-            }
-        }
-    }
-
     // ===== MENU INICIAL (CADASTRO / LOGIN) =====
-    private static void menuInicial() {
+    public static void menuInicial() {
         System.out.println("\n=== Bem-vindo ao UberPB ===");
         System.out.println("1 - Cadastrar novo usuario");
         System.out.println("2 - Login");
@@ -172,7 +158,7 @@ public class MenuInicialCLI {
     }
 
     // ===== MENU PRINCIPAL (APOS LOGIN) =====
-    private static void menuPrincipal(User user) {
+    public static void menuPrincipal(User user) {
         // Atualizar última atividade
         SessionManager.updateLastActivity();
 

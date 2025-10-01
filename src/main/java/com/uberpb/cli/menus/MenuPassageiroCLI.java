@@ -1,13 +1,13 @@
 package com.uberpb.cli.menus;
 
-import com.uberpb.model.Categoria;
+import com.uberpb.enums.Categoria;
 import com.uberpb.model.Corrida;
-import com.uberpb.model.CorridaStatus;
+import com.uberpb.enums.CorridaStatus;
 import com.uberpb.model.Motorista;
 import com.uberpb.model.Passageiro;
 import com.uberpb.repository.DatabaseManager;
-import com.uberpb.sevices.CorridaService;
-import com.uberpb.sevices.EstimativaService;
+import com.uberpb.services.CorridaService;
+import com.uberpb.services.EstimativaService;
 import com.uberpb.services.LocalizacaoService;
 
 import java.util.Optional;
@@ -263,9 +263,6 @@ public class MenuPassageiroCLI {
                 passageiroId, 0, 0, distancia);
 
         if (corrida.getMotoristaId() > 0) {
-            // Buscar informações do motorista atribuído
-            Optional<Motorista> motoristaOpt = db.findMotoristaById(corrida.getMotoristaId());
-
             System.out.println("\n✅ Corrida solicitada com sucesso!");
             System.out.println("📍 Origem: " + origem);
             System.out.println("📍 Destino: " + destino);

@@ -1,4 +1,4 @@
-package com.uberpb.model;
+package com.uberpb.enums;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

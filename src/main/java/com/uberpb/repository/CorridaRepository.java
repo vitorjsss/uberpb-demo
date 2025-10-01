@@ -1,8 +1,8 @@
 package com.uberpb.repository;
 
 import com.uberpb.model.Corrida;
-import com.uberpb.model.CorridaStatus;
-import com.uberpb.model.Categoria;
+import com.uberpb.enums.CorridaStatus;
+import com.uberpb.enums.Categoria;
 
 import java.util.List;
 import java.util.Optional;

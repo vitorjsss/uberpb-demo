@@ -1,11 +1,11 @@
 package com.uberpb.cli.menus;
 
-import com.uberpb.sevices.CorridaService;
 import com.uberpb.cli.forms.CadastroVeiculoCLI;
 import com.uberpb.model.Corrida;
-import com.uberpb.model.CorridaStatus;
+import com.uberpb.enums.CorridaStatus;
 import com.uberpb.model.Motorista;
 import com.uberpb.repository.DatabaseManager;
+import com.uberpb.services.CorridaService;
 import com.uberpb.services.LocalizacaoService;
 
 import java.util.List;

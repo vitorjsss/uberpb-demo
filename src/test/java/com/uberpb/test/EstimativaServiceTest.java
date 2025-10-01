@@ -1,7 +1,8 @@
 package com.uberpb.test;
 
-import com.uberpb.model.Categoria;
-import com.uberpb.sevices.EstimativaService;
+import com.uberpb.enums.Categoria;
+import com.uberpb.services.EstimativaService;
+
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,9 +34,8 @@ public class EstimativaServiceTest {
             double preco = estimativaService.estimarPreco(5.0, Categoria.BLACK);
             assertTrue(preco > 0);
             assertNotEquals(
-                estimativaService.estimarPreco(5.0, Categoria.UBER_X),
-                preco
-            ); // Diferentes categorias devem dar preços diferentes
+                    estimativaService.estimarPreco(5.0, Categoria.UBER_X),
+                    preco); // Diferentes categorias devem dar preços diferentes
         }
 
         @Test
@@ -49,7 +49,7 @@ public class EstimativaServiceTest {
         @DisplayName("Deve lançar exceção se categoria for inválida")
         void testCategoriaInvalida() {
             assertThrows(IllegalArgumentException.class,
-                () -> estimativaService.estimarPreco(10.0, "categoria_invalida"));
+                    () -> estimativaService.estimarPreco(10.0, "categoria_invalida"));
         }
     }
 
@@ -60,11 +60,11 @@ public class EstimativaServiceTest {
         @Test
         @DisplayName("Deve calcular tempo proporcional à distância")
         void testTempoEstimado() {
-            int tempo1 = estimativaService.estimarTempoMinutos(2.0);  // 2 km
+            int tempo1 = estimativaService.estimarTempoMinutos(2.0); // 2 km
             int tempo2 = estimativaService.estimarTempoMinutos(10.0); // 10 km
 
             assertTrue(tempo2 > tempo1);
-            assertEquals(6, tempo1);  // 2 km * 3 min/km
+            assertEquals(6, tempo1); // 2 km * 3 min/km
             assertEquals(30, tempo2); // 10 km * 3 min/km
         }
     }

@@ -67,4 +67,14 @@ public class PagamentoRepositoryJSON extends BaseRepository<Pagamento> {
             lock.writeLock().unlock();
         }
     }
+
+    @Override
+    protected int getId(Pagamento entity) {
+        return entity.getId();
+    }
+
+    @Override
+    protected void setId(Pagamento entity, int id) {
+        entity.setId(id);
+    }
 }

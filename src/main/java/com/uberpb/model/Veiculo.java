@@ -11,7 +11,6 @@ public class Veiculo {
     private boolean veiculoNovo;
     private int idadeVeiculo;
 
-    // Atributos adicionais obrigatórios da task T2.1
     private double capacidadePortaMalas; // em litros
     private int numeroPassageiros;
 

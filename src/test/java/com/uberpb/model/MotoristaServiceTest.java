@@ -3,7 +3,7 @@ package com.uberpb.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.uberpb.sevices.MotoristaService;
+import com.uberpb.services.MotoristaService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDateTime;

@@ -2,10 +2,10 @@ package com.uberpb.cli.forms;
 
 import com.uberpb.helpers.ValidadoresVeiculo;
 import com.uberpb.model.Veiculo;
-import com.uberpb.model.Categoria;
+import com.uberpb.enums.Categoria;
 import com.uberpb.model.Motorista;
 import com.uberpb.repository.json.VeiculoRepositoryJSON;
-import com.uberpb.sevices.CategoriaService;
+import com.uberpb.services.CategoriaService;
 import com.uberpb.repository.DatabaseManager;
 
 import java.util.Scanner;

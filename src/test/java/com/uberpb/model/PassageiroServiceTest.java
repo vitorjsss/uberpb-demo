@@ -3,7 +3,7 @@ package com.uberpb.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.uberpb.sevices.PassageiroService;
+import com.uberpb.services.PassageiroService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;

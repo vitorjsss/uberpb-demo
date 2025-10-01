@@ -2,8 +2,8 @@ package com.uberpb.test;
 
 import com.uberpb.model.*;
 import com.uberpb.repository.CorridaRepository;
-import com.uberpb.sevices.CorridaService;
-import com.uberpb.sevices.EstimativaService;
+import com.uberpb.services.CorridaService;
+import com.uberpb.services.EstimativaService;
 
 import org.junit.jupiter.api.*;
 import org.mockito.*;

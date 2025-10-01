@@ -1,5 +1,8 @@
 package com.uberpb.model;
 
+import com.uberpb.enums.Categoria;
+import com.uberpb.enums.CorridaStatus;
+
 import java.time.LocalDateTime;
 
 public class Corrida {

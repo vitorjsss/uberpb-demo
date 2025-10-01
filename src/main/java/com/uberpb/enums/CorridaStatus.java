@@ -1,4 +1,4 @@
-package com.uberpb.model;
+package com.uberpb.enums;
 
 public enum CorridaStatus {
     PENDENTE,

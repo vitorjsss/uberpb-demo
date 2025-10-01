@@ -1,7 +1,7 @@
-package com.uberpb.sevices;
+package com.uberpb.services;
 
 import com.uberpb.model.Pagamento;
-import com.uberpb.model.StatusPagamento;
+import com.uberpb.enums.StatusPagamento;
 import com.uberpb.repository.json.PagamentoRepositoryJSON;
 
 import java.time.LocalDateTime;

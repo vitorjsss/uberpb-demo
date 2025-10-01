@@ -1,14 +1,13 @@
-package com.uberpb.sevices;
+package com.uberpb.services;
 
 import com.uberpb.model.Corrida;
-import com.uberpb.model.CorridaStatus;
-import com.uberpb.model.Categoria;
+import com.uberpb.enums.CorridaStatus;
+import com.uberpb.enums.Categoria;
 import com.uberpb.model.Motorista;
 import com.uberpb.model.Pagamento;
 import com.uberpb.repository.CorridaRepository;
 import com.uberpb.repository.DatabaseManager;
 import com.uberpb.repository.json.CorridaRepositoryJSON;
-import com.uberpb.services.LocalizacaoService;
 
 import java.util.List;
 import java.util.Optional;
@@ -270,13 +269,13 @@ public class CorridaService {
             }
 
             // ---- 🔥 Simulação de pagamento ----
-        PagamentoService pagamentoService = new PagamentoService();
-       Pagamento pagamento = pagamentoService.processarPagamento(
-        corrida.getId(),
-        corrida.getPassageiroId(),
-        corrida.getPrecoEstimado());
+            PagamentoService pagamentoService = new PagamentoService();
+            Pagamento pagamento = pagamentoService.processarPagamento(
+                    corrida.getId(),
+                    corrida.getPassageiroId(),
+                    corrida.getPrecoEstimado());
 
-        System.out.println("Pagamento realizado: " + pagamento.getStatus());
+            System.out.println("Pagamento realizado: " + pagamento.getStatus());
         }
     }
 

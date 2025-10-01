@@ -62,4 +62,20 @@
   "emCorrida" : false,
   "metodosPagamento" : [ "dinheiro", "Debito" ],
   "idade" : 25
+}, {
+  "id" : 1,
+  "username" : "vitor",
+  "senha" : "Teste123@",
+  "nome" : "Vitor",
+  "sobrenome" : "Soares",
+  "email" : "vitor@mail.com",
+  "telefone" : "83999923999",
+  "tipo" : "passageiro",
+  "dataCadastro" : "25/09/2025 01:39:03",
+  "avaliacaoMedia" : 0.0,
+  "historicoCorridas" : [ ],
+  "localizacaoAtual" : "Hospital",
+  "emCorrida" : false,
+  "metodosPagamento" : [ "Pix" ],
+  "idade" : 23
 } ]

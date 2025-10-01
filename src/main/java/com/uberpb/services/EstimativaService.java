@@ -1,7 +1,6 @@
-package com.uberpb.sevices;
+package com.uberpb.services;
 
-import com.uberpb.model.Categoria;
-import com.uberpb.services.LocalizacaoService;
+import com.uberpb.enums.Categoria;
 
 public class EstimativaService {
 
