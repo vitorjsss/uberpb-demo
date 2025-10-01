@@ -46,4 +46,20 @@
   "emCorrida" : false,
   "metodosPagamento" : [ ],
   "idade" : 24
+}, {
+  "id" : 8,
+  "username" : "vitinho",
+  "senha" : "Vitinho123@",
+  "nome" : "Vitor",
+  "sobrenome" : "Jesus",
+  "email" : "vitinho@mail.com",
+  "telefone" : "83908087676",
+  "tipo" : "passageiro",
+  "dataCadastro" : "01/10/2025 15:42:19",
+  "avaliacaoMedia" : 0.0,
+  "historicoCorridas" : [ ],
+  "localizacaoAtual" : "Nao definida",
+  "emCorrida" : false,
+  "metodosPagamento" : [ "dinheiro", "Debito" ],
+  "idade" : 25
 } ]

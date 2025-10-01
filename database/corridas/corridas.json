@@ -13,4 +13,19 @@
   "dataHoraFim" : "2025-09-25T02:35:22.975042",
   "dataHoraAceito" : "2025-09-25T02:19:12.457201",
   "tempoRestante" : 0
+}, {
+  "id" : 5,
+  "origem" : "Hospital",
+  "destino" : "Teatro",
+  "categoria" : "UBER_X",
+  "status" : "PENDENTE",
+  "passageiroId" : 8,
+  "motoristaId" : 0,
+  "veiculoId" : 0,
+  "precoEstimado" : 6.4,
+  "distancia" : 0.7,
+  "dataHoraSolicitacao" : "2025-10-01T17:27:27.9802056",
+  "dataHoraFim" : null,
+  "dataHoraAceito" : null,
+  "tempoRestante" : 0
 } ]

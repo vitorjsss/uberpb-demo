@@ -58,4 +58,24 @@
   "telefone" : "83999231233",
   "tipo" : "usuario",
   "dataCadastro" : "25/09/2025 07:48:37"
+}, {
+  "id" : 7,
+  "username" : "lucas",
+  "senha" : "Lucas10*",
+  "nome" : "Lucas Anacleto",
+  "sobrenome" : "UEPB",
+  "email" : "lucas@gmail.com",
+  "telefone" : "83954566776",
+  "tipo" : "usuario",
+  "dataCadastro" : "01/10/2025 15:17:46"
+}, {
+  "id" : 8,
+  "username" : "vitinho",
+  "senha" : "Vitinho123@",
+  "nome" : "Vitor",
+  "sobrenome" : "Jesus",
+  "email" : "vitinho@mail.com",
+  "telefone" : "83908087676",
+  "tipo" : "usuario",
+  "dataCadastro" : "01/10/2025 15:42:19"
 } ]

@@ -4,6 +4,7 @@ import com.uberpb.model.Corrida;
 import com.uberpb.model.CorridaStatus;
 import com.uberpb.model.Categoria;
 import com.uberpb.model.Motorista;
+import com.uberpb.model.Pagamento;
 import com.uberpb.repository.CorridaRepository;
 import com.uberpb.repository.DatabaseManager;
 import com.uberpb.repository.json.CorridaRepositoryJSON;
@@ -267,6 +268,15 @@ public class CorridaService {
                 motorista.setDisponivel(true);
                 databaseManager.updateMotorista(motorista);
             }
+
+            // ---- 🔥 Simulação de pagamento ----
+        PagamentoService pagamentoService = new PagamentoService();
+       Pagamento pagamento = pagamentoService.processarPagamento(
+        corrida.getId(),
+        corrida.getPassageiroId(),
+        corrida.getPrecoEstimado());
+
+        System.out.println("Pagamento realizado: " + pagamento.getStatus());
         }
     }
 

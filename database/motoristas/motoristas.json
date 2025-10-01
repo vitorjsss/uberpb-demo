@@ -70,4 +70,22 @@
   "disponivel" : true,
   "localizacaoAtual" : "Nao definida",
   "categoria" : "Comfort"
+}, {
+  "id" : 7,
+  "username" : "lucas",
+  "senha" : "Lucas10*",
+  "nome" : "Lucas Anacleto",
+  "sobrenome" : "UEPB",
+  "email" : "lucas@gmail.com",
+  "telefone" : "83954566776",
+  "tipo" : "motorista",
+  "dataCadastro" : "01/10/2025 15:17:46",
+  "ativo" : true,
+  "cnh" : "34554354332",
+  "validadeCnh" : "01/01/2026",
+  "avaliacaoMedia" : 0.0,
+  "totalAvaliacoes" : 0,
+  "disponivel" : true,
+  "localizacaoAtual" : "Nao definida",
+  "categoria" : "Nao definida"
 } ]
