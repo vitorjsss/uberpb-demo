@@ -1,6 +1,6 @@
 package com.uberpb.repository.json;
 
-import com.uberpb.model.Pagamento;
+import com.uberpb.model.pagamento.Pagamento;
 import com.uberpb.repository.BaseRepository;
 
 import java.util.List;

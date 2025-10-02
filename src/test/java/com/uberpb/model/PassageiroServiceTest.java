@@ -21,7 +21,7 @@ class PassageiroServiceTest {
         passageiro.setTelefone("123456789");
         passageiro.setIdade(30);
         passageiro.setAvaliacaoMedia(4.5);
-        passageiro.setMetodosPagamento(Arrays.asList("Cartão", "Dinheiro"));
+        passageiro.setMetodosPagamento(Arrays.asList("Cartão", "PIX"));
     }
 
     @Test

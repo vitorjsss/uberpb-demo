@@ -1,0 +1,21 @@
+[ {
+  "id" : 2,
+  "corridaId" : 3,
+  "passageiroId" : 1,
+  "valor" : 12.100000000000001,
+  "status" : "PENDENTE",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-10-01T22:35:08.426506",
+  "atualizadoEm" : "2025-10-01T22:35:08.426518"
+}, {
+  "id" : 3,
+  "corridaId" : 4,
+  "passageiroId" : 1,
+  "valor" : 10.56,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-10-01T22:38:02.669913",
+  "atualizadoEm" : "2025-10-01T22:38:02.673404"
+} ]

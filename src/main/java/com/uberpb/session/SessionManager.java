@@ -58,7 +58,6 @@ public class SessionManager {
                     var userOpt = db.findUserByEmail(sessionData.getEmail());
                     if (userOpt.isPresent()) {
                         currentUser = userOpt.get();
-                        System.out.println("Sessão anterior recuperada para: " + currentUser.getNome());
 
                         // Atualizar última atividade
                         updateLastActivity();

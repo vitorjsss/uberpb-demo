@@ -52,8 +52,7 @@ public class LocalizacaoService {
         System.out.println("\n=== Recomendações ===");
         for (Map.Entry<String, Map<String, Object>> entry : localizacoes.entrySet()) {
             String nome = entry.getKey();
-            Integer coordenada = (Integer) entry.getValue().get("coordenada");
-            System.out.printf("%s (Coordenada: %d)%n", nome, coordenada);
+            System.out.println(nome);
         }
         System.out.println();
     }

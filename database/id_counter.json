@@ -1,7 +1,6 @@
 {
-  "users" : 8,
-  "passageiros" : 0,
-  "motoristas" : 0,
-  "veiculos" : 2,
-  "corridas" : 5
+  "users" : 2,
+  "corridas" : 4,
+  "veiculos" : 1,
+  "pagamentos" : 3
 }

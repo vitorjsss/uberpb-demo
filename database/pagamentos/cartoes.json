@@ -1,0 +1,11 @@
+[ {
+  "id" : 1,
+  "usuarioId" : 1,
+  "numeroCartao" : "1111000022223333",
+  "pin" : "1234",
+  "validade" : [ 2028, 5, 31 ],
+  "nomeDono" : "Vitor Soa",
+  "cpfDono" : "12345678900",
+  "tipo" : "CREDITO",
+  "ativo" : true
+} ]

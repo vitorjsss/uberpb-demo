@@ -1,0 +1,15 @@
+[ {
+  "id" : 1,
+  "usuarioId" : 1,
+  "chave" : "vitor@mail.com",
+  "tipoChave" : "EMAIL",
+  "descricao" : "email",
+  "ativo" : true
+}, {
+  "id" : 2,
+  "usuarioId" : 1,
+  "chave" : "12345678900",
+  "tipoChave" : "CPF",
+  "descricao" : "cpf",
+  "ativo" : true
+} ]

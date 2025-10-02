@@ -4,7 +4,7 @@ import com.uberpb.model.Corrida;
 import com.uberpb.enums.CorridaStatus;
 import com.uberpb.enums.Categoria;
 import com.uberpb.model.Motorista;
-import com.uberpb.model.Pagamento;
+import com.uberpb.model.pagamento.Pagamento;
 import com.uberpb.repository.CorridaRepository;
 import com.uberpb.repository.DatabaseManager;
 import com.uberpb.repository.json.CorridaRepositoryJSON;
@@ -46,7 +46,14 @@ public class CorridaService {
         // Buscar motorista mais próximo da categoria solicitada
         Optional<Motorista> motoristaProximo = encontrarMotoristaMaisProximo(origem, categoria);
 
-        int motoristaEscolhidoId = motoristaProximo.isPresent() ? motoristaProximo.get().getId() : 0;
+        // Se não encontrar motorista disponível, retornar null (não criar corrida órfã)
+        if (motoristaProximo.isEmpty()) {
+            System.out.println("Nenhum motorista disponível encontrado para categoria " + categoria.getNome());
+            return null;
+        }
+
+        int motoristaEscolhidoId = motoristaProximo.get().getId();
+        System.out.println("Corrida solicitada procurando motorista...");
 
         Corrida corrida = new Corrida(0, origem, destino, categoria,
                 passageiroId, motoristaEscolhidoId, veiculoId, distancia);

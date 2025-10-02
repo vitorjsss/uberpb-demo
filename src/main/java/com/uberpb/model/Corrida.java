@@ -1,5 +1,6 @@
 package com.uberpb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.uberpb.enums.Categoria;
 import com.uberpb.enums.CorridaStatus;
 
@@ -210,6 +211,27 @@ public class Corrida {
 
     public void setTempoRestante(int tempoRestante) {
         this.tempoRestante = tempoRestante;
+    }
+
+    // ===== Método para Status String =====
+    @JsonIgnore
+    public String getStatusString() {
+        if (status == null) {
+            return "Status indefinido";
+        }
+
+        switch (status) {
+            case PENDENTE:
+                return "🟡 Aguardando motorista";
+            case EM_ANDAMENTO:
+                return "🟢 Em andamento";
+            case FINALIZADA:
+                return "✅ Finalizada";
+            case CANCELADA:
+                return "❌ Cancelada";
+            default:
+                return "❓ Status desconhecido";
+        }
     }
 
     @Override

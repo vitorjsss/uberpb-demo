@@ -97,7 +97,6 @@ public class MenuMotoristaCLI {
             db.updateMotorista(motorista);
             System.out.println("📍 Nova localização: " + localizacaoAleatoria);
             System.out.println("✓ Localização atualizada com sucesso!");
-            System.out.println("Dados atualizados em: database/motoristas/motoristas.json");
         } else {
             System.out.println("❌ Erro: Não foi possível obter uma localização aleatória!");
         }
@@ -245,8 +244,6 @@ public class MenuMotoristaCLI {
 
         Corrida corrida = corridaEmAndamento.get();
 
-        System.out.println("📍 Corrida encontrada:");
-        System.out.println("   ID: " + corrida.getId());
         System.out.println("   Origem: " + corrida.getOrigem());
         System.out.println("   Destino: " + corrida.getDestino());
         System.out.println("   Valor: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));

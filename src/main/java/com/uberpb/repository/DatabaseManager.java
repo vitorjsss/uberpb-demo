@@ -149,6 +149,7 @@ public class DatabaseManager {
             User savedUser = saveUser(user);
             motorista.setId(savedUser.getId());
 
+            System.out.println("Perfil de motorista criado com sucesso!");
             // Depois salvar como motorista
             return motoristaRepository.save(motorista);
         }

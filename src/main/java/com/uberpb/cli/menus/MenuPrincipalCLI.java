@@ -122,7 +122,7 @@ public class MenuPrincipalCLI {
             String input = sc.nextLine();
             if (ValidadoresCadastro.validarDataValidade(input)) {
                 validade = input;
-                System.out.println("✓ Validade válida!");
+                System.out.println("✓ Validade!");
             }
         }
 

@@ -9,7 +9,6 @@ public class Passageiro extends User {
     private List<String> historicoCorridas;
     private String localizacaoAtual;
     private boolean emCorrida;
-    private List<String> metodosPagamento;
     private int idade;
 
     // Construtor padrão necessário para o Jackson
@@ -19,7 +18,6 @@ public class Passageiro extends User {
         this.historicoCorridas = new ArrayList<>();
         this.localizacaoAtual = "Nao definida";
         this.emCorrida = false;
-        this.metodosPagamento = new ArrayList<>();
     }
 
     // Construtor existente
@@ -30,7 +28,6 @@ public class Passageiro extends User {
         this.historicoCorridas = new ArrayList<>();
         this.localizacaoAtual = localizacaoAtual;
         this.emCorrida = emCorrida;
-        this.metodosPagamento = new ArrayList<>();
     }
 
     // ===== Getters e Setters =====
@@ -66,21 +63,13 @@ public class Passageiro extends User {
         this.emCorrida = emCorrida;
     }
 
-    public List<String> getMetodosPagamento() {
-        return metodosPagamento;
-    }
-
-    public void setMetodosPagamento(List<String> metodosPagamento) {
-        this.metodosPagamento = metodosPagamento;
-    }
-
     public int getIdade() {
         return idade;
-    } // <-- getter
+    }
 
     public void setIdade(int idade) {
         this.idade = idade;
-    } // <-- setter
+    }
 
     @Override
     public String toString() {
@@ -91,7 +80,6 @@ public class Passageiro extends User {
                 ", historicoCorridas=" + historicoCorridas +
                 ", localizacaoAtual='" + localizacaoAtual + '\'' +
                 ", emCorrida=" + emCorrida +
-                ", metodosPagamento=" + metodosPagamento +
                 '}';
     }
 }

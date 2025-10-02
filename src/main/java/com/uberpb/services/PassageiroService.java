@@ -63,12 +63,6 @@ public class PassageiroService {
             throw new Exception("Passageiro não encontrado!");
         }
 
-        // Validar campos opcionais se não forem nulos
-        if (passageiroAtualizado.getMetodosPagamento() != null &&
-                passageiroAtualizado.getMetodosPagamento().isEmpty()) {
-            throw new Exception("Lista de métodos de pagamento não pode ser vazia se fornecida!");
-        }
-
         // Validar avaliação média se fornecida
         if (passageiroAtualizado.getAvaliacaoMedia() < 0 || passageiroAtualizado.getAvaliacaoMedia() > 5) {
             throw new Exception("Avaliação média deve estar entre 0 e 5!");
@@ -77,11 +71,6 @@ public class PassageiroService {
         // Atualiza apenas campos editáveis
         existente.setLocalizacaoAtual(passageiroAtualizado.getLocalizacaoAtual());
         existente.setEmCorrida(passageiroAtualizado.isEmCorrida());
-
-        if (passageiroAtualizado.getMetodosPagamento() != null) {
-            existente.setMetodosPagamento(passageiroAtualizado.getMetodosPagamento());
-        }
-
         existente.setAvaliacaoMedia(passageiroAtualizado.getAvaliacaoMedia());
     }
 

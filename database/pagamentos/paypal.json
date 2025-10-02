@@ -1,0 +1,8 @@
+[ {
+  "id" : 1,
+  "usuarioId" : 1,
+  "email" : "vitor@mail.com",
+  "nomeCompleto" : "Vitor Soa",
+  "descricao" : "Conta PayPal",
+  "ativo" : true
+} ]
