@@ -10,4 +10,16 @@
   "idadeVeiculo" : 0,
   "capacidadePortaMalas" : 500.0,
   "numeroPassageiros" : 4
+}, {
+  "id" : 2,
+  "modelo" : "Spin",
+  "marca" : "Chevrolet",
+  "ano" : 2024,
+  "cor" : "Prata",
+  "placa" : "QFO2120",
+  "categoria" : "XL",
+  "veiculoNovo" : true,
+  "idadeVeiculo" : 1,
+  "capacidadePortaMalas" : 1000.0,
+  "numeroPassageiros" : 6
 } ]

@@ -20,12 +20,52 @@
   "atualizadoEm" : "2025-10-01T22:38:02.673404"
 }, {
   "id" : 4,
-  "corridaId" : 5,
-  "passageiroId" : 1,
-  "valor" : 8.8,
+  "corridaId" : 7,
+  "passageiroId" : 4,
+  "valor" : 21.32,
   "status" : "SUCESSO",
   "tipoPagamento" : "PIX",
   "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-08T16:10:03.481089",
-  "atualizadoEm" : "2025-10-08T16:10:03.481089"
+  "criadoEm" : "2025-10-08T17:46:25.6814536",
+  "atualizadoEm" : "2025-10-08T17:46:25.6884352"
+}, {
+  "id" : 4,
+  "corridaId" : 7,
+  "passageiroId" : 4,
+  "valor" : 21.32,
+  "status" : "PENDENTE",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-10-08T17:46:25.6814536",
+  "atualizadoEm" : "2025-10-08T17:46:25.6814536"
+}, {
+  "id" : 5,
+  "corridaId" : 8,
+  "passageiroId" : 4,
+  "valor" : 10.4,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-10-08T17:52:58.7374275",
+  "atualizadoEm" : "2025-10-08T17:52:58.7454052"
+}, {
+  "id" : 6,
+  "corridaId" : 9,
+  "passageiroId" : 3,
+  "valor" : 24.44,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-10-08T18:11:59.7510103",
+  "atualizadoEm" : "2025-10-08T18:11:59.7589889"
+}, {
+  "id" : 7,
+  "corridaId" : 10,
+  "passageiroId" : 3,
+  "valor" : 24.44,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-10-08T18:18:02.8334322",
+  "atualizadoEm" : "2025-10-08T18:18:02.8404136"
 } ]

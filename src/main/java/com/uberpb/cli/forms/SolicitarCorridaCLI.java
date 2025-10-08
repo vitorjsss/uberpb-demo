@@ -157,7 +157,7 @@ public class SolicitarCorridaCLI {
         double distancia = estimativaService.calcularDistanciaKm(origem, destino);
 
         Corrida corrida = corridaService.criarCorrida(origem, destino, categoriaEscolhida,
-                passageiroId, 0, 0, distancia);
+                passageiroId, 0, 0, distancia); // Os IDs do motorista e veículo serão atribuídos pelo CorridaService
 
         if (corrida != null && corrida.getMotoristaId() > 0) {
             System.out.println("\n✅ Corrida solicitada com sucesso!");

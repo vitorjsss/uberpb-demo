@@ -4,6 +4,7 @@ import com.uberpb.model.Corrida;
 import com.uberpb.enums.CorridaStatus;
 import com.uberpb.enums.Categoria;
 import com.uberpb.model.Motorista;
+import com.uberpb.model.Veiculo;
 import com.uberpb.model.pagamento.Pagamento;
 import com.uberpb.repository.CorridaRepository;
 import com.uberpb.repository.DatabaseManager;
@@ -52,11 +53,20 @@ public class CorridaService {
             return null;
         }
 
+        // Buscar veículo disponível para a categoria
+        List<Veiculo> veiculosDisponiveis = databaseManager.findVeiculosByCategoria(categoria.getNome());
+        if (veiculosDisponiveis.isEmpty()) {
+            System.out.println("Nenhum veículo disponível encontrado para categoria " + categoria.getNome());
+            return null;
+        }
+        
         int motoristaEscolhidoId = motoristaProximo.get().getId();
+        int veiculoEscolhidoId = veiculosDisponiveis.get(0).getId();
+        
         System.out.println("Corrida solicitada procurando motorista...");
 
         Corrida corrida = new Corrida(0, origem, destino, categoria,
-                passageiroId, motoristaEscolhidoId, veiculoId, distancia);
+                passageiroId, motoristaEscolhidoId, veiculoEscolhidoId, distancia);
 
         // Usar EstimativaService para calcular o preço usando nomes
         double precoEstimado = estimativaService.estimarPreco(origem, destino, categoria.getNome());

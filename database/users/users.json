@@ -18,4 +18,24 @@
   "telefone" : "83995235555",
   "tipo" : "usuario",
   "dataCadastro" : "01/10/2025 22:23:36"
+}, {
+  "id" : 3,
+  "username" : "Kevin",
+  "senha" : "K2004m22!",
+  "nome" : "Kevin",
+  "sobrenome" : "Santos",
+  "email" : "kkevinmaxx@hotmail.com",
+  "telefone" : "83988542850",
+  "tipo" : "usuario",
+  "dataCadastro" : "08/10/2025 17:34:29"
+}, {
+  "id" : 4,
+  "username" : "Raiff",
+  "senha" : "Kevin123!",
+  "nome" : "Raiff",
+  "sobrenome" : "Santos",
+  "email" : "raiff@mail.com",
+  "telefone" : "9199399299",
+  "tipo" : "usuario",
+  "dataCadastro" : "08/10/2025 17:41:41"
 } ]

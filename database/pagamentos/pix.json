@@ -12,4 +12,25 @@
   "tipoChave" : "CPF",
   "descricao" : "cpf",
   "ativo" : true
+}, {
+  "id" : 3,
+  "usuarioId" : 4,
+  "chave" : "15409697464",
+  "tipoChave" : "CPF",
+  "descricao" : "PIX CPF",
+  "ativo" : true
+}, {
+  "id" : 4,
+  "usuarioId" : 3,
+  "chave" : "kkevinmaxx@hotmail.com",
+  "tipoChave" : "EMAIL",
+  "descricao" : "PIX Email",
+  "ativo" : true
+}, {
+  "id" : 5,
+  "usuarioId" : 3,
+  "chave" : "kkevinmaxx@hotmail.com",
+  "tipoChave" : "EMAIL",
+  "descricao" : "PIX Email",
+  "ativo" : true
 } ]

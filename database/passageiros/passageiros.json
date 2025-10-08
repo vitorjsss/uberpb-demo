@@ -13,4 +13,34 @@
   "localizacaoAtual" : "Centro",
   "emCorrida" : false,
   "idade" : 23
+}, {
+  "id" : 4,
+  "username" : "Raiff",
+  "senha" : "Kevin123!",
+  "nome" : "Raiff",
+  "sobrenome" : "Santos",
+  "email" : "raiff@mail.com",
+  "telefone" : "9199399299",
+  "tipo" : "passageiro",
+  "dataCadastro" : "08/10/2025 17:41:41",
+  "avaliacaoMedia" : 0.0,
+  "historicoCorridas" : [ ],
+  "localizacaoAtual" : "Nao definida",
+  "emCorrida" : false,
+  "idade" : 21
+}, {
+  "id" : 3,
+  "username" : "Kevin",
+  "senha" : "K2004m22!",
+  "nome" : "Kevin",
+  "sobrenome" : "Santos",
+  "email" : "kkevinmaxx@hotmail.com",
+  "telefone" : "83988542850",
+  "tipo" : "passageiro",
+  "dataCadastro" : "08/10/2025 17:34:29",
+  "avaliacaoMedia" : 0.0,
+  "historicoCorridas" : [ ],
+  "localizacaoAtual" : "Nao definida",
+  "emCorrida" : false,
+  "idade" : 23
 } ]

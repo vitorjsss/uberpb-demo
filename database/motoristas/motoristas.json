@@ -16,4 +16,22 @@
   "disponivel" : true,
   "localizacaoAtual" : "Universidade",
   "categoria" : "Bag"
+}, {
+  "id" : 3,
+  "username" : "Kevin",
+  "senha" : "K2004m22!",
+  "nome" : "Kevin",
+  "sobrenome" : "Santos",
+  "email" : "kkevinmaxx@hotmail.com",
+  "telefone" : "83988542850",
+  "tipo" : "motorista",
+  "dataCadastro" : "08/10/2025 17:34:29",
+  "ativo" : true,
+  "cnh" : "15409491212",
+  "validadeCnh" : "10/11/2026",
+  "avaliacaoMedia" : 0.0,
+  "totalAvaliacoes" : 0,
+  "disponivel" : true,
+  "localizacaoAtual" : "Centro",
+  "categoria" : "XL"
 } ]
