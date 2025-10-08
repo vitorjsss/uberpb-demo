@@ -18,4 +18,14 @@
   "metodoPagamentoId" : 0,
   "criadoEm" : "2025-10-01T22:38:02.669913",
   "atualizadoEm" : "2025-10-01T22:38:02.673404"
+}, {
+  "id" : 4,
+  "corridaId" : 5,
+  "passageiroId" : 1,
+  "valor" : 8.8,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-10-08T16:10:03.481089",
+  "atualizadoEm" : "2025-10-08T16:10:03.481089"
 } ]

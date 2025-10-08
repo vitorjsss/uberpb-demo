@@ -10,6 +10,7 @@ import com.uberpb.repository.DatabaseManager;
 import com.uberpb.services.CorridaService;
 import com.uberpb.services.LocalizacaoService;
 import com.uberpb.services.MetodoPagamentoService;
+import com.uberpb.services.ReciboService;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -40,7 +41,8 @@ public class MenuPassageiroCLI {
             System.out.println("6 - Ver status (em corrida ou nao)");
             System.out.println("7 - Atualizar localizacao");
             System.out.println("8 - Ver informacoes do perfil");
-            System.out.println("9 - Voltar");
+            System.out.println("9 - Gerar recibo de corrida");
+            System.out.println("10 - Voltar");
             System.out.print("Escolha: ");
             int op = sc.nextInt();
             sc.nextLine();
@@ -54,7 +56,8 @@ public class MenuPassageiroCLI {
                 case 6 -> verStatusCorrida();
                 case 7 -> atualizarLocalizacao();
                 case 8 -> verInformacoesPerfil();
-                case 9 -> {
+                case 9 -> gerarReciboCorrida();
+                case 10 -> {
                     return;
                 }
                 default -> System.out.println("Opcao invalida!");
@@ -222,5 +225,86 @@ public class MenuPassageiroCLI {
     private void solicitarCorrida() {
         SolicitarCorridaCLI menuSolicitar = new SolicitarCorridaCLI(sc, passageiro);
         menuSolicitar.exibirMenu();
+    }
+
+    private void gerarReciboCorrida() {
+        System.out.println("\n=== Gerar Recibo de Corrida ===");
+        
+        ReciboService reciboService = new ReciboService();
+        
+        // Listar corridas finalizadas do passageiro
+        var corridasFinalizadas = reciboService.listarCorridasFinalizadasDoPassageiro(passageiro.getId());
+        
+        if (corridasFinalizadas.isEmpty()) {
+            System.out.println("❌ Você não possui corridas finalizadas para gerar recibo.");
+            System.out.println("\nPressione Enter para voltar...");
+            sc.nextLine();
+            return;
+        }
+        
+        System.out.println("\n📋 Corridas Finalizadas Disponíveis:");
+        System.out.println("═══════════════════════════════════════");
+        
+        for (int i = 0; i < corridasFinalizadas.size(); i++) {
+            Corrida corrida = corridasFinalizadas.get(i);
+            System.out.println((i + 1) + ". 📍 " + corrida.getOrigem() + " → " + corrida.getDestino());
+            System.out.println("   🚗 " + corrida.getCategoria());
+            System.out.println("   💰 R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
+            if (corrida.getDataHoraFim() != null) {
+                System.out.println("   📅 " + corrida.getDataHoraFim()
+                    .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+            }
+            System.out.println("   ────────────────────────────────");
+        }
+        
+        System.out.print("\nEscolha o número da corrida para gerar o recibo (0 para cancelar): ");
+        int escolha = sc.nextInt();
+        sc.nextLine();
+        
+        if (escolha == 0) {
+            return;
+        }
+        
+        if (escolha < 1 || escolha > corridasFinalizadas.size()) {
+            System.out.println("❌ Opção inválida!");
+            System.out.println("\nPressione Enter para voltar...");
+            sc.nextLine();
+            return;
+        }
+        
+        Corrida corridaEscolhida = corridasFinalizadas.get(escolha - 1);
+        
+        System.out.println("\n🧾 Gerando recibo da corrida " + corridaEscolhida.getOrigem() + " → " + corridaEscolhida.getDestino());
+        System.out.println("═══════════════════════════════════════");
+        
+        // Gerar e exibir recibo
+        boolean sucesso = reciboService.exibirRecibo(corridaEscolhida.getId());
+        
+        if (sucesso) {
+            System.out.println("\n📄 Deseja salvar o recibo em arquivo? (s/n): ");
+            String resposta = sc.nextLine().trim().toLowerCase();
+            
+            if (resposta.equals("s") || resposta.equals("sim")) {
+                System.out.print("Digite o nome do arquivo (deixe vazio para nome padrão): ");
+                String nomeArquivo = sc.nextLine().trim();
+                
+                if (nomeArquivo.isEmpty()) {
+                    nomeArquivo = null; // Usará nome padrão
+                }
+                
+                boolean salvo = reciboService.salvarReciboEmArquivo(corridaEscolhida.getId(), nomeArquivo);
+                
+                if (salvo) {
+                    System.out.println("✅ Recibo salvo com sucesso!");
+                } else {
+                    System.out.println("❌ Erro ao salvar recibo em arquivo.");
+                }
+            }
+        } else {
+            System.out.println("❌ Erro ao gerar recibo.");
+        }
+        
+        System.out.println("\nPressione Enter para voltar...");
+        sc.nextLine();
     }
 }

@@ -13,4 +13,19 @@
   "dataHoraFim" : "2025-10-01T22:38:02.646451",
   "dataHoraAceito" : "2025-10-01T22:37:48.113005",
   "tempoRestante" : 0
+}, {
+  "id" : 5,
+  "origem" : "Centro",
+  "destino" : "Aeroporto",
+  "categoria" : "BAG",
+  "status" : "FINALIZADA",
+  "passageiroId" : 1,
+  "motoristaId" : 2,
+  "veiculoId" : 0,
+  "precoEstimado" : 8.8,
+  "distancia" : 1.5,
+  "dataHoraSolicitacao" : "2025-10-08T15:54:03.4810897",
+  "dataHoraFim" : "2025-10-08T16:10:03.4810897",
+  "dataHoraAceito" : "2025-10-08T15:55:03.4810897",
+  "tempoRestante" : 0
 } ]
