@@ -1,4 +1,4 @@
-package com.uberpb.model.test;
+package com.uberpb.test;
 
 import com.uberpb.enums.MetodoPagamento;
 import com.uberpb.enums.StatusPagamento;
@@ -28,9 +28,9 @@ public class PagamentoIntegrationTest {
         PagamentoService service = new PagamentoService();
 
         Pagamento pagamento = service.processarPagamento(
-                1002, 777, 250.00, MetodoPagamento.CARTAO, 1234);
+                1002, 777, 250.00, MetodoPagamento.CARTAO_CREDITO, 1234);
 
-        assertEquals(MetodoPagamento.CARTAO, pagamento.getTipoPagamento());
+        assertEquals(MetodoPagamento.CARTAO_CREDITO, pagamento.getTipoPagamento());
         assertEquals(StatusPagamento.SUCESSO, pagamento.getStatus());
     }
 }

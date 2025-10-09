@@ -1,4 +1,4 @@
-package com.uberpb.model.test;
+package com.uberpb.test;
 
 import com.uberpb.enums.StatusPagamento;
 import com.uberpb.enums.MetodoPagamento;
@@ -22,7 +22,7 @@ public class PagamentoUnitTest {
 
     @Test
     void deveAtualizarStatusParaSucesso() {
-        Pagamento pagamento = new Pagamento(1, 1, 100.0, MetodoPagamento.CARTAO, 456);
+        Pagamento pagamento = new Pagamento(1, 1, 100.0, MetodoPagamento.CARTAO_CREDITO, 456);
         pagamento.setStatus(StatusPagamento.SUCESSO);
 
         assertEquals(StatusPagamento.SUCESSO, pagamento.getStatus());

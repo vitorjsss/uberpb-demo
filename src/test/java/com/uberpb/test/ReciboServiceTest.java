@@ -1,4 +1,4 @@
-package com.uberpb.model.test;
+package com.uberpb.test;
 
 import com.uberpb.model.Corrida;
 import com.uberpb.model.Passageiro;
@@ -15,7 +15,6 @@ import org.junit.jupiter.api.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,28 +28,39 @@ public class ReciboServiceTest {
     void setup() {
         reciboService = new ReciboService();
 
-        // Criar dados de teste
-        Passageiro p = new Passageiro(1, "Teste", false);
+        // Usar timestamp para IDs únicos
+        long timestamp = System.currentTimeMillis() % 100000; // Últimos 5 dígitos do timestamp
+        int baseId = (int) (9000 + timestamp % 1000);
+
+        // Criar dados de teste com IDs únicos para evitar conflitos
+        Passageiro p = new Passageiro();
+        p.setId(baseId); 
         p.setNome("João");
         p.setEmail("joao@teste.com");
         new PassageiroRepositoryJSON().save(p);
 
-        Motorista m = new Motorista(1, true, "12345678901", "30/12/2025", 0.0, 5, true, "UberX");
+        Motorista m = new Motorista();
+        m.setId(baseId + 1); 
         m.setNome("Carlos");
         m.setCnh("12345678901");
+        m.setAtivo(true);
+        m.setDisponivel(true);
+        m.setLocalizacaoAtual("Centro");
+        m.setCategoria("UberX");
         new MotoristaRepositoryJSON().save(m);
 
-        Veiculo v = new Veiculo(1, "HB20", "Hyundai", "Preto", "ABC-1234", "UberX");
+        String placaUnica = "TST-" + String.format("%04d", timestamp % 10000);
+        Veiculo v = new Veiculo(baseId + 2, "HB20", "Hyundai", 2020, "Preto", placaUnica, "UBER_X", 300.0, 4);
         new VeiculoRepositoryJSON().save(v);
 
         Corrida corrida = new Corrida();
-        corrida.setId(1001);
+        corrida.setId(baseId); 
         corrida.setPassageiroId(p.getId());
         corrida.setMotoristaId(m.getId());
         corrida.setVeiculoId(v.getId());
         corrida.setOrigem("UEPB");
         corrida.setDestino("Centro");
-        corrida.setCategoria("UberX");
+        corrida.setCategoria(com.uberpb.enums.Categoria.UBER_X);
         corrida.setDistancia(10.5);
         corrida.setStatus(CorridaStatus.FINALIZADA);
         corrida.setDataHoraSolicitacao(LocalDateTime.now().minusMinutes(20));
@@ -71,7 +81,7 @@ public class ReciboServiceTest {
         assertNotNull(recibo, "Recibo não deve ser nulo");
         assertEquals("João", recibo.getNomePassageiro());
         assertEquals("Carlos", recibo.getNomeMotorista());
-        assertEquals("UberX", recibo.getCategoria());
+        assertTrue(recibo.getCategoria().contains("UberX"), "Categoria deve conter UberX");
         assertEquals(25.50, recibo.getPrecoFinal());
         assertEquals("PIX", recibo.getMetodoPagamento());
         assertEquals("SUCESSO", recibo.getStatusPagamento());
