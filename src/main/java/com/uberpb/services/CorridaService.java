@@ -59,10 +59,10 @@ public class CorridaService {
             System.out.println("Nenhum veículo disponível encontrado para categoria " + categoria.getNome());
             return null;
         }
-        
+
         int motoristaEscolhidoId = motoristaProximo.get().getId();
         int veiculoEscolhidoId = veiculosDisponiveis.get(0).getId();
-        
+
         System.out.println("Corrida solicitada procurando motorista...");
 
         Corrida corrida = new Corrida(0, origem, destino, categoria,
@@ -443,5 +443,9 @@ public class CorridaService {
                 .filter(corrida -> corrida.getStatus() != CorridaStatus.FINALIZADA
                         && corrida.getStatus() != CorridaStatus.CANCELADA)
                 .findFirst();
+    }
+
+    public void updateCorrida(Corrida corrida) {
+        repository.update(corrida);
     }
 }

@@ -26,6 +26,8 @@ public class Corrida {
     private LocalDateTime dataHoraFim;
     private LocalDateTime dataHoraAceito;
     private int tempoRestante; // em minutos
+    private boolean avaliada_passageiro;
+    private boolean avaliada_motorista;
 
     // ===== Construtores =====
     public Corrida() {
@@ -43,6 +45,8 @@ public class Corrida {
         this.veiculoId = veiculoId;
         this.distancia = distancia;
         this.dataHoraSolicitacao = LocalDateTime.now();
+        this.avaliada_passageiro = false;
+        this.avaliada_motorista = false;
     }
 
     // ===== Métodos de Negócio =====
@@ -57,7 +61,7 @@ public class Corrida {
 
     public void finalizarCorrida() {
         if (this.status == CorridaStatus.EM_ANDAMENTO) {
-            this.status = CorridaStatus.FINALIZADA;
+            this.status = CorridaStatus.AVALIACAO;
             this.dataHoraFim = LocalDateTime.now();
             this.tempoRestante = 0; // Corrida finalizada
         }
@@ -213,6 +217,22 @@ public class Corrida {
         this.tempoRestante = tempoRestante;
     }
 
+    public boolean isAvaliada_passageiro() {
+        return avaliada_passageiro;
+    }
+
+    public void setAvaliada_passageiro(boolean avaliada_passageiro) {
+        this.avaliada_passageiro = avaliada_passageiro;
+    }
+
+    public boolean isAvaliada_motorista() {
+        return avaliada_motorista;
+    }
+
+    public void setAvaliada_motorista(boolean avaliada_motorista) {
+        this.avaliada_motorista = avaliada_motorista;
+    }
+
     // ===== Método para Status String =====
     @JsonIgnore
     public String getStatusString() {
@@ -251,6 +271,8 @@ public class Corrida {
                 ", dataHoraFim=" + dataHoraFim +
                 ", dataHoraAceito=" + dataHoraAceito +
                 ", tempoRestante=" + tempoRestante +
+                ", avaliada_passageiro=" + avaliada_passageiro +
+                ", avaliada_motorista=" + avaliada_motorista +
                 '}';
     }
 }

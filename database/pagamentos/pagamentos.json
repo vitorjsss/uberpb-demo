@@ -1,181 +1,21 @@
 [ {
+  "id" : 1,
+  "corridaId" : 1,
+  "passageiroId" : 1,
+  "valor" : 10.319999999999999,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-10-14T20:52:07.183462",
+  "atualizadoEm" : "2025-10-14T20:52:07.188475"
+}, {
   "id" : 2,
-  "corridaId" : 3,
+  "corridaId" : 2,
   "passageiroId" : 1,
-  "valor" : 12.100000000000001,
-  "status" : "PENDENTE",
-  "tipoPagamento" : "PIX",
-  "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-01T22:35:08.426506",
-  "atualizadoEm" : "2025-10-01T22:35:08.426518"
-}, {
-  "id" : 3,
-  "corridaId" : 4,
-  "passageiroId" : 1,
-  "valor" : 10.56,
+  "valor" : 11.52,
   "status" : "SUCESSO",
   "tipoPagamento" : "PIX",
   "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-01T22:38:02.669913",
-  "atualizadoEm" : "2025-10-01T22:38:02.673404"
-}, {
-  "id" : 4,
-  "corridaId" : 7,
-  "passageiroId" : 4,
-  "valor" : 21.32,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "PIX",
-  "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-08T17:46:25.6814536",
-  "atualizadoEm" : "2025-10-08T17:46:25.6884352"
-}, {
-  "id" : 4,
-  "corridaId" : 7,
-  "passageiroId" : 4,
-  "valor" : 21.32,
-  "status" : "PENDENTE",
-  "tipoPagamento" : "PIX",
-  "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-08T17:46:25.6814536",
-  "atualizadoEm" : "2025-10-08T17:46:25.6814536"
-}, {
-  "id" : 5,
-  "corridaId" : 8,
-  "passageiroId" : 4,
-  "valor" : 10.4,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "PIX",
-  "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-08T17:52:58.7374275",
-  "atualizadoEm" : "2025-10-08T17:52:58.7454052"
-}, {
-  "id" : 6,
-  "corridaId" : 9,
-  "passageiroId" : 3,
-  "valor" : 24.44,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "PIX",
-  "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-08T18:11:59.7510103",
-  "atualizadoEm" : "2025-10-08T18:11:59.7589889"
-}, {
-  "id" : 7,
-  "corridaId" : 10,
-  "passageiroId" : 3,
-  "valor" : 24.44,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "PIX",
-  "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-08T18:18:02.8334322",
-  "atualizadoEm" : "2025-10-08T18:18:02.8404136"
-}, {
-  "id" : 8,
-  "corridaId" : 1001,
-  "passageiroId" : 501,
-  "valor" : 89.9,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "PIX",
-  "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-08T22:57:25.4517096",
-  "atualizadoEm" : "2025-10-08T22:57:25.9657057"
-}, {
-  "id" : 9,
-  "corridaId" : 1002,
-  "passageiroId" : 777,
-  "valor" : 250.0,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "CARTAO_CREDITO",
-  "metodoPagamentoId" : 1234,
-  "criadoEm" : "2025-10-08T22:57:25.9797109",
-  "atualizadoEm" : "2025-10-08T22:57:26.0052806"
-}, {
-  "id" : 10,
-  "corridaId" : 1001,
-  "passageiroId" : 1,
-  "valor" : 25.5,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "PIX",
-  "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-08T22:57:26.1328715",
-  "atualizadoEm" : "2025-10-08T22:57:26.1328715"
-}, {
-  "id" : 11,
-  "corridaId" : 1001,
-  "passageiroId" : 501,
-  "valor" : 89.9,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "PIX",
-  "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-08T23:01:53.1525469",
-  "atualizadoEm" : "2025-10-08T23:01:53.6149147"
-}, {
-  "id" : 12,
-  "corridaId" : 1002,
-  "passageiroId" : 777,
-  "valor" : 250.0,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "CARTAO_CREDITO",
-  "metodoPagamentoId" : 1234,
-  "criadoEm" : "2025-10-08T23:01:53.6486227",
-  "atualizadoEm" : "2025-10-08T23:01:53.6992418"
-}, {
-  "id" : 13,
-  "corridaId" : 9001,
-  "passageiroId" : 9001,
-  "valor" : 25.5,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "PIX",
-  "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-08T23:01:53.8473972",
-  "atualizadoEm" : "2025-10-08T23:01:53.8473972"
-}, {
-  "id" : 14,
-  "corridaId" : 1001,
-  "passageiroId" : 501,
-  "valor" : 89.9,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "PIX",
-  "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-08T23:02:19.3401267",
-  "atualizadoEm" : "2025-10-08T23:02:19.8465689"
-}, {
-  "id" : 15,
-  "corridaId" : 1002,
-  "passageiroId" : 777,
-  "valor" : 250.0,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "CARTAO_CREDITO",
-  "metodoPagamentoId" : 1234,
-  "criadoEm" : "2025-10-08T23:02:19.8977247",
-  "atualizadoEm" : "2025-10-08T23:02:19.9543667"
-}, {
-  "id" : 16,
-  "corridaId" : 1001,
-  "passageiroId" : 501,
-  "valor" : 89.9,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "PIX",
-  "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-08T23:05:19.8721973",
-  "atualizadoEm" : "2025-10-08T23:05:20.3076085"
-}, {
-  "id" : 17,
-  "corridaId" : 1002,
-  "passageiroId" : 777,
-  "valor" : 250.0,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "CARTAO_CREDITO",
-  "metodoPagamentoId" : 1234,
-  "criadoEm" : "2025-10-08T23:05:20.321312",
-  "atualizadoEm" : "2025-10-08T23:05:20.3440795"
-}, {
-  "id" : 18,
-  "corridaId" : 9389,
-  "passageiroId" : 9389,
-  "valor" : 25.5,
-  "status" : "SUCESSO",
-  "tipoPagamento" : "PIX",
-  "metodoPagamentoId" : 0,
-  "criadoEm" : "2025-10-08T23:05:20.585603",
-  "atualizadoEm" : "2025-10-08T23:05:20.585603"
+  "criadoEm" : "2025-10-14T21:01:54.461901",
+  "atualizadoEm" : "2025-10-14T21:01:54.469182"
 } ]

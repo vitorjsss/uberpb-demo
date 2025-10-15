@@ -6,6 +6,7 @@ import java.util.List;
 public class Passageiro extends User {
 
     private double avaliacaoMedia;
+    private List<Float> avaliacoes;
     private List<String> historicoCorridas;
     private String localizacaoAtual;
     private boolean emCorrida;
@@ -24,6 +25,7 @@ public class Passageiro extends User {
     public Passageiro(int id, String localizacaoAtual, boolean emCorrida) {
         super();
         this.setId(id);
+        this.avaliacoes = new ArrayList<>();
         this.avaliacaoMedia = 0.0;
         this.historicoCorridas = new ArrayList<>();
         this.localizacaoAtual = localizacaoAtual;

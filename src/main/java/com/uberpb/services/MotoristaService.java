@@ -96,6 +96,20 @@ public class MotoristaService {
         motoristas.remove(motorista);
     }
 
+    public void avaliarMotorista(int idMotorista, float nota) throws Exception {
+        if (nota < 1 || nota > 5) {
+            throw new Exception("A nota deve estar entre 1 e 5!");
+        }
+
+        Motorista motorista = buscarPorId(idMotorista);
+        if (motorista == null) {
+            throw new Exception("Motorista não encontrado!");
+        }
+
+        motorista.adicionarAvaliacao(nota);
+        System.out.println("Avaliação registrada! Nova média: " + motorista.getAvaliacaoMedia());
+    }
+
     // Listar todos os motoristas
     public List<Motorista> listar() {
         return new ArrayList<>(motoristas);

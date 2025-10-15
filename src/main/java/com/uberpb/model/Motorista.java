@@ -1,20 +1,24 @@
 package com.uberpb.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Motorista extends User {
 
     private boolean ativo;
     private String cnh;
     private String validadeCnh;
+    private List<Float> avaliacoes;
     private double avaliacaoMedia;
     private int totalAvaliacoes;
     private boolean disponivel;
     private String localizacaoAtual;
     private String categoria;
 
-    // Construtor padrão necessário para o Jackson
     public Motorista() {
         super();
         this.ativo = false;
+        this.avaliacoes = new ArrayList<>();
         this.avaliacaoMedia = 0.0;
         this.totalAvaliacoes = 0;
         this.disponivel = false;
@@ -29,6 +33,7 @@ public class Motorista extends User {
         this.ativo = ativo;
         this.cnh = cnh;
         this.validadeCnh = validadeCnh;
+        this.avaliacoes = new ArrayList<>();
         this.avaliacaoMedia = avaliacaoMedia;
         this.totalAvaliacoes = totalAvaliacoes;
         this.disponivel = disponivel;
@@ -36,7 +41,6 @@ public class Motorista extends User {
         this.categoria = (categoria != null) ? categoria : "Não definida";
     }
 
-    // ===== Getters e Setters =====
     public boolean isAtivo() {
         return ativo;
     }
@@ -101,10 +105,55 @@ public class Motorista extends User {
         this.categoria = categoria;
     }
 
-    // ===== Métodos auxiliares =====
+    public List<Float> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<Float> avaliacoes) {
+        this.avaliacoes = avaliacoes;
+        recalcularAvaliacaoMedia();
+    }
+
+    // ===== Novo método principal de avaliação =====
+    public void adicionarAvaliacao(float nota) {
+        if (nota < 1 || nota > 5) {
+            throw new IllegalArgumentException("A nota deve ser entre 1 e 5.");
+        }
+        avaliacoes.add(nota);
+        recalcularAvaliacaoMedia();
+    }
+
+    private void recalcularAvaliacaoMedia() {
+        if (avaliacoes.isEmpty()) {
+            this.avaliacaoMedia = 0.0;
+            this.totalAvaliacoes = 0;
+        } else {
+            double soma = 0;
+            for (float n : avaliacoes)
+                soma += n;
+            this.totalAvaliacoes = avaliacoes.size();
+            this.avaliacaoMedia = soma / this.totalAvaliacoes;
+        }
+    }
+
+    // Método auxiliar anterior (mantido)
     public void atualizarAvaliacao(double novaNota) {
         double total = this.avaliacaoMedia * this.totalAvaliacoes;
         this.totalAvaliacoes++;
         this.avaliacaoMedia = (total + novaNota) / this.totalAvaliacoes;
+        this.avaliacoes.add((float) novaNota);
+    }
+
+    @Override
+    public String toString() {
+        return "Motorista{" +
+                "id=" + getId() +
+                ", nome='" + getNome() + '\'' +
+                ", avaliacaoMedia=" + avaliacaoMedia +
+                ", totalAvaliacoes=" + totalAvaliacoes +
+                ", categoria='" + categoria + '\'' +
+                ", localizacaoAtual='" + localizacaoAtual + '\'' +
+                ", disponivel=" + disponivel +
+                '}';
     }
 }
