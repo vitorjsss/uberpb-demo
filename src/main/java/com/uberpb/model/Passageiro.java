@@ -16,6 +16,7 @@ public class Passageiro extends User {
     public Passageiro() {
         super();
         this.avaliacaoMedia = 0.0;
+        this.avaliacoes = new ArrayList<>();
         this.historicoCorridas = new ArrayList<>();
         this.localizacaoAtual = "Nao definida";
         this.emCorrida = false;
@@ -71,6 +72,34 @@ public class Passageiro extends User {
 
     public void setIdade(int idade) {
         this.idade = idade;
+    }
+
+    public List<Float> getAvaliacoes() {
+        if (avaliacoes == null) {
+            avaliacoes = new ArrayList<>();
+        }
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<Float> avaliacoes) {
+        this.avaliacoes = avaliacoes;
+        if (this.avaliacoes == null) {
+            this.avaliacoes = new ArrayList<>();
+        }
+        recalcularAvaliacaoMedia();
+    }
+
+    private void recalcularAvaliacaoMedia() {
+        if (avaliacoes == null || avaliacoes.isEmpty()) {
+            this.avaliacaoMedia = 0.0;
+            return;
+        }
+        double soma = avaliacoes.stream().mapToDouble(nota -> nota).sum();
+        this.avaliacaoMedia = soma / avaliacoes.size();
+    }
+
+    public int getTotalAvaliacoes() {
+        return avaliacoes != null ? avaliacoes.size() : 0;
     }
 
     @Override

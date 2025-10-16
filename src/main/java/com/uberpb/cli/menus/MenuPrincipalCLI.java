@@ -186,6 +186,29 @@ public class MenuPrincipalCLI {
         }
 
         Motorista motorista = motoristaOpt.get();
+
+        // Lógica de avaliação de corrida pendente (deve ser antes do menu)
+        CorridaService corridaService = new CorridaService();
+        Optional<Corrida> corridaAvaliacao = corridaService.obterCorridaAtivaMotorista(motorista.getId())
+                .filter(c -> c.getStatus() == com.uberpb.enums.CorridaStatus.AVALIACAO && !c.isAvaliada_motorista());
+        if (corridaAvaliacao.isPresent()) {
+            Corrida corrida = corridaAvaliacao.get();
+            System.out.println("\nVocê possui uma corrida anterior aguardando avaliação do passageiro!");
+            System.out.println("Origem: " + corrida.getOrigem() + " | Destino: " + corrida.getDestino());
+            System.out.print("Deseja avaliar o passageiro agora? (s/n): ");
+            String resp = sc.nextLine().trim().toLowerCase();
+            if (resp.equals("s") || resp.equals("sim")) {
+                com.uberpb.cli.forms.AvaliarPassageiroCLI avaliarMenu = new com.uberpb.cli.forms.AvaliarPassageiroCLI(sc, corrida, db);
+                avaliarMenu.exibirMenu();
+                corridaService.updateCorrida(corrida);
+                // Se ambos avaliaram, finalizar
+                if (corrida.isAvaliada_passageiro() && corrida.isAvaliada_motorista()) {
+                    corrida.setStatus(com.uberpb.enums.CorridaStatus.FINALIZADA);
+                    corridaService.updateCorrida(corrida);
+                }
+            }
+        }
+
         MenuMotoristaCLI menuMotorista = new MenuMotoristaCLI(sc, db, motorista);
         menuMotorista.exibirMenu();
     }

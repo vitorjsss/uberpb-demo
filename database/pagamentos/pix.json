@@ -5,4 +5,18 @@
   "tipoChave" : "EMAIL",
   "descricao" : "pix email",
   "ativo" : true
+}, {
+  "id" : 2,
+  "usuarioId" : 2,
+  "chave" : "15409697464",
+  "tipoChave" : "CPF",
+  "descricao" : "PIX CPF",
+  "ativo" : true
+}, {
+  "id" : 3,
+  "usuarioId" : 3,
+  "chave" : "kevin@mail.com",
+  "tipoChave" : "EMAIL",
+  "descricao" : "PIX Email",
+  "ativo" : true
 } ]

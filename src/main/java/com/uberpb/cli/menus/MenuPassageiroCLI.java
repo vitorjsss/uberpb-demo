@@ -41,8 +41,9 @@ public class MenuPassageiroCLI {
             System.out.println("6 - Ver status (em corrida ou nao)");
             System.out.println("7 - Atualizar localizacao");
             System.out.println("8 - Ver informacoes do perfil");
-            System.out.println("9 - Gerar recibo de corrida");
-            System.out.println("10 - Voltar");
+            System.out.println("9 - Ver avaliação média");
+            System.out.println("10 - Gerar recibo de corrida");
+            System.out.println("11 - Voltar");
             System.out.print("Escolha: ");
             int op = sc.nextInt();
             sc.nextLine();
@@ -56,8 +57,9 @@ public class MenuPassageiroCLI {
                 case 6 -> verStatusCorrida();
                 case 7 -> atualizarLocalizacao();
                 case 8 -> verInformacoesPerfil();
-                case 9 -> gerarReciboCorrida();
-                case 10 -> {
+                case 9 -> verAvaliacaoMedia();
+                case 10 -> gerarReciboCorrida();
+                case 11 -> {
                     return;
                 }
                 default -> System.out.println("Opcao invalida!");
@@ -220,6 +222,22 @@ public class MenuPassageiroCLI {
         System.out.println("Localização: " + passageiro.getLocalizacaoAtual());
         System.out.println("Avaliação média: " + passageiro.getAvaliacaoMedia() + " ⭐");
         System.out.println("Status: " + (passageiro.isEmCorrida() ? "Em corrida" : "Disponível"));
+    }
+
+    private void verAvaliacaoMedia() {
+        System.out.println("\n--- Avaliação Média ---");
+        System.out.println("⭐ Avaliação média: " + String.format("%.1f", passageiro.getAvaliacaoMedia()));
+        System.out.println("📊 Total de avaliações: " + passageiro.getTotalAvaliacoes());
+
+        // Mostrar mensagem adicional baseada no número de avaliações
+        if (passageiro.getTotalAvaliacoes() == 0) {
+            System.out.println("\nℹ️ Você ainda não recebeu avaliações.");
+        } else {
+            System.out.println("\n💫 Continue mantendo um bom histórico de viagens!");
+        }
+
+        System.out.println("\nPressione Enter para continuar...");
+        sc.nextLine();
     }
 
     private void solicitarCorrida() {

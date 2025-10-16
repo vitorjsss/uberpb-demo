@@ -259,6 +259,22 @@ public class MenuMotoristaCLI {
                 corridaService.finalizarCorrida(corrida.getId());
                 System.out.println("✅ Corrida finalizada com sucesso!");
                 System.out.println("💰 Valor recebido: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
+
+                // Mostrar tela de avaliação imediatamente
+                System.out.println("\nVocê possui uma corrida anterior aguardando avaliação do passageiro!");
+                System.out.println("Origem: " + corrida.getOrigem() + " | Destino: " + corrida.getDestino());
+                System.out.print("Deseja avaliar o passageiro agora? (s/n): ");
+                String resp = sc.nextLine().trim().toLowerCase();
+                if (resp.equals("s") || resp.equals("sim")) {
+                    com.uberpb.cli.forms.AvaliarPassageiroCLI avaliarMenu = new com.uberpb.cli.forms.AvaliarPassageiroCLI(sc, corrida, db);
+                    avaliarMenu.exibirMenu();
+                    corridaService.updateCorrida(corrida);
+                    // Se ambos avaliaram, finalizar
+                    if (corrida.isAvaliada_passageiro() && corrida.isAvaliada_motorista()) {
+                        corrida.setStatus(CorridaStatus.FINALIZADA);
+                        corridaService.updateCorrida(corrida);
+                    }
+                }
             } catch (Exception e) {
                 System.out.println("❌ Erro ao finalizar corrida: " + e.getMessage());
             }

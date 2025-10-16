@@ -11,9 +11,9 @@
   "ativo" : true,
   "cnh" : "12345678900",
   "validadeCnh" : "01/11/2026",
-  "avaliacoes" : [ 5.0, 5.0 ],
-  "avaliacaoMedia" : 5.0,
-  "totalAvaliacoes" : 2,
+  "avaliacoes" : [ 5.0, 5.0, 2.0, 5.0 ],
+  "avaliacaoMedia" : 4.25,
+  "totalAvaliacoes" : 4,
   "disponivel" : true,
   "localizacaoAtual" : "Universidade",
   "categoria" : "Comfort"

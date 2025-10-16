@@ -18,4 +18,14 @@
   "telefone" : "83996242222",
   "tipo" : "usuario",
   "dataCadastro" : "14/10/2025 20:48:08"
+}, {
+  "id" : 3,
+  "username" : "Kevin",
+  "senha" : "Kevin123!",
+  "nome" : "Kevin",
+  "sobrenome" : "Santos",
+  "email" : "kevin@mail.com",
+  "telefone" : "83988542850",
+  "tipo" : "usuario",
+  "dataCadastro" : "16/10/2025 09:51:05"
 } ]

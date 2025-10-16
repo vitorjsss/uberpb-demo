@@ -264,8 +264,8 @@ public class CorridaService {
         if (corridaOpt.isPresent()) {
             Corrida corrida = corridaOpt.get();
 
-            // Atualizar status da corrida
-            corrida.finalizarCorrida();
+            // Mudar status da corrida para avaliação
+            corrida.setStatus(CorridaStatus.AVALIACAO);
             repository.update(corrida);
 
             // Buscar e atualizar passageiro - setar emCorrida = false
@@ -447,5 +447,14 @@ public class CorridaService {
 
     public void updateCorrida(Corrida corrida) {
         repository.update(corrida);
+    }
+
+    public Optional<Corrida> obterCorridaAtivaMotorista(int motoristaId) {
+        List<Corrida> corridasMotorista = repository.findByMotoristaId(motoristaId);
+
+        return corridasMotorista.stream()
+                .filter(corrida -> corrida.getStatus() != CorridaStatus.FINALIZADA
+                        && corrida.getStatus() != CorridaStatus.CANCELADA)
+                .findFirst();
     }
 }

@@ -249,6 +249,8 @@ public class Corrida {
                 return "✅ Finalizada";
             case CANCELADA:
                 return "❌ Cancelada";
+            case AVALIACAO:
+                return "⭐ Aguardando avaliação";
             default:
                 return "❓ Status desconhecido";
         }
