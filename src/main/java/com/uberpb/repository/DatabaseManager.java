@@ -21,6 +21,7 @@ public class DatabaseManager {
     private final MotoristaRepository motoristaRepository;
     private final VeiculoRepository veiculoRepository;
     private final CorridaRepository corridaRepository;
+    private final AvaliacaoRepository avaliacaoRepository;
 
     public DatabaseManager() {
         this.userRepository = new UserRepositoryJSON();
@@ -28,6 +29,7 @@ public class DatabaseManager {
         this.motoristaRepository = new MotoristaRepositoryJSON();
         this.veiculoRepository = new VeiculoRepositoryJSON();
         this.corridaRepository = new CorridaRepositoryJSON();
+        this.avaliacaoRepository = new AvaliacaoRepository();
     }
 
     // ===== OPERAÇÕES DE USUÁRIO =====
@@ -284,6 +286,7 @@ public class DatabaseManager {
         int totalPassageiros = findAllPassageiros().size();
         int totalMotoristas = findAllMotoristas().size();
         int totalVeiculos = findAllVeiculos().size();
+        int totalAvaliacoes = findAllAvaliacoes().size();
 
         return String.format(
                 "=== ESTATÍSTICAS DO BANCO DE DADOS ===\n" +
@@ -291,7 +294,62 @@ public class DatabaseManager {
                         "Total de Passageiros: %d\n" +
                         "Total de Motoristas: %d\n" +
                         "Total de Veículos: %d\n" +
+                        "Total de Avaliações: %d\n" +
                         "=====================================",
-                totalUsers, totalPassageiros, totalMotoristas, totalVeiculos);
+                totalUsers, totalPassageiros, totalMotoristas, totalVeiculos, totalAvaliacoes);
+    }
+
+    // ===== OPERAÇÕES DE AVALIAÇÃO =====
+
+    public Avaliacao saveAvaliacao(Avaliacao avaliacao) {
+        return avaliacaoRepository.save(avaliacao);
+    }
+
+    public Optional<Avaliacao> findAvaliacaoById(int id) {
+        return avaliacaoRepository.findById(id);
+    }
+
+    public List<Avaliacao> findAllAvaliacoes() {
+        return avaliacaoRepository.findAll();
+    }
+
+    public List<Avaliacao> findAvaliacoesByCorridaId(int corridaId) {
+        return avaliacaoRepository.findByCorridaId(corridaId);
+    }
+
+    public List<Avaliacao> findAvaliacoesByAvaliadorId(int avaliadorId) {
+        return avaliacaoRepository.findByAvaliadorId(avaliadorId);
+    }
+
+    public List<Avaliacao> findAvaliacoesByAvaliadoId(int avaliadoId) {
+        return avaliacaoRepository.findByAvaliadoId(avaliadoId);
+    }
+
+    public List<Avaliacao> findAvaliacoesDeMotoristas() {
+        return avaliacaoRepository.findAvaliacoesDeMotoristas();
+    }
+
+    public List<Avaliacao> findAvaliacoesDePassageiros() {
+        return avaliacaoRepository.findAvaliacoesDePassageiros();
+    }
+
+    public boolean corridaJaAvaliadaPor(int corridaId, int avaliadorId, String tipoAvaliador) {
+        return avaliacaoRepository.corridaJaAvaliadaPor(corridaId, avaliadorId, tipoAvaliador);
+    }
+
+    public double calcularMediaAvaliacoes(int avaliadoId) {
+        return avaliacaoRepository.calcularMediaAvaliacoes(avaliadoId);
+    }
+
+    public int contarAvaliacoes(int avaliadoId) {
+        return avaliacaoRepository.contarAvaliacoes(avaliadoId);
+    }
+
+    public boolean deleteAvaliacaoById(int id) {
+        return avaliacaoRepository.deleteById(id);
+    }
+
+    public Optional<Avaliacao> updateAvaliacao(Avaliacao avaliacao) {
+        return avaliacaoRepository.update(avaliacao);
     }
 }

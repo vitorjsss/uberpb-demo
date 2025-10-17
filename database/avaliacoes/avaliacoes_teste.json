@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "corridaId": 1,
+    "avaliadorId": 1,
+    "avaliadoId": 2,
+    "tipoAvaliador": "PASSAGEIRO",
+    "tipoAvaliado": "MOTORISTA",
+    "nota": 4.5,
+    "comentario": "Motorista muito educado e dirigiu com segurança!",
+    "criadoEm": "2025-10-16T22:47:47.5115481",
+    "atualizadoEm": "2025-10-16T22:47:47.5145487"
+  }
+]

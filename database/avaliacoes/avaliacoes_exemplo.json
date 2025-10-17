@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "corridaId": 1,
+    "avaliadorId": 1,
+    "avaliadoId": 2,
+    "tipoAvaliador": "PASSAGEIRO",
+    "tipoAvaliado": "MOTORISTA",
+    "nota": 4.5,
+    "comentario": "Motorista muito educado e dirigiu com segurança!",
+    "criadoEm": "2025-10-16T10:30:15.123456",
+    "atualizadoEm": "2025-10-16T10:30:15.123456"
+  },
+  {
+    "id": 2,
+    "corridaId": 1,
+    "avaliadorId": 2,
+    "avaliadoId": 1,
+    "tipoAvaliador": "MOTORISTA",
+    "tipoAvaliado": "PASSAGEIRO",
+    "nota": 5.0,
+    "comentario": "Passageiro pontual e educado.",
+    "criadoEm": "2025-10-16T10:35:20.654321",
+    "atualizadoEm": "2025-10-16T10:35:20.654321"
+  }
+]

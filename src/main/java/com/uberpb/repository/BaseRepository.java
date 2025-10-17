@@ -86,6 +86,10 @@ public abstract class BaseRepository<T> {
                     return (List<T>) objectMapper.readValue(content,
                             new TypeReference<List<com.uberpb.model.pagamento.Pagamento>>() {
                             });
+                case "avaliacoes":
+                    return (List<T>) objectMapper.readValue(content,
+                            new TypeReference<List<com.uberpb.model.Avaliacao>>() {
+                            });
                 default:
                     return objectMapper.readValue(content, new TypeReference<List<T>>() {
                     });
