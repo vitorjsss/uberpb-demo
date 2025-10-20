@@ -43,7 +43,8 @@ public class MenuMotoristaCLI {
             System.out.println("10 - Notificações de corrida");
             System.out.println("11 - Finalizar corrida atual");
             System.out.println("12 - Gerar recibo de corrida");
-            System.out.println("13 - Voltar");
+            System.out.println("13 - Ver histórico de corridas");
+            System.out.println("14 - Voltar");
             System.out.print("Escolha: ");
             int op = sc.nextInt();
             sc.nextLine();
@@ -61,7 +62,8 @@ public class MenuMotoristaCLI {
                 case 10 -> notificacoesCorrida();
                 case 11 -> finalizarCorridaAtual();
                 case 12 -> gerarReciboCorrida();
-                case 13 -> {
+                case 13 -> verHistoricoCorridas();
+                case 14 -> {
                     return;
                 }
                 default -> System.out.println("Opção inválida!");
@@ -76,7 +78,7 @@ public class MenuMotoristaCLI {
 
     private void verAvaliacaoMedia() {
         System.out.println("\n--- Avaliação Média ---");
-        System.out.println("Avaliação média: " + motorista.getAvaliacaoMedia() + " ⭐");
+        System.out.println("Avaliação média: " + motorista.getAvaliacaoMedia());
     }
 
     private void verTotalAvaliacoes() {
@@ -91,17 +93,15 @@ public class MenuMotoristaCLI {
 
     private void atualizarLocalizacao() {
         System.out.println("\n--- Atualizar Localização ---");
-
-        // Obter uma localização aleatória do JSON
         String localizacaoAleatoria = localizacaoService.getLocalizacaoAleatoria();
 
         if (localizacaoAleatoria != null) {
             motorista.setLocalizacaoAtual(localizacaoAleatoria);
             db.updateMotorista(motorista);
-            System.out.println("📍 Nova localização: " + localizacaoAleatoria);
-            System.out.println("✓ Localização atualizada com sucesso!");
+            System.out.println("Nova localização: " + localizacaoAleatoria);
+            System.out.println("Localização atualizada com sucesso!");
         } else {
-            System.out.println("❌ Erro: Não foi possível obter uma localização aleatória!");
+            System.out.println("Erro: Não foi possível obter uma localização aleatória!");
         }
     }
 
@@ -113,12 +113,11 @@ public class MenuMotoristaCLI {
         System.out.println("CNH: " + motorista.getCnh());
         System.out.println("Validade CNH: " + motorista.getValidadeCnh());
         System.out.println("Localização: " + motorista.getLocalizacaoAtual());
-        System.out.println("Avaliação média: " + motorista.getAvaliacaoMedia() + " ⭐");
+        System.out.println("Avaliação média: " + motorista.getAvaliacaoMedia());
         System.out.println("Total de avaliações: " + motorista.getTotalAvaliacoes());
         System.out.println("Status: " + (motorista.isAtivo() ? "Ativo" : "Inativo"));
         System.out.println("Disponibilidade: " + (motorista.isDisponivel() ? "Disponível" : "Indisponível"));
-        System.out.println(
-                "Categoria: " + (motorista.getCategoria() != null ? motorista.getCategoria() : "Não definida"));
+        System.out.println("Categoria: " + (motorista.getCategoria() != null ? motorista.getCategoria() : "Não definida"));
     }
 
     private void verCnhValidade() {
@@ -135,8 +134,6 @@ public class MenuMotoristaCLI {
     private void notificacoesCorrida() {
         System.out.println("\n--- Corridas Atribuídas ---");
 
-        // Buscar corridas atribuídas especificamente a este motorista
-        CorridaService corridaService = new CorridaService();
         List<Corrida> corridasAtribuidas = corridaService.listarCorridasPorMotorista(motorista.getId())
                 .stream()
                 .filter(c -> c.getStatus() == CorridaStatus.PENDENTE)
@@ -148,12 +145,12 @@ public class MenuMotoristaCLI {
             return;
         }
 
-        System.out.println("🔔 Você tem " + corridasAtribuidas.size() + " corrida(s) atribuída(s):");
-        System.out.println("═══════════════════════════════════════════════════════════════");
+        System.out.println("Você tem " + corridasAtribuidas.size() + " corrida(s) atribuída(s):");
+        System.out.println("===============================");
 
         for (int i = 0; i < corridasAtribuidas.size(); i++) {
             Corrida corrida = corridasAtribuidas.get(i);
-            System.out.printf("%d. 📍 %s → %s | 💰 R$ %.2f | 📏 %.1f km%n",
+            System.out.printf("%d. %s -> %s | R$ %.2f | %.1f km%n",
                     (i + 1),
                     corrida.getOrigem(),
                     corrida.getDestino(),
@@ -161,12 +158,12 @@ public class MenuMotoristaCLI {
                     corrida.getDistancia());
 
             if (corrida.getDataHoraSolicitacao() != null) {
-                System.out.println("   🕐 Solicitada em: " + corrida.getDataHoraSolicitacao()
+                System.out.println("   Solicitada em: " + corrida.getDataHoraSolicitacao()
                         .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
             }
         }
 
-        System.out.println("═══════════════════════════════════════════════════════════════");
+        System.out.println("===============================");
         System.out.print("Digite o número da corrida para aceitar (0 para voltar): ");
         int opcao = sc.nextInt();
         sc.nextLine();
@@ -174,56 +171,46 @@ public class MenuMotoristaCLI {
         if (opcao > 0 && opcao <= corridasAtribuidas.size()) {
             Corrida corridaEscolhida = corridasAtribuidas.get(opcao - 1);
 
-            System.out.println("\n📋 Detalhes da corrida:");
-            System.out.println("📍 Origem: " + corridaEscolhida.getOrigem());
-            System.out.println("📍 Destino: " + corridaEscolhida.getDestino());
-            System.out.printf("📏 Distância: %.1f km%n", corridaEscolhida.getDistancia());
-            System.out.printf("💰 Valor: R$ %.2f%n", corridaEscolhida.getPrecoEstimado());
+            System.out.println("\nDetalhes da corrida:");
+            System.out.println("Origem: " + corridaEscolhida.getOrigem());
+            System.out.println("Destino: " + corridaEscolhida.getDestino());
+            System.out.printf("Distância: %.1f km%n", corridaEscolhida.getDistancia());
+            System.out.printf("Valor: R$ %.2f%n", corridaEscolhida.getPrecoEstimado());
 
-            // Calcular tempo estimado baseado na distância
             int tempoEstimado = (int) Math.ceil(corridaEscolhida.getDistancia() * 3);
-            System.out.println("⏱️ Tempo estimado: " + tempoEstimado + " min");
+            System.out.println("Tempo estimado: " + tempoEstimado + " min");
 
             System.out.print("\nDeseja aceitar esta corrida? (s/n): ");
             String resposta = sc.nextLine();
 
             if (resposta.equalsIgnoreCase("s")) {
-                // Inicia a corrida
                 corridaService.iniciarCorrida(corridaEscolhida.getId());
-
-                // Atualiza disponibilidade do motorista
                 motorista.setDisponivel(false);
                 db.updateMotorista(motorista);
-
-                System.out.println("✅ Corrida aceita e iniciada com sucesso!");
-                System.out.println("🚗 Você agora está a caminho do passageiro!");
+                System.out.println("Corrida aceita e iniciada com sucesso!");
+                System.out.println("Você agora está a caminho do passageiro!");
             } else {
-                System.out.println("❌ Corrida recusada.");
-                System.out.println("🔄 Buscando próximo motorista disponível...");
+                System.out.println("Corrida recusada.");
+                System.out.println("Buscando próximo motorista disponível...");
 
-                // Mostrar informações sobre motoristas disponíveis
                 List<Motorista> motoristasDisponiveis = corridaService.listarMotoristasPorProximidade(
                         corridaEscolhida.getOrigem(),
                         corridaEscolhida.getCategoria(),
                         motorista.getId());
 
                 if (!motoristasDisponiveis.isEmpty()) {
-                    System.out.println("📋 Motoristas disponíveis encontrados: " + motoristasDisponiveis.size());
-
-                    // Reatribuir corrida para o próximo motorista mais próximo
+                    System.out.println("Motoristas disponíveis encontrados: " + motoristasDisponiveis.size());
                     boolean reatribuida = corridaService.reatribuirCorrida(corridaEscolhida.getId(), motorista.getId());
 
                     if (reatribuida) {
-                        System.out.println("✅ Corrida reatribuída com sucesso para outro motorista.");
+                        System.out.println("Corrida reatribuída com sucesso para outro motorista.");
                     } else {
-                        System.out.println("❌ Erro ao reatribuir a corrida.");
+                        System.out.println("Erro ao reatribuir a corrida.");
                     }
                 } else {
-                    System.out.println("❌ Nenhum motorista disponível na categoria " +
+                    System.out.println("Nenhum motorista disponível na categoria " +
                             corridaEscolhida.getCategoria().getNome() + ".");
-                    System.out.println("🚫 Corrida será cancelada automaticamente.");
-
-                    // Forçar cancelamento
+                    System.out.println("Corrida será cancelada automaticamente.");
                     corridaService.reatribuirCorrida(corridaEscolhida.getId(), motorista.getId());
                 }
             }
@@ -233,7 +220,6 @@ public class MenuMotoristaCLI {
     private void finalizarCorridaAtual() {
         System.out.println("\n--- Finalizar Corrida Atual ---");
 
-        // Buscar corrida em andamento do motorista usando CorridaService
         List<Corrida> todasCorridas = corridaService.listarCorridasPorMotorista(motorista.getId());
 
         Optional<Corrida> corridaEmAndamento = todasCorridas.stream()
@@ -241,7 +227,7 @@ public class MenuMotoristaCLI {
                 .findFirst();
 
         if (corridaEmAndamento.isEmpty()) {
-            System.out.println("❌ Você não possui nenhuma corrida em andamento.");
+            System.out.println("Você não possui nenhuma corrida em andamento.");
             return;
         }
 
@@ -257,10 +243,9 @@ public class MenuMotoristaCLI {
         if (confirmacao.equals("s") || confirmacao.equals("sim")) {
             try {
                 corridaService.finalizarCorrida(corrida.getId());
-                System.out.println("✅ Corrida finalizada com sucesso!");
-                System.out.println("💰 Valor recebido: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
+                System.out.println("Corrida finalizada com sucesso!");
+                System.out.println("Valor recebido: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
 
-                // Mostrar tela de avaliação imediatamente
                 System.out.println("\nVocê possui uma corrida anterior aguardando avaliação do passageiro!");
                 System.out.println("Origem: " + corrida.getOrigem() + " | Destino: " + corrida.getDestino());
                 System.out.print("Deseja avaliar o passageiro agora? (s/n): ");
@@ -269,48 +254,73 @@ public class MenuMotoristaCLI {
                     com.uberpb.cli.forms.AvaliarPassageiroCLI avaliarMenu = new com.uberpb.cli.forms.AvaliarPassageiroCLI(sc, corrida, db);
                     avaliarMenu.exibirMenu();
                     corridaService.updateCorrida(corrida);
-                    // Se ambos avaliaram, finalizar
                     if (corrida.isAvaliada_passageiro() && corrida.isAvaliada_motorista()) {
                         corrida.setStatus(CorridaStatus.FINALIZADA);
                         corridaService.updateCorrida(corrida);
                     }
                 }
             } catch (Exception e) {
-                System.out.println("❌ Erro ao finalizar corrida: " + e.getMessage());
+                System.out.println("Erro ao finalizar corrida: " + e.getMessage());
             }
         } else {
-            System.out.println("❌ Finalização cancelada.");
+            System.out.println("Finalização cancelada.");
         }
+    }
+
+    private void verHistoricoCorridas() {
+        System.out.println("\n=== Histórico de Corridas ===");
+        System.out.println("===============================");
+
+        List<Corrida> corridas = corridaService.listarCorridasPorMotorista(motorista.getId());
+
+        if (corridas.isEmpty()) {
+            System.out.println("Nenhuma corrida realizada ainda.");
+        } else {
+            corridas.forEach(corrida -> {
+                System.out.println("Corrida #" + corrida.getId());
+                System.out.println("Origem: " + corrida.getOrigem());
+                System.out.println("Destino: " + corrida.getDestino());
+                System.out.println("Valor: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
+                System.out.println("Status: " + corrida.getStatusString());
+                if (corrida.getDataHoraFim() != null) {
+                    System.out.println("Data: " + corrida.getDataHoraFim()
+                        .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+                }
+                System.out.println("--------------------------------");
+            });
+            System.out.println("\nTotal de corridas: " + corridas.size());
+        }
+
+        System.out.println("\nPressione Enter para continuar...");
+        sc.nextLine();
     }
 
     private void gerarReciboCorrida() {
         System.out.println("\n=== Gerar Recibo de Corrida ===");
         
         ReciboService reciboService = new ReciboService();
-        
-        // Listar corridas finalizadas do motorista
         var corridasFinalizadas = reciboService.listarCorridasFinalizadasDoMotorista(motorista.getId());
         
         if (corridasFinalizadas.isEmpty()) {
-            System.out.println("❌ Você não possui corridas finalizadas para gerar recibo.");
+            System.out.println("Você não possui corridas finalizadas para gerar recibo.");
             System.out.println("\nPressione Enter para voltar...");
             sc.nextLine();
             return;
         }
         
-        System.out.println("\n📋 Corridas Finalizadas Disponíveis:");
-        System.out.println("═══════════════════════════════════════");
+        System.out.println("\nCorridas Finalizadas Disponíveis:");
+        System.out.println("===============================");
         
         for (int i = 0; i < corridasFinalizadas.size(); i++) {
             Corrida corrida = corridasFinalizadas.get(i);
-            System.out.println((i + 1) + ". 📍 " + corrida.getOrigem() + " → " + corrida.getDestino());
-            System.out.println("   🚗 " + corrida.getCategoria());
-            System.out.println("   💰 R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
+            System.out.println((i + 1) + ". " + corrida.getOrigem() + " -> " + corrida.getDestino());
+            System.out.println("   Categoria: " + corrida.getCategoria());
+            System.out.println("   Valor: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
             if (corrida.getDataHoraFim() != null) {
-                System.out.println("   📅 " + corrida.getDataHoraFim()
+                System.out.println("   Data: " + corrida.getDataHoraFim()
                     .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
             }
-            System.out.println("   ────────────────────────────────");
+            System.out.println("   --------------------------------");
         }
         
         System.out.print("\nEscolha o número da corrida para gerar o recibo (0 para cancelar): ");
@@ -322,7 +332,7 @@ public class MenuMotoristaCLI {
         }
         
         if (escolha < 1 || escolha > corridasFinalizadas.size()) {
-            System.out.println("❌ Opção inválida!");
+            System.out.println("Opção inválida!");
             System.out.println("\nPressione Enter para voltar...");
             sc.nextLine();
             return;
@@ -330,14 +340,13 @@ public class MenuMotoristaCLI {
         
         Corrida corridaEscolhida = corridasFinalizadas.get(escolha - 1);
         
-        System.out.println("\n🧾 Gerando recibo da corrida " + corridaEscolhida.getOrigem() + " → " + corridaEscolhida.getDestino());
-        System.out.println("═══════════════════════════════════════");
+        System.out.println("\nGerando recibo da corrida " + corridaEscolhida.getOrigem() + " -> " + corridaEscolhida.getDestino());
+        System.out.println("===============================");
         
-        // Gerar e exibir recibo
         boolean sucesso = reciboService.exibirRecibo(corridaEscolhida.getId());
         
         if (sucesso) {
-            System.out.println("\n📄 Deseja salvar o recibo em arquivo? (s/n): ");
+            System.out.println("\nDeseja salvar o recibo em arquivo? (s/n): ");
             String resposta = sc.nextLine().trim().toLowerCase();
             
             if (resposta.equals("s") || resposta.equals("sim")) {
@@ -345,19 +354,19 @@ public class MenuMotoristaCLI {
                 String nomeArquivo = sc.nextLine().trim();
                 
                 if (nomeArquivo.isEmpty()) {
-                    nomeArquivo = null; // Usará nome padrão
+                    nomeArquivo = null;
                 }
                 
                 boolean salvo = reciboService.salvarReciboEmArquivo(corridaEscolhida.getId(), nomeArquivo);
                 
                 if (salvo) {
-                    System.out.println("✅ Recibo salvo com sucesso!");
+                    System.out.println("Recibo salvo com sucesso!");
                 } else {
-                    System.out.println("❌ Erro ao salvar recibo em arquivo.");
+                    System.out.println("Erro ao salvar recibo em arquivo.");
                 }
             }
         } else {
-            System.out.println("❌ Erro ao gerar recibo.");
+            System.out.println("Erro ao gerar recibo.");
         }
         
         System.out.println("\nPressione Enter para voltar...");

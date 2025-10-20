@@ -12,6 +12,7 @@ import com.uberpb.repository.json.CorridaRepositoryJSON;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class CorridaService {
 
@@ -44,16 +45,13 @@ public class CorridaService {
     public Corrida criarCorrida(String origem, String destino, Categoria categoria,
             int passageiroId, int motoristaId, int veiculoId, double distancia) {
 
-        // Buscar motorista mais próximo da categoria solicitada
         Optional<Motorista> motoristaProximo = encontrarMotoristaMaisProximo(origem, categoria);
 
-        // Se não encontrar motorista disponível, retornar null (não criar corrida órfã)
         if (motoristaProximo.isEmpty()) {
             System.out.println("Nenhum motorista disponível encontrado para categoria " + categoria.getNome());
             return null;
         }
 
-        // Buscar veículo disponível para a categoria
         List<Veiculo> veiculosDisponiveis = databaseManager.findVeiculosByCategoria(categoria.getNome());
         if (veiculosDisponiveis.isEmpty()) {
             System.out.println("Nenhum veículo disponível encontrado para categoria " + categoria.getNome());
@@ -68,47 +66,36 @@ public class CorridaService {
         Corrida corrida = new Corrida(0, origem, destino, categoria,
                 passageiroId, motoristaEscolhidoId, veiculoEscolhidoId, distancia);
 
-        // Usar EstimativaService para calcular o preço usando nomes
         double precoEstimado = estimativaService.estimarPreco(origem, destino, categoria.getNome());
         corrida.setPrecoEstimado(precoEstimado);
 
         return repository.save(corrida);
     }
 
-    /**
-     * Encontra o motorista mais próximo da origem na categoria solicitada
-     */
     public Optional<Motorista> encontrarMotoristaMaisProximo(String origem, Categoria categoria) {
         return encontrarMotoristaMaisProximo(origem, categoria, -1);
     }
 
-    /**
-     * Encontra o motorista mais próximo da origem na categoria solicitada,
-     * excluindo um motorista específico
-     */
     public Optional<Motorista> encontrarMotoristaMaisProximo(String origem, Categoria categoria,
             int motoristaExcluido) {
-        // Buscar todos os motoristas disponíveis
         List<Motorista> motoristasDisponiveis = databaseManager.findAllMotoristas()
                 .stream()
                 .filter(m -> m.isDisponivel() && m.isAtivo())
                 .filter(m -> !temCorridaAtiva(m.getId()))
                 .filter(m -> categoria.getNome().equalsIgnoreCase(m.getCategoria()))
-                .filter(m -> m.getId() != motoristaExcluido) // Excluir motorista específico
+                .filter(m -> m.getId() != motoristaExcluido)
                 .toList();
 
         if (motoristasDisponiveis.isEmpty()) {
             return Optional.empty();
         }
 
-        // Encontrar o motorista mais próximo calculando a distância
         Motorista motoristaProximo = null;
         int menorDistancia = Integer.MAX_VALUE;
 
         for (Motorista motorista : motoristasDisponiveis) {
             String localizacaoMotorista = motorista.getLocalizacaoAtual();
 
-            // Verificar se a localização do motorista é válida
             if (localizacaoService.isLocalizacaoValida(localizacaoMotorista)) {
                 int distancia = localizacaoService.calcularDistancia(origem, localizacaoMotorista);
 
@@ -122,9 +109,6 @@ public class CorridaService {
         return Optional.ofNullable(motoristaProximo);
     }
 
-    /**
-     * Reatribui uma corrida para o próximo motorista mais próximo
-     */
     public boolean reatribuirCorrida(int corridaId, int motoristaQueRecusou) {
         Optional<Corrida> corridaOpt = repository.findById(corridaId);
 
@@ -134,14 +118,12 @@ public class CorridaService {
 
         Corrida corrida = corridaOpt.get();
 
-        // Buscar próximo motorista mais próximo (excluindo o que recusou)
         Optional<Motorista> novoMotorista = encontrarMotoristaMaisProximo(
                 corrida.getOrigem(),
                 corrida.getCategoria(),
                 motoristaQueRecusou);
 
         if (novoMotorista.isPresent()) {
-            // Reatribuir corrida
             corrida.setMotoristaId(novoMotorista.get().getId());
             repository.update(corrida);
 
@@ -151,11 +133,9 @@ public class CorridaService {
 
             return true;
         } else {
-            // Cancelar corrida se não houver mais motoristas disponíveis
             corrida.cancelarCorrida();
             repository.update(corrida);
 
-            // Atualizar passageiro - setar emCorrida = false
             Optional<com.uberpb.model.Passageiro> passageiroOpt = databaseManager
                     .findPassageiroById(corrida.getPassageiroId());
             if (passageiroOpt.isPresent()) {
@@ -169,9 +149,6 @@ public class CorridaService {
         }
     }
 
-    /**
-     * Obter informações detalhadas sobre uma reatribuição de corrida
-     */
     public String obterDetalhesReatribuicao(int corridaId, int motoristaQueRecusou) {
         Optional<Corrida> corridaOpt = repository.findById(corridaId);
 
@@ -181,7 +158,6 @@ public class CorridaService {
 
         Corrida corrida = corridaOpt.get();
 
-        // Buscar próximo motorista mais próximo (excluindo o que recusou)
         Optional<Motorista> novoMotorista = encontrarMotoristaMaisProximo(
                 corrida.getOrigem(),
                 corrida.getCategoria(),
@@ -197,9 +173,6 @@ public class CorridaService {
         }
     }
 
-    /**
-     * Lista motoristas disponíveis por ordem de proximidade (útil para debug)
-     */
     public List<Motorista> listarMotoristasPorProximidade(String origem, Categoria categoria, int motoristaExcluido) {
         return databaseManager.findAllMotoristas()
                 .stream()
@@ -216,9 +189,6 @@ public class CorridaService {
                 .toList();
     }
 
-    /**
-     * Verifica se um motorista tem uma corrida ativa
-     */
     private boolean temCorridaAtiva(int motoristaId) {
         List<Corrida> corridasMotorista = repository.findByMotoristaId(motoristaId);
 
@@ -232,11 +202,9 @@ public class CorridaService {
         if (corridaOpt.isPresent()) {
             Corrida corrida = corridaOpt.get();
 
-            // Atualizar status da corrida
             corrida.iniciarCorrida();
             repository.update(corrida);
 
-            // Buscar e atualizar passageiro - setar emCorrida = true
             Optional<com.uberpb.model.Passageiro> passageiroOpt = databaseManager
                     .findPassageiroById(corrida.getPassageiroId());
             if (passageiroOpt.isPresent()) {
@@ -245,7 +213,6 @@ public class CorridaService {
                 databaseManager.updatePassageiro(passageiro);
             }
 
-            // Buscar e atualizar motorista - setar disponivel = false
             Optional<Motorista> motoristaOpt = databaseManager.findMotoristaById(corrida.getMotoristaId());
             if (motoristaOpt.isPresent()) {
                 Motorista motorista = motoristaOpt.get();
@@ -264,11 +231,9 @@ public class CorridaService {
         if (corridaOpt.isPresent()) {
             Corrida corrida = corridaOpt.get();
 
-            // Mudar status da corrida para avaliação
             corrida.setStatus(CorridaStatus.AVALIACAO);
             repository.update(corrida);
 
-            // Buscar e atualizar passageiro - setar emCorrida = false
             Optional<com.uberpb.model.Passageiro> passageiroOpt = databaseManager
                     .findPassageiroById(corrida.getPassageiroId());
             if (passageiroOpt.isPresent()) {
@@ -277,7 +242,6 @@ public class CorridaService {
                 databaseManager.updatePassageiro(passageiro);
             }
 
-            // Buscar e atualizar motorista - setar disponivel = true
             Optional<Motorista> motoristaOpt = databaseManager.findMotoristaById(corrida.getMotoristaId());
             if (motoristaOpt.isPresent()) {
                 Motorista motorista = motoristaOpt.get();
@@ -285,7 +249,6 @@ public class CorridaService {
                 databaseManager.updateMotorista(motorista);
             }
 
-            // ---- 🔥 Simulação de pagamento ----
             PagamentoService pagamentoService = new PagamentoService();
             Pagamento pagamento = pagamentoService.processarPagamento(
                     corrida.getId(),
@@ -301,11 +264,9 @@ public class CorridaService {
         if (corridaOpt.isPresent()) {
             Corrida corrida = corridaOpt.get();
 
-            // Atualizar status da corrida
             corrida.cancelarCorrida();
             repository.update(corrida);
 
-            // Buscar e atualizar passageiro - setar emCorrida = false
             Optional<com.uberpb.model.Passageiro> passageiroOpt = databaseManager
                     .findPassageiroById(corrida.getPassageiroId());
             if (passageiroOpt.isPresent()) {
@@ -314,7 +275,6 @@ public class CorridaService {
                 databaseManager.updatePassageiro(passageiro);
             }
 
-            // Buscar e atualizar motorista - setar disponivel = true
             Optional<Motorista> motoristaOpt = databaseManager.findMotoristaById(corrida.getMotoristaId());
             if (motoristaOpt.isPresent()) {
                 Motorista motorista = motoristaOpt.get();
@@ -381,9 +341,6 @@ public class CorridaService {
         return estimativaService.estimarPreco(nomeOrigem, nomeDestino, categoriaNome);
     }
 
-    /**
-     * Atualiza o tempo restante de uma corrida em tempo real
-     */
     public void atualizarTempoRestante(int corridaId) {
         Optional<Corrida> corridaOpt = repository.findById(corridaId);
         if (corridaOpt.isPresent()) {
@@ -396,19 +353,14 @@ public class CorridaService {
         }
     }
 
-    /**
-     * Finaliza automaticamente corridas que passaram do tempo estimado
-     */
     public void finalizarCorridasExpiradas() {
         List<Corrida> corridasEmAndamento = repository.findByStatus(CorridaStatus.EM_ANDAMENTO);
 
         for (Corrida corrida : corridasEmAndamento) {
             if (corrida.calcularTempoRestanteReal() <= 0 && corrida.getDataHoraAceito() != null) {
-                // Corrida passou do tempo estimado, finalizar automaticamente
                 corrida.finalizarCorrida();
                 repository.update(corrida);
 
-                // Atualizar passageiro - setar emCorrida = false
                 Optional<com.uberpb.model.Passageiro> passageiroOpt = databaseManager
                         .findPassageiroById(corrida.getPassageiroId());
                 if (passageiroOpt.isPresent()) {
@@ -417,7 +369,6 @@ public class CorridaService {
                     databaseManager.updatePassageiro(passageiro);
                 }
 
-                // Atualizar motorista - setar disponivel = true
                 Optional<Motorista> motoristaOpt = databaseManager.findMotoristaById(corrida.getMotoristaId());
                 if (motoristaOpt.isPresent()) {
                     Motorista motorista = motoristaOpt.get();
@@ -456,5 +407,15 @@ public class CorridaService {
                 .filter(corrida -> corrida.getStatus() != CorridaStatus.FINALIZADA
                         && corrida.getStatus() != CorridaStatus.CANCELADA)
                 .findFirst();
+    }
+
+    // ✅ Novo método adicionado conforme solicitado
+    public List<Corrida> getHistoricoCorridas(String userId) {
+        int id = Integer.parseInt(userId);
+        List<Corrida> todasCorridas = repository.findAll();
+        return todasCorridas.stream()
+                .filter(c -> c.getPassageiroId() == id || c.getMotoristaId() == id)
+                .sorted((c1, c2) -> c2.getDataHoraSolicitacao().compareTo(c1.getDataHoraSolicitacao()))
+                .collect(Collectors.toList());
     }
 }

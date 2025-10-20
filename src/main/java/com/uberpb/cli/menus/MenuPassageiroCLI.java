@@ -12,6 +12,7 @@ import com.uberpb.services.LocalizacaoService;
 import com.uberpb.services.MetodoPagamentoService;
 import com.uberpb.services.ReciboService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -21,6 +22,7 @@ public class MenuPassageiroCLI {
     private final Passageiro passageiro;
     private final LocalizacaoService localizacaoService;
     private final MetodoPagamentoService metodoPagamentoService;
+    private final CorridaService corridaService;
 
     public MenuPassageiroCLI(Scanner sc, DatabaseManager db, Passageiro passageiro) {
         this.sc = sc;
@@ -28,6 +30,7 @@ public class MenuPassageiroCLI {
         this.passageiro = passageiro;
         this.localizacaoService = new LocalizacaoService();
         this.metodoPagamentoService = new MetodoPagamentoService();
+        this.corridaService = new CorridaService();
     }
 
     public void exibirMenu() {
@@ -77,43 +80,40 @@ public class MenuPassageiroCLI {
 
         int total = 0;
 
-        // Cartões
         var cartoes = metodoPagamentoService.listarCartoesPorUsuario(passageiro.getId());
         if (!cartoes.isEmpty()) {
-            System.out.println("\n🏦 CARTÕES:");
+            System.out.println("\nCARTÕES:");
             for (int i = 0; i < cartoes.size(); i++) {
                 System.out.println((i + 1) + ". " + cartoes.get(i));
-                System.out.println("   ────────────────────────────────");
+                System.out.println("   --------------------------------");
             }
             total += cartoes.size();
         }
 
-        // PIX
         var pixList = metodoPagamentoService.listarPIXPorUsuario(passageiro.getId());
         if (!pixList.isEmpty()) {
-            System.out.println("\n💳 PIX:");
+            System.out.println("\nPIX:");
             for (int i = 0; i < pixList.size(); i++) {
                 System.out.println((i + 1) + ". " + pixList.get(i));
-                System.out.println("   ────────────────────────────────");
+                System.out.println("   --------------------------------");
             }
             total += pixList.size();
         }
 
-        // PayPal
         var paypalList = metodoPagamentoService.listarPayPalPorUsuario(passageiro.getId());
         if (!paypalList.isEmpty()) {
-            System.out.println("\n🌐 PAYPAL:");
+            System.out.println("\nPAYPAL:");
             for (int i = 0; i < paypalList.size(); i++) {
                 System.out.println((i + 1) + ". " + paypalList.get(i));
-                System.out.println("   ────────────────────────────────");
+                System.out.println("   --------------------------------");
             }
             total += paypalList.size();
         }
 
         if (total == 0) {
-            System.out.println("❌ Nenhum método de pagamento cadastrado ainda.");
+            System.out.println("Nenhum método de pagamento cadastrado ainda.");
         } else {
-            System.out.println("\n📊 Total: " + total + " método(s) de pagamento cadastrado(s)");
+            System.out.println("\nTotal: " + total + " método(s) de pagamento cadastrado(s)");
         }
 
         System.out.println("\nPressione Enter para continuar...");
@@ -121,14 +121,31 @@ public class MenuPassageiroCLI {
     }
 
     private void verHistoricoCorridas() {
-        System.out.println("\n--- Histórico de Corridas ---");
-        if (passageiro.getHistoricoCorridas().isEmpty()) {
+        System.out.println("\n=== Histórico de Corridas ===");
+        System.out.println("===============================");
+
+        List<Corrida> corridas = corridaService.listarCorridasPorPassageiro(passageiro.getId());
+
+        if (corridas.isEmpty()) {
             System.out.println("Nenhuma corrida realizada ainda.");
         } else {
-            for (int i = 0; i < passageiro.getHistoricoCorridas().size(); i++) {
-                System.out.println((i + 1) + ". " + passageiro.getHistoricoCorridas().get(i));
-            }
+            corridas.forEach(corrida -> {
+                System.out.println("Corrida #" + corrida.getId());
+                System.out.println("Origem: " + corrida.getOrigem());
+                System.out.println("Destino: " + corrida.getDestino());
+                System.out.println("Valor: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
+                System.out.println("Status: " + corrida.getStatusString());
+                if (corrida.getDataHoraFim() != null) {
+                    System.out.println("Data: " + corrida.getDataHoraFim()
+                        .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+                }
+                System.out.println("--------------------------------");
+            });
+            System.out.println("\nTotal de corridas: " + corridas.size());
         }
+
+        System.out.println("\nPressione Enter para continuar...");
+        sc.nextLine();
     }
 
     private void verLocalizacaoAtual() {
@@ -139,58 +156,55 @@ public class MenuPassageiroCLI {
     private void verStatusCorrida() {
         System.out.println("\n--- Status da Corrida ---");
 
-        CorridaService corridaService = new CorridaService();
         Optional<Corrida> corridaAtiva = corridaService.obterCorridaAtivaPassageiro(passageiro.getId());
 
         if (corridaAtiva.isPresent()) {
             Corrida corrida = corridaAtiva.get();
             System.out.println("Status: Em corrida");
-            System.out.println("═══════════════════════════════════════");
-            System.out.println("📍 Origem: " + corrida.getOrigem());
-            System.out.println("📍 Destino: " + corrida.getDestino());
-            System.out.println("🚗 Categoria: " + corrida.getCategoria().getNome());
-            System.out.println("📊 Status: " + corrida.getStatusString());
-            System.out.println("💰 Preço: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
+            System.out.println("===============================");
+            System.out.println("Origem: " + corrida.getOrigem());
+            System.out.println("Destino: " + corrida.getDestino());
+            System.out.println("Categoria: " + corrida.getCategoria().getNome());
+            System.out.println("Status: " + corrida.getStatusString());
+            System.out.println("Preço: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
             if (corrida.getDistancia() > 0) {
-                System.out.println("📏 Distância: " + String.format("%.1f km", corrida.getDistancia()));
+                System.out.println("Distância: " + String.format("%.1f km", corrida.getDistancia()));
             }
 
-            // Mostrar informações do motorista atribuído
             if (corrida.getMotoristaId() > 0 && corrida.getStatus() != CorridaStatus.PENDENTE) {
                 Optional<Motorista> motoristaOpt = db.findMotoristaById(corrida.getMotoristaId());
                 if (motoristaOpt.isPresent()) {
                     Motorista motorista = motoristaOpt.get();
-                    System.out.println("\n🚖 Motorista Atribuído:");
-                    System.out.println("👤 Nome: " + motorista.getNome() + " " + motorista.getSobrenome());
-                    System.out.println("⭐ Avaliação: " + String.format("%.1f", motorista.getAvaliacaoMedia()));
+                    System.out.println("\nMotorista Atribuído:");
+                    System.out.println("Nome: " + motorista.getNome() + " " + motorista.getSobrenome());
+                    System.out.println("Avaliação: " + String.format("%.1f", motorista.getAvaliacaoMedia()));
                 } else {
-                    System.out.println("\n⚠️ Motorista não encontrado (ID: " + corrida.getMotoristaId() + ")");
+                    System.out.println("\nMotorista não encontrado (ID: " + corrida.getMotoristaId() + ")");
                 }
             } else {
-                System.out.println("\n🔍 Aguardando atribuição de motorista...");
+                System.out.println("\nAguardando atribuição de motorista...");
             }
 
             if (corrida.getDataHoraSolicitacao() != null) {
-                System.out.println("🕐 Solicitada em: " + corrida.getDataHoraSolicitacao()
+                System.out.println("Solicitada em: " + corrida.getDataHoraSolicitacao()
                         .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
             }
             if (corrida.getDataHoraAceito() != null) {
-                System.out.println("✅ Aceita em: " + corrida.getDataHoraAceito()
+                System.out.println("Aceita em: " + corrida.getDataHoraAceito()
                         .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
 
-                // Mostrar tempo restante em tempo real
                 int tempoRestanteReal = corrida.calcularTempoRestanteReal();
                 if (tempoRestanteReal > 0) {
-                    System.out.println("⏱️ Tempo restante: " + tempoRestanteReal + " min");
+                    System.out.println("Tempo restante: " + tempoRestanteReal + " min");
                 } else if (corrida.getStatus() == CorridaStatus.EM_ANDAMENTO) {
-                    System.out.println("⏱️ Tempo esgotado - chegando em breve!");
+                    System.out.println("Tempo esgotado - chegando em breve!");
                 }
             }
             if (corrida.getDataHoraFim() != null) {
-                System.out.println("🏁 Finalizada em: " + corrida.getDataHoraFim()
+                System.out.println("Finalizada em: " + corrida.getDataHoraFim()
                         .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
             }
-            System.out.println("═══════════════════════════════════════");
+            System.out.println("===============================");
         } else {
             System.out.println("Status: Disponível");
             System.out.println("Você não possui nenhuma corrida ativa no momento.");
@@ -200,16 +214,15 @@ public class MenuPassageiroCLI {
     private void atualizarLocalizacao() {
         System.out.println("\n--- Atualizar Localização ---");
 
-        // Obter uma localização aleatória do JSON
         String localizacaoAleatoria = localizacaoService.getLocalizacaoAleatoria();
 
         if (localizacaoAleatoria != null) {
             passageiro.setLocalizacaoAtual(localizacaoAleatoria);
             db.updatePassageiro(passageiro);
-            System.out.println("📍 Nova localização: " + localizacaoAleatoria);
-            System.out.println("✓ Localização atualizada com sucesso!");
+            System.out.println("Nova localização: " + localizacaoAleatoria);
+            System.out.println("Localização atualizada com sucesso!");
         } else {
-            System.out.println("❌ Erro: Não foi possível obter uma localização aleatória!");
+            System.out.println("Erro: Não foi possível obter uma localização aleatória!");
         }
     }
 
@@ -220,20 +233,19 @@ public class MenuPassageiroCLI {
         System.out.println("Telefone: " + passageiro.getTelefone());
         System.out.println("Idade: " + passageiro.getIdade() + " anos");
         System.out.println("Localização: " + passageiro.getLocalizacaoAtual());
-        System.out.println("Avaliação média: " + passageiro.getAvaliacaoMedia() + " ⭐");
+        System.out.println("Avaliação média: " + passageiro.getAvaliacaoMedia());
         System.out.println("Status: " + (passageiro.isEmCorrida() ? "Em corrida" : "Disponível"));
     }
 
     private void verAvaliacaoMedia() {
         System.out.println("\n--- Avaliação Média ---");
-        System.out.println("⭐ Avaliação média: " + String.format("%.1f", passageiro.getAvaliacaoMedia()));
-        System.out.println("📊 Total de avaliações: " + passageiro.getTotalAvaliacoes());
+        System.out.println("Avaliação média: " + String.format("%.1f", passageiro.getAvaliacaoMedia()));
+        System.out.println("Total de avaliações: " + passageiro.getTotalAvaliacoes());
 
-        // Mostrar mensagem adicional baseada no número de avaliações
         if (passageiro.getTotalAvaliacoes() == 0) {
-            System.out.println("\nℹ️ Você ainda não recebeu avaliações.");
+            System.out.println("\nVocê ainda não recebeu avaliações.");
         } else {
-            System.out.println("\n💫 Continue mantendo um bom histórico de viagens!");
+            System.out.println("\nContinue mantendo um bom histórico de viagens!");
         }
 
         System.out.println("\nPressione Enter para continuar...");
@@ -249,30 +261,28 @@ public class MenuPassageiroCLI {
         System.out.println("\n=== Gerar Recibo de Corrida ===");
         
         ReciboService reciboService = new ReciboService();
-        
-        // Listar corridas finalizadas do passageiro
         var corridasFinalizadas = reciboService.listarCorridasFinalizadasDoPassageiro(passageiro.getId());
         
         if (corridasFinalizadas.isEmpty()) {
-            System.out.println("❌ Você não possui corridas finalizadas para gerar recibo.");
+            System.out.println("Você não possui corridas finalizadas para gerar recibo.");
             System.out.println("\nPressione Enter para voltar...");
             sc.nextLine();
             return;
         }
         
-        System.out.println("\n📋 Corridas Finalizadas Disponíveis:");
-        System.out.println("═══════════════════════════════════════");
+        System.out.println("\nCorridas Finalizadas Disponíveis:");
+        System.out.println("===============================");
         
         for (int i = 0; i < corridasFinalizadas.size(); i++) {
             Corrida corrida = corridasFinalizadas.get(i);
-            System.out.println((i + 1) + ". 📍 " + corrida.getOrigem() + " → " + corrida.getDestino());
-            System.out.println("   🚗 " + corrida.getCategoria());
-            System.out.println("   💰 R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
+            System.out.println((i + 1) + ". " + corrida.getOrigem() + " -> " + corrida.getDestino());
+            System.out.println("   Categoria: " + corrida.getCategoria());
+            System.out.println("   Valor: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
             if (corrida.getDataHoraFim() != null) {
-                System.out.println("   📅 " + corrida.getDataHoraFim()
+                System.out.println("   Data: " + corrida.getDataHoraFim()
                     .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
             }
-            System.out.println("   ────────────────────────────────");
+            System.out.println("   --------------------------------");
         }
         
         System.out.print("\nEscolha o número da corrida para gerar o recibo (0 para cancelar): ");
@@ -284,7 +294,7 @@ public class MenuPassageiroCLI {
         }
         
         if (escolha < 1 || escolha > corridasFinalizadas.size()) {
-            System.out.println("❌ Opção inválida!");
+            System.out.println("Opção inválida!");
             System.out.println("\nPressione Enter para voltar...");
             sc.nextLine();
             return;
@@ -292,14 +302,13 @@ public class MenuPassageiroCLI {
         
         Corrida corridaEscolhida = corridasFinalizadas.get(escolha - 1);
         
-        System.out.println("\n🧾 Gerando recibo da corrida " + corridaEscolhida.getOrigem() + " → " + corridaEscolhida.getDestino());
-        System.out.println("═══════════════════════════════════════");
+        System.out.println("\nGerando recibo da corrida " + corridaEscolhida.getOrigem() + " -> " + corridaEscolhida.getDestino());
+        System.out.println("===============================");
         
-        // Gerar e exibir recibo
         boolean sucesso = reciboService.exibirRecibo(corridaEscolhida.getId());
         
         if (sucesso) {
-            System.out.println("\n📄 Deseja salvar o recibo em arquivo? (s/n): ");
+            System.out.println("\nDeseja salvar o recibo em arquivo? (s/n): ");
             String resposta = sc.nextLine().trim().toLowerCase();
             
             if (resposta.equals("s") || resposta.equals("sim")) {
@@ -307,19 +316,19 @@ public class MenuPassageiroCLI {
                 String nomeArquivo = sc.nextLine().trim();
                 
                 if (nomeArquivo.isEmpty()) {
-                    nomeArquivo = null; // Usará nome padrão
+                    nomeArquivo = null;
                 }
                 
                 boolean salvo = reciboService.salvarReciboEmArquivo(corridaEscolhida.getId(), nomeArquivo);
                 
                 if (salvo) {
-                    System.out.println("✅ Recibo salvo com sucesso!");
+                    System.out.println("Recibo salvo com sucesso!");
                 } else {
-                    System.out.println("❌ Erro ao salvar recibo em arquivo.");
+                    System.out.println("Erro ao salvar recibo em arquivo.");
                 }
             }
         } else {
-            System.out.println("❌ Erro ao gerar recibo.");
+            System.out.println("Erro ao gerar recibo.");
         }
         
         System.out.println("\nPressione Enter para voltar...");
