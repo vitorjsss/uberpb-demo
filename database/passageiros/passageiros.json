@@ -8,12 +8,13 @@
   "telefone" : "83996248888",
   "tipo" : "passageiro",
   "dataCadastro" : "14/10/2025 20:47:23",
-  "avaliacaoMedia" : 3.0,
-  "avaliacoes" : [ 3.0 ],
+  "avaliacaoMedia" : 4.0,
+  "avaliacoes" : [ 3.0, 5.0 ],
   "historicoCorridas" : [ ],
   "localizacaoAtual" : "Nao definida",
-  "emCorrida" : false,
-  "idade" : 23
+  "emCorrida" : true,
+  "idade" : 23,
+  "totalAvaliacoes" : 2
 }, {
   "id" : 2,
   "username" : "Alexandre",
@@ -29,7 +30,8 @@
   "historicoCorridas" : [ ],
   "localizacaoAtual" : "Nao definida",
   "emCorrida" : false,
-  "idade" : 21
+  "idade" : 21,
+  "totalAvaliacoes" : 0
 }, {
   "id" : 3,
   "username" : "Kevin",
@@ -45,5 +47,6 @@
   "historicoCorridas" : [ ],
   "localizacaoAtual" : "Nao definida",
   "emCorrida" : false,
-  "idade" : 21
+  "idade" : 21,
+  "totalAvaliacoes" : 3
 } ]

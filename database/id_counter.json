@@ -1,6 +1,7 @@
 {
   "users" : 3,
-  "veiculos" : 1,
-  "corridas" : 5,
-  "pagamentos" : 5
+  "veiculos" : 2,
+  "corridas" : 6,
+  "pagamentos" : 5,
+  "avaliacoes" : 2
 }

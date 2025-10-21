@@ -10,4 +10,16 @@
   "idadeVeiculo" : 0,
   "capacidadePortaMalas" : 200.0,
   "numeroPassageiros" : 4
+}, {
+  "id" : 2,
+  "modelo" : "Spin",
+  "marca" : "Chevrolet",
+  "ano" : 2021,
+  "cor" : "Prata",
+  "placa" : "NAQ6034",
+  "categoria" : "XL",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 4,
+  "capacidadePortaMalas" : 700.0,
+  "numeroPassageiros" : 6
 } ]

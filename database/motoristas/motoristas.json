@@ -17,4 +17,23 @@
   "disponivel" : true,
   "localizacaoAtual" : "Universidade",
   "categoria" : "Comfort"
+}, {
+  "id" : 1,
+  "username" : "vitor",
+  "senha" : "Teste123@",
+  "nome" : "Vitor",
+  "sobrenome" : "Soares",
+  "email" : "vitor@gmail.com",
+  "telefone" : "83996248888",
+  "tipo" : "motorista",
+  "dataCadastro" : "14/10/2025 20:47:23",
+  "ativo" : true,
+  "cnh" : "15409697411",
+  "validadeCnh" : "22/10/2026",
+  "avaliacoes" : [ 5.0 ],
+  "avaliacaoMedia" : 5.0,
+  "totalAvaliacoes" : 1,
+  "disponivel" : false,
+  "localizacaoAtual" : "Praia",
+  "categoria" : "XL"
 } ]

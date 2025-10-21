@@ -83,4 +83,21 @@
   "tempoRestante" : 4,
   "avaliada_passageiro" : false,
   "avaliada_motorista" : true
+}, {
+  "id" : 6,
+  "origem" : "Praia",
+  "destino" : "Teatro",
+  "categoria" : "XL",
+  "status" : "FINALIZADA",
+  "passageiroId" : 1,
+  "motoristaId" : 1,
+  "veiculoId" : 2,
+  "precoEstimado" : 9.360000000000001,
+  "distancia" : 1.1,
+  "dataHoraSolicitacao" : "2025-10-21T14:21:25.442902",
+  "dataHoraFim" : null,
+  "dataHoraAceito" : "2025-10-21T14:21:38.9126634",
+  "tempoRestante" : 4,
+  "avaliada_passageiro" : true,
+  "avaliada_motorista" : true
 } ]

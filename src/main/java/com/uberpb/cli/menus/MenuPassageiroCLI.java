@@ -129,8 +129,34 @@ public class MenuPassageiroCLI {
         if (corridas.isEmpty()) {
             System.out.println("Nenhuma corrida realizada ainda.");
         } else {
-            corridas.forEach(corrida -> {
-                System.out.println("Corrida #" + corrida.getId());
+            System.out.println("Deseja filtrar por categoria de carro? (S/N)");
+            String resposta = sc.nextLine().trim().toLowerCase();
+
+            List<Corrida> corridasFiltradas = corridas;
+            if (resposta.equals("s") || resposta.equals("sim")) {
+                System.out.println("\nCategorias disponíveis:");
+                corridas.stream()
+                    .map(corrida -> corrida.getCategoria())
+                    .distinct()
+                    .forEach(categoria -> System.out.println("- " + categoria.getNome()));
+
+                System.out.print("\nDigite o nome da categoria para filtrar: ");
+                String categoriaFiltro = sc.nextLine().trim();
+
+                corridasFiltradas = corridas.stream()
+                    .filter(corrida -> corrida.getCategoria().getNome().equalsIgnoreCase(categoriaFiltro))
+                    .toList();
+
+                if (corridasFiltradas.isEmpty()) {
+                    System.out.println("\nNenhuma corrida encontrada para a categoria: " + categoriaFiltro);
+                    return;
+                }
+                System.out.println("\nMostrando corridas da categoria: " + categoriaFiltro);
+            }
+
+            corridasFiltradas.forEach(corrida -> {
+                System.out.println("\nCorrida #" + corrida.getId());
+                System.out.println("Categoria: " + corrida.getCategoria().getNome());
                 System.out.println("Origem: " + corrida.getOrigem());
                 System.out.println("Destino: " + corrida.getDestino());
                 System.out.println("Valor: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
@@ -141,7 +167,9 @@ public class MenuPassageiroCLI {
                 }
                 System.out.println("--------------------------------");
             });
-            System.out.println("\nTotal de corridas: " + corridas.size());
+            System.out.println("\nTotal de corridas" + 
+                (corridasFiltradas.size() != corridas.size() ? " (filtradas)" : "") + 
+                ": " + corridasFiltradas.size());
         }
 
         System.out.println("\nPressione Enter para continuar...");

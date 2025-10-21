@@ -11,6 +11,7 @@ public class Passageiro extends User {
     private String localizacaoAtual;
     private boolean emCorrida;
     private int idade;
+    private int totalAvaliacoes; // Added to match JSON
 
     // Construtor padrão necessário para o Jackson
     public Passageiro() {
@@ -20,6 +21,7 @@ public class Passageiro extends User {
         this.historicoCorridas = new ArrayList<>();
         this.localizacaoAtual = "Nao definida";
         this.emCorrida = false;
+        this.totalAvaliacoes = 0;
     }
 
     // Construtor existente
@@ -31,6 +33,7 @@ public class Passageiro extends User {
         this.historicoCorridas = new ArrayList<>();
         this.localizacaoAtual = localizacaoAtual;
         this.emCorrida = emCorrida;
+        this.totalAvaliacoes = 0;
     }
 
     // ===== Getters e Setters =====
@@ -86,6 +89,7 @@ public class Passageiro extends User {
         if (this.avaliacoes == null) {
             this.avaliacoes = new ArrayList<>();
         }
+        this.totalAvaliacoes = this.avaliacoes.size();
         recalcularAvaliacaoMedia();
     }
 
@@ -99,7 +103,11 @@ public class Passageiro extends User {
     }
 
     public int getTotalAvaliacoes() {
-        return avaliacoes != null ? avaliacoes.size() : 0;
+        return totalAvaliacoes;
+    }
+
+    public void setTotalAvaliacoes(int totalAvaliacoes) {
+        this.totalAvaliacoes = totalAvaliacoes;
     }
 
     @Override

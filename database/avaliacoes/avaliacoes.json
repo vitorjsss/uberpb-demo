@@ -1,26 +1,49 @@
-[
-  {
-  "id": 1,
-  "corridaId": 1,
-  "avaliadorId": 1,
-  "avaliadoId": 2,
-  "tipoAvaliador": "PASSAGEIRO",
-  "tipoAvaliado": "MOTORISTA",
-  "nota": 4.5,
-  "comentario": "Motorista muito educado e dirigiu com segurança!",
-  "criadoEm": "2025-10-16T22:53:41.430738400",
-  "atualizadoEm": "2025-10-16T22:53:41.430738400"
-},
-  {
-  "id": 2,
-  "corridaId": 1,
-  "avaliadorId": 2,
-  "avaliadoId": 1,
-  "tipoAvaliador": "MOTORISTA",
-  "tipoAvaliado": "PASSAGEIRO",
-  "nota": 5.0,
-  "comentario": "Passageiro pontual e educado.",
-  "criadoEm": "2025-10-16T22:53:41.467619500",
-  "atualizadoEm": "2025-10-16T22:53:41.467619500"
-}
-]
+[ {
+  "id" : 1,
+  "corridaId" : 1,
+  "avaliadorId" : 1,
+  "avaliadoId" : 2,
+  "tipoAvaliador" : "PASSAGEIRO",
+  "tipoAvaliado" : "MOTORISTA",
+  "nota" : 4.5,
+  "comentario" : "Motorista muito educado e dirigiu com segurança!",
+  "criadoEm" : "2025-10-16T22:53:41.4307384",
+  "atualizadoEm" : "2025-10-16T22:53:41.4307384",
+  "valid" : true
+}, {
+  "id" : 2,
+  "corridaId" : 1,
+  "avaliadorId" : 2,
+  "avaliadoId" : 1,
+  "tipoAvaliador" : "MOTORISTA",
+  "tipoAvaliado" : "PASSAGEIRO",
+  "nota" : 5.0,
+  "comentario" : "Passageiro pontual e educado.",
+  "criadoEm" : "2025-10-16T22:53:41.4676195",
+  "atualizadoEm" : "2025-10-16T22:53:41.4676195",
+  "valid" : true
+}, {
+  "id" : 1,
+  "corridaId" : 6,
+  "avaliadorId" : 1,
+  "avaliadoId" : 1,
+  "tipoAvaliador" : "PASSAGEIRO",
+  "tipoAvaliado" : "MOTORISTA",
+  "nota" : 5.0,
+  "comentario" : null,
+  "criadoEm" : "2025-10-21T14:24:27.3308486",
+  "atualizadoEm" : "2025-10-21T14:24:27.3308486",
+  "valid" : true
+}, {
+  "id" : 2,
+  "corridaId" : 6,
+  "avaliadorId" : 1,
+  "avaliadoId" : 1,
+  "tipoAvaliador" : "MOTORISTA",
+  "tipoAvaliado" : "PASSAGEIRO",
+  "nota" : 5.0,
+  "comentario" : null,
+  "criadoEm" : "2025-10-21T14:26:21.4614121",
+  "atualizadoEm" : "2025-10-21T14:26:21.4614121",
+  "valid" : true
+} ]

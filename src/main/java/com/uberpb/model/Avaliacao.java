@@ -19,12 +19,14 @@ public class Avaliacao {
     
     private LocalDateTime criadoEm;
     private LocalDateTime atualizadoEm;
+    private boolean valid;
 
     // ===== Construtores =====
-    public Avaliacao() {
-        this.criadoEm = LocalDateTime.now();
-        this.atualizadoEm = LocalDateTime.now();
-    }
+        public Avaliacao() {
+            this.criadoEm = LocalDateTime.now();
+            this.atualizadoEm = LocalDateTime.now();
+            this.valid = false;
+        }
 
     public Avaliacao(int corridaId, int avaliadorId, int avaliadoId, 
                     String tipoAvaliador, String tipoAvaliado, 
@@ -132,12 +134,21 @@ public class Avaliacao {
 
     // ===== Métodos de validação =====
     public boolean isValid() {
-        return corridaId > 0 && 
+        this.valid = corridaId > 0 && 
                avaliadorId > 0 && 
                avaliadoId > 0 && 
                nota >= 1 && nota <= 5 &&
                tipoAvaliador != null && !tipoAvaliador.trim().isEmpty() &&
                tipoAvaliado != null && !tipoAvaliado.trim().isEmpty();
+        return this.valid;
+    }
+
+    public boolean getValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     // ===== toString =====
