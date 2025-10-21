@@ -121,55 +121,69 @@ public class MenuPassageiroCLI {
     }
 
     private void verHistoricoCorridas() {
-        System.out.println("\n=== Histórico de Corridas ===");
-        System.out.println("===============================");
+        System.out.println("\n=== Histórico Completo de Corridas ===");
+        System.out.println("======================================");
 
-        List<Corrida> corridas = corridaService.listarCorridasPorPassageiro(passageiro.getId());
+        // Usar o novo serviço de histórico integrado
+        com.uberpb.services.HistoricoService historicoService = 
+            new com.uberpb.services.HistoricoService(new com.uberpb.repository.DatabaseManager());
+        
+        List<com.uberpb.model.HistoricoItem> historico = historicoService.gerarHistoricoPassageiro(passageiro.getId());
 
-        if (corridas.isEmpty()) {
+        if (historico.isEmpty()) {
             System.out.println("Nenhuma corrida realizada ainda.");
         } else {
             System.out.println("Deseja filtrar por categoria de carro? (S/N)");
             String resposta = sc.nextLine().trim().toLowerCase();
 
-            List<Corrida> corridasFiltradas = corridas;
+            List<com.uberpb.model.HistoricoItem> historicoFiltrado = historico;
             if (resposta.equals("s") || resposta.equals("sim")) {
                 System.out.println("\nCategorias disponíveis:");
-                corridas.stream()
-                    .map(corrida -> corrida.getCategoria())
+                historico.stream()
+                    .map(item -> item.getCategoria())
                     .distinct()
+                    .filter(cat -> cat != null)
                     .forEach(categoria -> System.out.println("- " + categoria.getNome()));
 
                 System.out.print("\nDigite o nome da categoria para filtrar: ");
                 String categoriaFiltro = sc.nextLine().trim();
 
-                corridasFiltradas = corridas.stream()
-                    .filter(corrida -> corrida.getCategoria().getNome().equalsIgnoreCase(categoriaFiltro))
+                historicoFiltrado = historico.stream()
+                    .filter(item -> item.getCategoria() != null && 
+                           item.getCategoria().getNome().equalsIgnoreCase(categoriaFiltro))
                     .toList();
 
-                if (corridasFiltradas.isEmpty()) {
+                if (historicoFiltrado.isEmpty()) {
                     System.out.println("\nNenhuma corrida encontrada para a categoria: " + categoriaFiltro);
                     return;
                 }
                 System.out.println("\nMostrando corridas da categoria: " + categoriaFiltro);
             }
 
-            corridasFiltradas.forEach(corrida -> {
-                System.out.println("\nCorrida #" + corrida.getId());
-                System.out.println("Categoria: " + corrida.getCategoria().getNome());
-                System.out.println("Origem: " + corrida.getOrigem());
-                System.out.println("Destino: " + corrida.getDestino());
-                System.out.println("Valor: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
-                System.out.println("Status: " + corrida.getStatusString());
-                if (corrida.getDataHoraFim() != null) {
-                    System.out.println("Data: " + corrida.getDataHoraFim()
-                        .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
-                }
-                System.out.println("--------------------------------");
+            // Exibir histórico completo com dados integrados
+            historicoFiltrado.forEach(item -> {
+                System.out.println("\n" + item.formatarParaExibicao() + "\n");
             });
-            System.out.println("\nTotal de corridas" + 
-                (corridasFiltradas.size() != corridas.size() ? " (filtradas)" : "") + 
-                ": " + corridasFiltradas.size());
+            
+            System.out.println("========================================");
+            System.out.println("Total de corridas" + 
+                (historicoFiltrado.size() != historico.size() ? " (filtradas)" : "") + 
+                ": " + historicoFiltrado.size());
+            
+            // Estatísticas resumidas
+            if (!historicoFiltrado.isEmpty()) {
+                double valorTotal = historicoFiltrado.stream()
+                    .mapToDouble(com.uberpb.model.HistoricoItem::getValorFinal)
+                    .sum();
+                long corridasAvaliadas = historicoFiltrado.stream()
+                    .mapToLong(item -> item.isCorridaAvaliada() ? 1 : 0)
+                    .sum();
+                
+                System.out.println("\n=== RESUMO ===");
+                System.out.println("Valor total gasto: R$ " + String.format("%.2f", valorTotal));
+                System.out.println("Corridas avaliadas: " + corridasAvaliadas + "/" + historicoFiltrado.size());
+                System.out.println("===============");
+            }
         }
 
         System.out.println("\nPressione Enter para continuar...");

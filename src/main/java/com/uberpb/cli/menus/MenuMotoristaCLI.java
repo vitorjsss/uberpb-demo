@@ -268,27 +268,40 @@ public class MenuMotoristaCLI {
     }
 
     private void verHistoricoCorridas() {
-        System.out.println("\n=== Histórico de Corridas ===");
-        System.out.println("===============================");
+        System.out.println("\n=== Histórico Completo de Corridas ===");
+        System.out.println("======================================");
 
-        List<Corrida> corridas = corridaService.listarCorridasPorMotorista(motorista.getId());
+        // Usar o novo serviço de histórico integrado
+        com.uberpb.services.HistoricoService historicoService = 
+            new com.uberpb.services.HistoricoService(new com.uberpb.repository.DatabaseManager());
+        
+        List<com.uberpb.model.HistoricoItem> historico = historicoService.gerarHistoricoMotorista(motorista.getId());
 
-        if (corridas.isEmpty()) {
+        if (historico.isEmpty()) {
             System.out.println("Nenhuma corrida realizada ainda.");
         } else {
-            corridas.forEach(corrida -> {
-                System.out.println("Corrida #" + corrida.getId());
-                System.out.println("Origem: " + corrida.getOrigem());
-                System.out.println("Destino: " + corrida.getDestino());
-                System.out.println("Valor: R$ " + String.format("%.2f", corrida.getPrecoEstimado()));
-                System.out.println("Status: " + corrida.getStatusString());
-                if (corrida.getDataHoraFim() != null) {
-                    System.out.println("Data: " + corrida.getDataHoraFim()
-                        .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
-                }
-                System.out.println("--------------------------------");
+            // Exibir histórico completo com dados integrados
+            historico.forEach(item -> {
+                System.out.println("\n" + item.formatarParaExibicao() + "\n");
             });
-            System.out.println("\nTotal de corridas: " + corridas.size());
+            
+            System.out.println("========================================");
+            System.out.println("Total de corridas: " + historico.size());
+            
+            // Estatísticas resumidas para motorista
+            if (!historico.isEmpty()) {
+                double valorTotal = historico.stream()
+                    .mapToDouble(com.uberpb.model.HistoricoItem::getValorFinal)
+                    .sum();
+                long corridasAvaliadas = historico.stream()
+                    .mapToLong(item -> item.isCorridaAvaliada() ? 1 : 0)
+                    .sum();
+                
+                System.out.println("\n=== RESUMO DE GANHOS ===");
+                System.out.println("Valor total recebido: R$ " + String.format("%.2f", valorTotal));
+                System.out.println("Corridas avaliadas: " + corridasAvaliadas + "/" + historico.size());
+                System.out.println("========================");
+            }
         }
 
         System.out.println("\nPressione Enter para continuar...");

@@ -22,6 +22,7 @@ public class DatabaseManager {
     private final VeiculoRepository veiculoRepository;
     private final CorridaRepository corridaRepository;
     private final AvaliacaoRepository avaliacaoRepository;
+    private final PagamentoRepositoryJSON pagamentoRepository;
 
     public DatabaseManager() {
         this.userRepository = new UserRepositoryJSON();
@@ -30,6 +31,7 @@ public class DatabaseManager {
         this.veiculoRepository = new VeiculoRepositoryJSON();
         this.corridaRepository = new CorridaRepositoryJSON();
         this.avaliacaoRepository = new AvaliacaoRepository();
+        this.pagamentoRepository = new PagamentoRepositoryJSON();
     }
 
     // ===== OPERAÇÕES DE USUÁRIO =====
@@ -351,5 +353,29 @@ public class DatabaseManager {
 
     public Optional<Avaliacao> updateAvaliacao(Avaliacao avaliacao) {
         return avaliacaoRepository.update(avaliacao);
+    }
+
+    // ===== OPERAÇÕES DE PAGAMENTO =====
+
+    public List<com.uberpb.model.pagamento.Pagamento> findAllPagamentos() {
+        return pagamentoRepository.listarTodos();
+    }
+
+    public Optional<com.uberpb.model.pagamento.Pagamento> findPagamentoById(int id) {
+        return pagamentoRepository.buscarPorId(id);
+    }
+
+    public List<com.uberpb.model.pagamento.Pagamento> findPagamentosByCorridaId(int corridaId) {
+        return pagamentoRepository.listarTodos().stream()
+                .filter(p -> p.getCorridaId() == corridaId)
+                .collect(Collectors.toList());
+    }
+
+    public com.uberpb.model.pagamento.Pagamento savePagamento(com.uberpb.model.pagamento.Pagamento pagamento) {
+        return pagamentoRepository.salvar(pagamento);
+    }
+
+    public void updatePagamento(com.uberpb.model.pagamento.Pagamento pagamento) {
+        pagamentoRepository.atualizar(pagamento);
     }
 }

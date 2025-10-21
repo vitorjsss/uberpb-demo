@@ -1,39 +1,68 @@
 package com.uberpb.cli.menus;
 
-import com.uberpb.model.Corrida;
-import com.uberpb.services.CorridaService;
+import com.uberpb.model.HistoricoItem;
+import com.uberpb.services.HistoricoService;
+import com.uberpb.repository.DatabaseManager;
 import com.uberpb.session.SessionManager;
 
 import java.util.List;
 
+/**
+ * Menu para exibir histórico completo de corridas
+ * Integra dados de corridas, pagamentos, usuários e veículos
+ */
 public class HistoricoCorridasMenu {
-    private final CorridaService corridaService;
-    private final SessionManager sessionManager;
+    private final HistoricoService historicoService;
 
     public HistoricoCorridasMenu() {
-        this.corridaService = new CorridaService();
-        this.sessionManager = SessionManager.getInstance();
+        this.historicoService = new HistoricoService(new DatabaseManager());
     }
 
     public void mostrarHistorico() {
-        System.out.println("\n=== Histórico de Corridas ===\n");
+        System.out.println("\n=== Histórico Completo de Corridas ===\n");
         
-        String userId = sessionManager.getCurrentSession().getUserId();
-        List<Corrida> corridas = corridaService.getHistoricoCorridas(userId);
+        // Obter usuário atual da sessão
+        com.uberpb.model.User currentUser = SessionManager.getCurrentUser();
         
-        if (corridas.isEmpty()) {
+        if (currentUser == null) {
+            System.out.println("Nenhuma sessão ativa encontrada.");
+            return;
+        }
+        
+        // Determinar se é passageiro ou motorista e exibir histórico apropriado
+        int userId = currentUser.getId();
+        
+        // Tentar primeiro como passageiro
+        List<HistoricoItem> historico = historicoService.gerarHistoricoPassageiro(userId);
+        
+        // Se não encontrar como passageiro, tentar como motorista
+        if (historico.isEmpty()) {
+            historico = historicoService.gerarHistoricoMotorista(userId);
+        }
+        
+        if (historico.isEmpty()) {
             System.out.println("Nenhuma corrida encontrada no histórico.");
             return;
         }
 
-        for (Corrida corrida : corridas) {
-            System.out.println("ID da Corrida: " + corrida.getId());
-            System.out.println("Data: " + corrida.getDataHora());
-            System.out.println("Origem: " + corrida.getOrigem());
-            System.out.println("Destino: " + corrida.getDestino());
-            System.out.println("Status: " + corrida.getStatus());
-            System.out.println("Valor: R$ " + String.format("%.2f", corrida.getValor()));
-            System.out.println("------------------------");
+        // Exibir histórico completo
+        for (HistoricoItem item : historico) {
+            System.out.println(item.formatarParaExibicao());
+            System.out.println(); // Linha em branco entre itens
         }
+        
+        // Estatísticas resumidas
+        double valorTotal = historico.stream()
+            .mapToDouble(HistoricoItem::getValorFinal)
+            .sum();
+        long corridasAvaliadas = historico.stream()
+            .mapToLong(item -> item.isCorridaAvaliada() ? 1 : 0)
+            .sum();
+        
+        System.out.println("========================================");
+        System.out.println("Total de corridas: " + historico.size());
+        System.out.println("Valor total: R$ " + String.format("%.2f", valorTotal));
+        System.out.println("Corridas avaliadas: " + corridasAvaliadas + "/" + historico.size());
+        System.out.println("========================================");
     }
 }
