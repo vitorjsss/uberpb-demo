@@ -90,6 +90,51 @@ public class CorridaService {
             return Optional.empty();
         }
 
+        // Verificar se é categoria premium (BLACK ou XL)
+        boolean isPremium = categoria == Categoria.BLACK || categoria == Categoria.XL;
+        
+        // Para categorias premium, priorizar avaliação; para outras, priorizar distância
+        return isPremium ? 
+            encontrarMotoristaComMelhorAvaliacao(motoristasDisponiveis, origem) :
+            encontrarMotoristaPorDistancia(motoristasDisponiveis, origem);
+    }
+
+    /**
+     * Encontra motorista priorizando a média de avaliação, com distância como critério secundário
+     * Usado especialmente para categorias premium
+     */
+    private Optional<Motorista> encontrarMotoristaComMelhorAvaliacao(List<Motorista> motoristasDisponiveis, String origem) {
+        Motorista melhorMotorista = null;
+        double melhorMedia = -1;
+        int menorDistancia = Integer.MAX_VALUE;
+
+        for (Motorista motorista : motoristasDisponiveis) {
+            String localizacaoMotorista = motorista.getLocalizacaoAtual();
+
+            if (localizacaoService.isLocalizacaoValida(localizacaoMotorista)) {
+                // Obter média de avaliações do motorista
+                double mediaAvaliacao = databaseManager.calcularMediaAvaliacoes(motorista.getId());
+                int distancia = localizacaoService.calcularDistancia(origem, localizacaoMotorista);
+
+                // Priorizar motorista com melhor avaliação
+                // Em caso de empate na avaliação, escolher o mais próximo
+                if (mediaAvaliacao > melhorMedia || 
+                    (mediaAvaliacao == melhorMedia && distancia < menorDistancia)) {
+                    melhorMedia = mediaAvaliacao;
+                    menorDistancia = distancia;
+                    melhorMotorista = motorista;
+                }
+            }
+        }
+
+        return Optional.ofNullable(melhorMotorista);
+    }
+
+    /**
+     * Encontra motorista priorizando apenas a distância
+     * Usado para categorias não-premium
+     */
+    private Optional<Motorista> encontrarMotoristaPorDistancia(List<Motorista> motoristasDisponiveis, String origem) {
         Motorista motoristaProximo = null;
         int menorDistancia = Integer.MAX_VALUE;
 
