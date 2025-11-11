@@ -23,6 +23,7 @@ public class DatabaseManager {
     private final CorridaRepository corridaRepository;
     private final AvaliacaoRepository avaliacaoRepository;
     private final PagamentoRepositoryJSON pagamentoRepository;
+    private final HistoricoRepository historicoRepository;
 
     public DatabaseManager() {
         this.userRepository = new UserRepositoryJSON();
@@ -32,6 +33,7 @@ public class DatabaseManager {
         this.corridaRepository = new CorridaRepositoryJSON();
         this.avaliacaoRepository = new AvaliacaoRepository();
         this.pagamentoRepository = new PagamentoRepositoryJSON();
+        this.historicoRepository = new HistoricoRepository();
     }
 
     // ===== OPERAÇÕES DE USUÁRIO =====
@@ -471,5 +473,29 @@ public class DatabaseManager {
 
     public void updatePagamento(com.uberpb.model.pagamento.Pagamento pagamento) {
         pagamentoRepository.atualizar(pagamento);
+    }
+
+    // ===== OPERAÇÕES DE HISTÓRICO =====
+    // T18.4: Garantir persistência do histórico no banco de dados
+
+    /**
+     * Salva o histórico em cache para melhor performance
+     */
+    public void salvarHistoricoCache(List<HistoricoItem> historico) {
+        historicoRepository.salvarHistorico(historico);
+    }
+
+    /**
+     * Carrega o histórico do cache
+     */
+    public List<HistoricoItem> carregarHistoricoCache() {
+        return historicoRepository.carregarHistorico();
+    }
+
+    /**
+     * Limpa o cache do histórico (útil quando há mudanças nas corridas)
+     */
+    public void limparHistoricoCache() {
+        historicoRepository.limparHistorico();
     }
 }

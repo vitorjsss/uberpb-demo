@@ -53,6 +53,9 @@ public class HistoricoService {
             return 0;
         });
 
+        // T18.4: Persistir histórico em cache
+        databaseManager.salvarHistoricoCache(historico);
+
         return historico;
     }
 
@@ -86,6 +89,9 @@ public class HistoricoService {
             }
             return 0;
         });
+
+        // T18.4: Persistir histórico em cache
+        databaseManager.salvarHistoricoCache(historico);
 
         return historico;
     }
