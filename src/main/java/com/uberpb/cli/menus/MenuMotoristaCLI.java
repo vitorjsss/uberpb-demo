@@ -77,13 +77,41 @@ public class MenuMotoristaCLI {
     }
 
     private void verAvaliacaoMedia() {
-        System.out.println("\n--- Avaliação Média ---");
-        System.out.println("Avaliação média: " + motorista.getAvaliacaoMedia());
+        System.out.println("\n--- Avaliação Média (Atualizada) ---");
+        
+        // Obter média atualizada em tempo real (T16.4)
+        com.uberpb.repository.DatabaseManager db = new com.uberpb.repository.DatabaseManager();
+        double mediaAtualizada = db.calcularMediaAvaliacoes(motorista.getId());
+        int totalAtualizado = db.contarAvaliacoes(motorista.getId());
+        
+        // Atualizar objeto motorista
+        motorista.setAvaliacaoMedia(mediaAtualizada);
+        motorista.setTotalAvaliacoes(totalAtualizado);
+        
+        System.out.printf("⭐ Avaliação média: %.2f (%d avaliações)%n", mediaAtualizada, totalAtualizado);
+        
+        if (totalAtualizado == 0) {
+            System.out.println("📝 Você ainda não recebeu avaliações");
+        } else if (mediaAtualizada >= 4.5) {
+            System.out.println("🌟 Excelente! Continue assim!");
+        } else if (mediaAtualizada >= 4.0) {
+            System.out.println("✅ Bom desempenho!");
+        } else if (mediaAtualizada >= 3.0) {
+            System.out.println("⚠️  Há espaço para melhorias");
+        } else {
+            System.out.println("⚠️  Atenção: Avaliação baixa - procure melhorar seu serviço");
+        }
     }
 
     private void verTotalAvaliacoes() {
         System.out.println("\n--- Total de Avaliações ---");
-        System.out.println("Total de avaliações: " + motorista.getTotalAvaliacoes());
+        
+        // Obter total atualizado (T16.4)
+        com.uberpb.repository.DatabaseManager db = new com.uberpb.repository.DatabaseManager();
+        int totalAtualizado = db.contarAvaliacoes(motorista.getId());
+        motorista.setTotalAvaliacoes(totalAtualizado);
+        
+        System.out.println("Total de avaliações: " + totalAtualizado);
     }
 
     private void verLocalizacaoAtual() {

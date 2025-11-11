@@ -209,6 +209,26 @@ public class DatabaseManager {
     public Optional<Motorista> findMotoristaByCnh(String cnh) {
         return motoristaRepository.findByCnh(cnh);
     }
+    
+    /**
+     * Obtém motorista com média de avaliações atualizada (T16.4)
+     * Útil para garantir que sempre temos a média mais recente
+     */
+    public Optional<Motorista> findMotoristaComMediaAtualizada(int id) {
+        Optional<Motorista> motoristaOpt = findMotoristaById(id);
+        
+        if (motoristaOpt.isPresent()) {
+            Motorista motorista = motoristaOpt.get();
+            // Garantir que a média está atualizada
+            double mediaAtual = calcularMediaAvaliacoes(id);
+            int totalAtual = contarAvaliacoes(id);
+            
+            motorista.setAvaliacaoMedia(mediaAtual);
+            motorista.setTotalAvaliacoes(totalAtual);
+        }
+        
+        return motoristaOpt;
+    }
 
     // ===== OPERAÇÕES DE VEÍCULO =====
 
@@ -272,6 +292,27 @@ public class DatabaseManager {
     // ===== MÉTODOS DE UTILIDADE =====
 
     /**
+     * Recalcula e atualiza a média de avaliações de TODOS os motoristas (T16.4)
+     * Útil para sincronizar dados após importação ou migração
+     */
+    public void recalcularTodasAsMedias() {
+        List<Motorista> todosMotoristas = findAllMotoristas();
+        int atualizados = 0;
+        
+        for (Motorista motorista : todosMotoristas) {
+            double mediaAtual = calcularMediaAvaliacoes(motorista.getId());
+            int totalAtual = contarAvaliacoes(motorista.getId());
+            
+            motorista.setAvaliacaoMedia(mediaAtual);
+            motorista.setTotalAvaliacoes(totalAtual);
+            updateMotorista(motorista);
+            atualizados++;
+        }
+        
+        System.out.println("✅ Recalculadas médias de " + atualizados + " motoristas");
+    }
+
+    /**
      * Limpa todos os dados do banco
      * Útil para testes
      */
@@ -304,7 +345,42 @@ public class DatabaseManager {
     // ===== OPERAÇÕES DE AVALIAÇÃO =====
 
     public Avaliacao saveAvaliacao(Avaliacao avaliacao) {
-        return avaliacaoRepository.save(avaliacao);
+        // Salvar a avaliação
+        Avaliacao avaliacaoSalva = avaliacaoRepository.save(avaliacao);
+        
+        // Atualizar automaticamente a média do avaliado (T16.4)
+        atualizarMediaAutomatica(avaliacao.getAvaliadoId());
+        
+        return avaliacaoSalva;
+    }
+    
+    /**
+     * Atualiza automaticamente a média de avaliações do motorista/passageiro (T16.4)
+     * Chamado sempre que uma nova avaliação é salva ou atualizada
+     */
+    private void atualizarMediaAutomatica(int avaliadoId) {
+        // Calcular nova média e total
+        double novaMedia = calcularMediaAvaliacoes(avaliadoId);
+        int novoTotal = contarAvaliacoes(avaliadoId);
+        
+        // Tentar atualizar como motorista primeiro
+        Optional<Motorista> motoristaOpt = findMotoristaById(avaliadoId);
+        if (motoristaOpt.isPresent()) {
+            Motorista motorista = motoristaOpt.get();
+            motorista.setAvaliacaoMedia(novaMedia);
+            motorista.setTotalAvaliacoes(novoTotal);
+            updateMotorista(motorista);
+            return;
+        }
+        
+        // Se não for motorista, tentar como passageiro
+        Optional<Passageiro> passageiroOpt = findPassageiroById(avaliadoId);
+        if (passageiroOpt.isPresent()) {
+            Passageiro passageiro = passageiroOpt.get();
+            // Passageiro também pode ter média de avaliações
+            // (caso futuramente motoristas avaliem passageiros)
+            updatePassageiro(passageiro);
+        }
     }
 
     public Optional<Avaliacao> findAvaliacaoById(int id) {
@@ -348,11 +424,29 @@ public class DatabaseManager {
     }
 
     public boolean deleteAvaliacaoById(int id) {
-        return avaliacaoRepository.deleteById(id);
+        // Antes de deletar, guardar o ID do avaliado para recalcular média depois
+        Optional<Avaliacao> avaliacaoOpt = findAvaliacaoById(id);
+        int avaliadoId = avaliacaoOpt.map(Avaliacao::getAvaliadoId).orElse(-1);
+        
+        boolean deletado = avaliacaoRepository.deleteById(id);
+        
+        // Recalcular média após deletar (T16.4)
+        if (deletado && avaliadoId != -1) {
+            atualizarMediaAutomatica(avaliadoId);
+        }
+        
+        return deletado;
     }
 
     public Optional<Avaliacao> updateAvaliacao(Avaliacao avaliacao) {
-        return avaliacaoRepository.update(avaliacao);
+        Optional<Avaliacao> avaliacaoAtualizada = avaliacaoRepository.update(avaliacao);
+        
+        // Recalcular média após atualizar (T16.4)
+        if (avaliacaoAtualizada.isPresent()) {
+            atualizarMediaAutomatica(avaliacao.getAvaliadoId());
+        }
+        
+        return avaliacaoAtualizada;
     }
 
     // ===== OPERAÇÕES DE PAGAMENTO =====
