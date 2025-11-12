@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import com.uberpb.services.PassageiroService;
 
 import static org.junit.jupiter.api.Assertions.*;
-import java.util.Arrays;
 
 class PassageiroServiceTest {
     private PassageiroService service;
@@ -21,7 +20,7 @@ class PassageiroServiceTest {
         passageiro.setTelefone("123456789");
         passageiro.setIdade(30);
         passageiro.setAvaliacaoMedia(4.5);
-        passageiro.setMetodosPagamento(Arrays.asList("Cartão", "PIX"));
+        // Removido setMetodosPagamento - não existe em Passageiro
     }
 
     @Test

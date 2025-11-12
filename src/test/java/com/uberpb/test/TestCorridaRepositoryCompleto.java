@@ -14,9 +14,9 @@ public class TestCorridaRepositoryCompleto {
         CorridaRepository corridaRepo = new CorridaRepositoryJSON();
 
         // ===== Criar corridas de teste =====
-        Corrida c1 = new Corrida(0, "A", "B", Categoria.BASICA, 1, 10, 100, 12.5);
-        Corrida c2 = new Corrida(0, "B", "C", Categoria.EXECUTIVA, 2, 11, 101, 5.0);
-        Corrida c3 = new Corrida(0, "A", "C", Categoria.LUXO, 1, 10, 100, 20.0);
+        Corrida c1 = new Corrida(0, "Aeroporto", "Shopping", Categoria.UBER_X, 1, 10, 100, 12.5);
+        Corrida c2 = new Corrida(0, "Centro", "Hospital", Categoria.COMFORT, 2, 11, 101, 5.0);
+        Corrida c3 = new Corrida(0, "Aeroporto", "Praia", Categoria.BLACK, 1, 10, 100, 20.0);
 
         // ===== Salvar corridas =====
         corridaRepo.save(c1);
@@ -53,7 +53,7 @@ public class TestCorridaRepositoryCompleto {
         c1.iniciarCorrida();
         corridaRepo.update(c1);
         System.out.println("\n=== Corridas em andamento ===");
-        corridaRepo.findEmAndamento()
+        corridaRepo.findByStatus(CorridaStatus.EM_ANDAMENTO)
                 .forEach(c -> System.out.println(c.getId() + ": " + c.getOrigem() + " -> " + c.getDestino()));
 
         // ===== Testar findByOrigem =====

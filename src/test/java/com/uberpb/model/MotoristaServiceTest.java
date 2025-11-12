@@ -15,7 +15,7 @@ class MotoristaServiceTest {
     @BeforeEach
     void setUp() {
         service = new MotoristaService();
-        motorista = new Motorista(1, true, "12345678900", "2026-12-31", 4.5, 10, true, "Localização X");
+        motorista = new Motorista(1, true, "12345678900", "2026-12-31", 4.5, 10, true, "UBER_X", "Localização X");
         motorista.setNome("Carlos");
         motorista.setEmail("carlos@email.com");
         motorista.setTelefone("11999999999");

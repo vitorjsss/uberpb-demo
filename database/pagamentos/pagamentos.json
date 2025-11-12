@@ -48,4 +48,154 @@
   "metodoPagamentoId" : 0,
   "criadoEm" : "2025-10-16T10:10:36.8456501",
   "atualizadoEm" : "2025-10-16T10:10:36.852648"
+}, {
+  "id" : 6,
+  "corridaId" : 1001,
+  "passageiroId" : 501,
+  "valor" : 89.9,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-11-11T15:45:31.8221389",
+  "atualizadoEm" : "2025-11-11T15:45:31.9677194"
+}, {
+  "id" : 7,
+  "corridaId" : 1002,
+  "passageiroId" : 777,
+  "valor" : 250.0,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "CARTAO_CREDITO",
+  "metodoPagamentoId" : 1234,
+  "criadoEm" : "2025-11-11T15:45:31.9716172",
+  "atualizadoEm" : "2025-11-11T15:45:31.9887062"
+}, {
+  "id" : 8,
+  "corridaId" : 9760,
+  "passageiroId" : 9760,
+  "valor" : 25.5,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-11-11T15:45:34.9593375",
+  "atualizadoEm" : "2025-11-11T15:45:34.9593375"
+}, {
+  "id" : 9,
+  "corridaId" : 1001,
+  "passageiroId" : 501,
+  "valor" : 89.9,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-11-11T15:56:21.4179258",
+  "atualizadoEm" : "2025-11-11T15:56:21.5508383"
+}, {
+  "id" : 10,
+  "corridaId" : 1002,
+  "passageiroId" : 777,
+  "valor" : 250.0,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "CARTAO_CREDITO",
+  "metodoPagamentoId" : 1234,
+  "criadoEm" : "2025-11-11T15:56:21.5608816",
+  "atualizadoEm" : "2025-11-11T15:56:21.5769778"
+}, {
+  "id" : 11,
+  "corridaId" : 1,
+  "passageiroId" : 1,
+  "valor" : 0.0,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-11-11T15:56:23.8409033",
+  "atualizadoEm" : "2025-11-11T15:56:23.8563156"
+}, {
+  "id" : 12,
+  "corridaId" : 9955,
+  "passageiroId" : 9955,
+  "valor" : 25.5,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-11-11T15:56:24.0122701",
+  "atualizadoEm" : "2025-11-11T15:56:24.0122701"
+}, {
+  "id" : 13,
+  "corridaId" : 1001,
+  "passageiroId" : 501,
+  "valor" : 89.9,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-11-11T16:04:36.715918",
+  "atualizadoEm" : "2025-11-11T16:04:36.841081"
+}, {
+  "id" : 14,
+  "corridaId" : 1002,
+  "passageiroId" : 777,
+  "valor" : 250.0,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "CARTAO_CREDITO",
+  "metodoPagamentoId" : 1234,
+  "criadoEm" : "2025-11-11T16:04:36.8520033",
+  "atualizadoEm" : "2025-11-11T16:04:36.8648824"
+}, {
+  "id" : 15,
+  "corridaId" : 1,
+  "passageiroId" : 1,
+  "valor" : 0.0,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-11-11T16:04:38.7912426",
+  "atualizadoEm" : "2025-11-11T16:04:38.811108"
+}, {
+  "id" : 16,
+  "corridaId" : 9887,
+  "passageiroId" : 9887,
+  "valor" : 25.5,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-11-11T16:04:38.9624428",
+  "atualizadoEm" : "2025-11-11T16:04:38.9624428"
+}, {
+  "id" : 17,
+  "corridaId" : 1001,
+  "passageiroId" : 501,
+  "valor" : 89.9,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-11-12T01:46:19.3179817",
+  "atualizadoEm" : "2025-11-12T01:46:19.5933559"
+}, {
+  "id" : 18,
+  "corridaId" : 1002,
+  "passageiroId" : 777,
+  "valor" : 250.0,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "CARTAO_CREDITO",
+  "metodoPagamentoId" : 1234,
+  "criadoEm" : "2025-11-12T01:46:19.6192679",
+  "atualizadoEm" : "2025-11-12T01:46:19.6500461"
+}, {
+  "id" : 19,
+  "corridaId" : 1,
+  "passageiroId" : 1,
+  "valor" : 0.0,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-11-12T01:46:22.4370976",
+  "atualizadoEm" : "2025-11-12T01:46:22.4557127"
+}, {
+  "id" : 20,
+  "corridaId" : 9669,
+  "passageiroId" : 9669,
+  "valor" : 25.5,
+  "status" : "SUCESSO",
+  "tipoPagamento" : "PIX",
+  "metodoPagamentoId" : 0,
+  "criadoEm" : "2025-11-12T01:46:22.7460104",
+  "atualizadoEm" : "2025-11-12T01:46:22.7460104"
 } ]
